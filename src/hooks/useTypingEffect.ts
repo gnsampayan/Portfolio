@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchWeatherData } from "./weatherApi";
-import streamText from "./streamText";
+// import streamText from "./streamText";
 
 const useTypingEffect = (typingSpeed: number, pauseTime: number) => {
     const [currentText, setCurrentText] = useState("");
@@ -23,7 +23,7 @@ const useTypingEffect = (typingSpeed: number, pauseTime: number) => {
                     `Wind speed: ${weatherData.wind.speed} m/s`,
                     `Date: ${weatherData.date}`,
                     `Time: ${weatherData.time24Hour} or ${weatherData.time12Hour}`,
-                    ...streamText,
+                    // ...streamText,
                 ]);
             } else {
                 setTexts(["Failed to load weather data."]);
@@ -49,7 +49,7 @@ const useTypingEffect = (typingSpeed: number, pauseTime: number) => {
                 timeout = setTimeout(() => {
                     setIsPaused(false);
                     setIsDone(true);
-                }, 3000);
+                }, 6000); // adjust pause time
             } else if (isDone) {
                 setCurrentText("");
                 setIsDone(false);

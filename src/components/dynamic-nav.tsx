@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import useTypingEffect from "../hooks/useTypingEffect";
 import { BsArrowLeft } from "react-icons/bs";
 
@@ -61,7 +60,7 @@ const NavBounderies = styled.div`
     align-items: center;
 `;
 const NavBox = styled.div<{ position: string }>`
-    background-color: none;
+    background-color: rgba(255, 255, 255, .3);
     width: 320px;
     height: 400px;
     border: 1px solid black;
@@ -131,7 +130,7 @@ const Nav = styled.div<{ position: string }>`
     transform: ${(props) => props.position};
     transition: 1s ease;
 `;
-const Main = styled.div`
+const Main = styled.div<{ navAlign: string}>`
     position: absolute;
     top: calc(50% - 40px);
     right: 20px;
@@ -139,7 +138,7 @@ const Main = styled.div`
     height: auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: ${(props) => props.navAlign};
 `;
 const Secondary = styled.div`
     position: absolute;
@@ -154,8 +153,11 @@ const Work = styled.div`
     position: absolute;
     width: auto;
     height: auto;
-    top: calc(50% - 59px);
-    left: 20px;
+    top: calc(50% - 95px);
+    left: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 `;
 const Tertiary = styled.div`
     position: absolute;
@@ -179,8 +181,17 @@ const Other = styled.div`
     flex-direction: column;
     align-items: flex-start;
 `;
-const NavButton = styled.button`
-    clear: both;
+const NavButton = styled.button<{isActive: boolean, isAnyButtonClicked: boolean}>`
+  clear: both;
+  color: ${(props) => props.isAnyButtonClicked ? (props.isActive ? 'black' : '#707070') : 'black'}; 
+  &:hover {
+    color: black;
+  }
+  background-color: none;
+  border: none;
+  margin-bottom: 12px;
+  text-decoration: none;
+  background: none;
 `;
 const Footer = styled.div`
     position: absolute;
@@ -198,30 +209,61 @@ const Stream = styled.p`
     font-size: small;
     padding-top: 4px;
 `;
+
 interface Props {
     onMove: (direction: string) => void;
+    activeButton: string | null;
+    setActiveButton: React.Dispatch<React.SetStateAction<string | null>>;
 }
-const DynamicNav = ({ onMove }: Props) => {
+const buttonData = [
+    { name: 'Design', direction: 'left' },
+    { name: 'Beyond', direction: 'left' },
+    { name: 'Websites', direction: 'left' },
+    { name: 'Print', direction: 'left' },
+    { name: 'Logos', direction: 'left' },
+    { name: 'Typography', direction: 'left' },
+    { name: 'Gallery', direction: 'left' },
+    { name: 'Back', direction: 'center', icon: <BsArrowLeft /> }
+];
+
+const DynamicNav = ({ onMove, setActiveButton, activeButton }: Props) => {
     const [locationNavBox, setLocationNavBox] = useState('translateX(0)');
     const [locationNav, setLocationNav] = useState('translateX(0)');
     const currentText = useTypingEffect(100, 1000); // Typing speed and pause time
+    const [flexAlignDir, setFlexAlignDir] = useState('flex-end');
+    const [isAnyButtonClicked, setIsAnyButtonClicked] = useState(false);
 
-    const moveNavBox = (direction: string) => {
+    const handleButtonClick = (direction: string, buttonName: string) => {
+        setActiveButton(buttonName);
+        setIsAnyButtonClicked(true);
         const directionTranslations: { [key: string]: string } = {
-            left: 'translateX(calc(-50vw + 200px))',
-            center: 'translateX(0)',
+          left: 'translateX(calc(-50vw + 200px))',
+          center: 'translateX(0)',
         };
-
+    
         const translation = directionTranslations[direction] || 'translateX(0)';
         setLocationNavBox(translation);
         onMove(direction);
-        console.log(`you clicked ${direction}`);
-    };
+
+        const navAlignDetector = (name: string) => {
+            const flexStartNames = buttonData
+                .filter(button => button.name !== "Back")
+                .map(button => button.name);
+                
+            if (flexStartNames.includes(name)) {
+                setFlexAlignDir('flex-start');
+            } else {
+                setFlexAlignDir('flex-end');
+            };
+        };
+        navAlignDetector(buttonName);
+      };
+    
 
     const moveNav = (direction: string) => {
         const directionTranslations: { [key: string]: string } = {
-            left: 'translateX(-310px)',
-            right: 'translateX(310px)',
+            left: 'translateX(-210px)',
+            right: 'translateX(210px)',
             center: 'translateX(0)',
         };
 
@@ -230,13 +272,15 @@ const DynamicNav = ({ onMove }: Props) => {
         console.log(`you clicked ${direction}`);
     };
 
-
-
     return (
         <NavBounderies>
             <NavBox position={locationNavBox}>
                 <Header>
-                    <Name onClick={() => { moveNavBox('center'); moveNav('center'); }}>Glenn Sampayan</Name>
+                    <Name onClick={() => { 
+                        handleButtonClick('center', 'Home');
+                        moveNav('center'); 
+                        setIsAnyButtonClicked(false);
+                    }}>Glenn Sampayan</Name>
                     <OrnamentsContainer>
                         <Blue />
                         <Yellow />
@@ -244,31 +288,70 @@ const DynamicNav = ({ onMove }: Props) => {
                     </OrnamentsContainer>
                 </Header>
                 <Nav position={locationNav}>
-                    <Main>
-                        <NavButton className="btn mb-12" onClick={() => {moveNavBox('left'); moveNav("left");}}>Work</NavButton>
-                        <NavButton className="btn mb-12" onClick={() => {moveNavBox('left'); moveNav("left");}}>About me</NavButton>
+                    <Main navAlign={flexAlignDir}>
+                        {buttonData.slice(0, 2).map(button => (
+                            <NavButton
+                                key={button.name}
+                                isActive={activeButton === button.name}
+                                isAnyButtonClicked={isAnyButtonClicked}
+                                onClick={() => {
+                                    moveNav(button.direction);
+                                    handleButtonClick(button.direction, button.name);
+                                }}
+                            >
+                                {button.icon || button.name}
+                            </NavButton>
+                        ))}
                     </Main>
                     <Secondary>
                         <Work>
-                            <NavButton className="btn mb-12" onClick={() => moveNav("left")}>Design</NavButton>
-                            <NavButton className="btn mb-12" onClick={() => moveNav("left")}>Other</NavButton>
-                            <NavButton className="btn mb-12" onClick={() => {moveNav("center"); moveNavBox("center");}}>
-                                <BsArrowLeft />
-                            </NavButton>
+                            {buttonData.slice(2, -1).map(button => (
+                                <NavButton
+                                    key={button.name}
+                                    isActive={activeButton === button.name}
+                                    isAnyButtonClicked={isAnyButtonClicked}
+                                    onClick={() => {
+                                        moveNav(button.direction);
+                                        handleButtonClick(button.direction, button.name);
+                                    }}
+                                >
+                                    {button.icon || button.name}
+                                </NavButton>
+                            ))}
                         </Work>
                     </Secondary>
                     <Tertiary>
                         <Design>
-                            <NavButton className="btn mb-12">DesignRun.org</NavButton>
-                            <NavButton className="btn mb-12">Spanning</NavButton>
-                            <NavButton className="btn mb-12">Here</NavButton>
-                            <NavButton className="btn mb-12">
+                            {['DesignRun.org', 'Spanning', 'Here'].map(name => (
+                                <NavButton
+                                    key={name}
+                                    isActive={false}
+                                    isAnyButtonClicked={isAnyButtonClicked}
+                                >
+                                    {name}
+                                </NavButton>
+                            ))}
+                            <NavButton
+                                isActive={false}
+                                isAnyButtonClicked={isAnyButtonClicked}
+                            >
                                 <BsArrowLeft />
                             </NavButton>
                         </Design>
                         <Other>
-                            <NavButton className="btn mb-12">Test</NavButton>
-                            <NavButton className="btn mb-12">
+                            {['Test'].map(name => (
+                                <NavButton
+                                    key={name}
+                                    isActive={false}
+                                    isAnyButtonClicked={isAnyButtonClicked}
+                                >
+                                    {name}
+                                </NavButton>
+                            ))}
+                            <NavButton
+                                isActive={false}
+                                isAnyButtonClicked={isAnyButtonClicked}
+                            >
                                 <BsArrowLeft />
                             </NavButton>
                         </Other>

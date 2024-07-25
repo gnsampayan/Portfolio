@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    opacity: 0.5; /* Adjust this value to change opacity */
+    opacity: 0.5;
     z-index: -1;
   }
 `
@@ -31,7 +31,7 @@ const App = () => {
 
   const [gridTranslation, setGridTranslation] = useState<string>('100vw');
   const [btn, setBtn] = useState<string | null>(null);
-  const [visState, setVis] = useState<string>('hidden');
+  const [visState, setVis] = useState<boolean>(false);
 
   const handleTranslationChange = (direction: string) => {
     const directionTranslations: { [key: string]: string } = {
@@ -44,9 +44,9 @@ const App = () => {
 
   const handleObjectVis = (activeNav: string | null) => {
     if (activeNav === "Design") {
-      setVis('visible');
+      setVis(true);
     } else {
-      setVis('hidden');
+      setVis(false);
     }
   };
   useEffect(() => {

@@ -5,7 +5,7 @@ import drgLogov2 from './assets/drg_logo_v2.svg';
 import drg1 from './assets/drg1.png';
 import drg2 from './assets/drg2.png';
 
-const Wrapper = styled.div<{visibility : string}>`
+const Wrapper = styled.div<{visibility : boolean }>`
     position: absolute;
     top: 0;
     left: 0;
@@ -14,7 +14,7 @@ const Wrapper = styled.div<{visibility : string}>`
     z-index: 2;
     overflow-x: hidden;
     overflow-y: auto;
-    visibility: ${(props) => props.visibility};
+    visibility: ${(props) => props.visibility ? 'visible' : 'hidden'};
 `;
 const Grid = styled.div<{ translation: string }>`
     display: grid;
@@ -36,6 +36,7 @@ const Object = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 100px;
 `;
 
 const ImageWrapper = styled.div`
@@ -44,6 +45,8 @@ const ImageWrapper = styled.div`
     width: 400px;
     overflow: hidden;
     border-radius: 3px;
+    cursor: pointer;
+    z-index: 3;
 
     &:hover .drg1 {
         opacity: 0;
@@ -80,6 +83,8 @@ const FirstChild = styled.div`
   height: 152px;
   border-radius: 3px;
   position: relative;
+  cursor: pointer;
+  z-index: 3;
 
   &:hover .logo1 {
     opacity: 0;
@@ -128,14 +133,14 @@ const Centering = styled.div`
 
 interface Props {
   translation: string;
-  vis: string;
+  vis: boolean;
 }
 
 const Works = ({ translation, vis }: Props) => {
   return (
     <Wrapper visibility={vis}>
       <Grid translation={translation}>
-        <Object style={{ marginTop: '20vh', marginBottom: '300px' }}>
+        <Object style={{ marginTop: '20vh' }}>
           <Centering>
             <Heading>
               <h1 style={{marginBottom: '20px'}}>DesignRunGroup.</h1>
@@ -161,16 +166,10 @@ const Works = ({ translation, vis }: Props) => {
         </Object>
         <Object>
           <Centering>
-            <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
-                marginBottom: '100px' 
-              }} >
-                <h1 style={{marginBottom: '20px'}}>NQ Hardware</h1>
-                <p>put description here.
-                </p>
-              </div>
+            <Heading>
+              <h1 style={{marginBottom: '20px'}}>NQ Hardware</h1>
+              <p>put description here.</p>
+            </Heading>
               <div style={{backgroundColor: 'lightblue', height: '400px', width: '720px'}}>test</div>
           </Centering>
         </Object>

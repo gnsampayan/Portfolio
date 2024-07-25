@@ -133,7 +133,7 @@ const Nav = styled.div<{ position: string }>`
 const Main = styled.div<{ navAlign: string}>`
     position: absolute;
     top: calc(50% - 40px);
-    right: 20px;
+    right: 12px; // + 8 to edge
     width: auto;
     height: auto;
     display: flex;
@@ -142,7 +142,7 @@ const Main = styled.div<{ navAlign: string}>`
 `;
 const Secondary = styled.div`
     position: absolute;
-    left: 320px;
+    left: 348px; // 368 is to edge
     top: 50%;
     width: auto;
     height: auto;
@@ -262,7 +262,7 @@ const DynamicNav = ({ onMove, setActiveButton, activeButton }: Props) => {
 
     const moveNav = (direction: string) => {
         const directionTranslations: { [key: string]: string } = {
-            left: 'translateX(-210px)',
+            left: 'translateX(-228px)', // 240 is to edge
             right: 'translateX(210px)',
             center: 'translateX(0)',
         };

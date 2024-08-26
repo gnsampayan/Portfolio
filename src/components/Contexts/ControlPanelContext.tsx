@@ -1,17 +1,18 @@
 // src/components/Contexts/ControlPanelContext.tsx
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { moveBox, setOpacity, toggleClickable, updateCoords, toggleTransition, reset } from '../../features/boxSlice';
+import { RootState } from '../../reducers/index';
+import { setBoxInView as setBoxInViewAction } from '../../features/boxInViewSlice';
 
 export interface ControlPanelContextProps {
   handleXCoordChange: (id: number, newXCoord: string) => void;
   handleYCoordChange: (id: number, newYCoord: string) => void;
-//   handleMove: (id: number) => void;
-    handleMove: (id: number, x: string, y: string) => void;
+  handleMove: (id: number, x: string, y: string) => void;
   changeOpacity: (id: number, opacity: number) => void;
   toggleClickability: (id: number) => void;
   boxInView: number;
-  setBoxInView: React.Dispatch<React.SetStateAction<number>>;
+  setBoxInView: (id: number) => void;
   toggleAnimation: (id: number, animate: boolean) => void;
   handleReset: (ids?: number[]) => void;
 }
@@ -21,7 +22,15 @@ const ControlPanelContext = createContext<ControlPanelContextProps | undefined>(
 export const ControlPanelProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
   const boxes = useSelector((state: any) => state.boxes); // Move useSelector outside of functions
-  const [boxInView, setBoxInView] = useState<number>(-1);
+  const boxInView = useSelector((state: RootState) => state.boxInView.boxInView);
+
+  // Load boxInView from local storage on initialization
+  useEffect(() => {
+    const savedBoxInView = localStorage.getItem('boxInView');
+    if (savedBoxInView !== null) {
+      dispatch(setBoxInViewAction(parseInt(savedBoxInView, 10)));
+    }
+  }, [dispatch]);
 
   const handleXCoordChange = (id: number, newXCoord: string) => {
     const box = boxes.find((b: any) => b.id === id);
@@ -36,13 +45,6 @@ export const ControlPanelProvider: React.FC<{ children: React.ReactNode }> = ({ 
       dispatch(updateCoords({ id, xCoord: box.xCoord, yCoord: newYCoord }));
     }
   };
-
-//   const handleMove = (id: number) => {
-//     const box = boxes.find((b: any) => b.id === id);
-//     if (box) {
-//       dispatch(moveBox({ id, x: `${box.xCoord}vw`, y: `${box.yCoord}vh` }));
-//     }
-//   };
 
     const handleMove = (id: number, xCoord: string, yCoord: string) => {
         const box = boxes.find((b: any) => b.id === id);
@@ -70,6 +72,12 @@ export const ControlPanelProvider: React.FC<{ children: React.ReactNode }> = ({ 
     };
     const handleReset = (ids?: number[]) => {
         dispatch(reset(ids)); // Pass the IDs to the reset action
+    };
+
+      // Update boxInView and save it to local storage
+    const setBoxInView = (id: number) => {
+      dispatch(setBoxInViewAction(id));
+      localStorage.setItem('boxInView', id.toString());
     };
 
 

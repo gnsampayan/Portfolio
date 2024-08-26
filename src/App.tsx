@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Orbital from './components/orbital';
 import Box from './components/Box';
-import { useDispatch } from 'react-redux';
-import { reset } from './features/boxSlice';
 //child components - Folds
 import NQHardware from './components/Folds/NQHardware';
 import DesignRunGroup from './components/Folds/DesignRunGroup';
@@ -17,6 +15,8 @@ import DrgOrgDetails from './components/ProjectDetails/DrgOrgDetails';
 import SpanningDetails from './components/ProjectDetails/SpanningDetails';
 //Dynamic Nav
 import DynamicNav from './components/dynamic-nav';
+//AboutMe
+import AboutMe from './components/AboutMe';
 
 const Wrapper = styled.div`
   position: relative;
@@ -47,6 +47,13 @@ const BoxGroup11Wrapper = styled.div`
   left: calc(50vw - 160px);
   z-index: 999;
 `;
+const BoxGroup12Wrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -100vw;
+`;
 
 const App = () => {
   const componentMapping = [
@@ -64,19 +71,10 @@ const App = () => {
     <SpanningDetails/>,
     //Nav
     <DynamicNav />,
+    <AboutMe />
   ]
-  const dispatch = useDispatch();
-  const handleReset = () => {
-    dispatch(reset());
-  };
   return (
     <Wrapper>
-      <button 
-        style={{ position: 'absolute', top: '0', left: '0', zIndex: '999999' }} 
-        onClick={handleReset} 
-        className="btn btn-danger">
-          Reset All Boxes
-      </button>
       <Orbital />
         {/* Render boxes 1-10 in one group */}
         <BoxGroup1To5Wrapper>
@@ -94,6 +92,9 @@ const App = () => {
         <BoxGroup11Wrapper>
           <Box key={11} id={11} childComponent={componentMapping[10]} />
         </BoxGroup11Wrapper>
+        <BoxGroup12Wrapper>
+          <Box key={12} id={12} childComponent={componentMapping[11]} />
+        </BoxGroup12Wrapper>
     </Wrapper>
   );
 };

@@ -75,6 +75,16 @@ const P = styled.p`
     line-height: 1.5rem;
     color: rgb(143, 143, 143);
 `
+const PBody = styled.p`
+    clear: both;
+    font-family: halyard-text, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 200;
+    font-style: normal;
+    max-width: 600px;
+    line-height: 1.5rem;
+    color: rgb(0, 0, 0);
+`
 const A = styled.a`
     all: unset;
     text-decoration: none;
@@ -170,7 +180,7 @@ const NQHardwareDetails = () => {
                     reflect the views of DesignRun.org.
                 </P>
                 <Caption>Summary</Caption>
-                <P>
+                <PBody>
                 DesignRun.org is a healthcare startup and non-profit organization 
                 that aims to establish a strong brand identity and digital presence 
                 to reach its target audience of current and future investors, 
@@ -180,7 +190,7 @@ const NQHardwareDetails = () => {
                 the team successfully delivered a website that effectively 
                 communicated the company's mission and provided a seamless 
                 experience for its users.
-                </P>
+                </PBody>
                 <A href="https://www.nqhardware.com/" target="_blank">Visit Site</A>
             </Summary>
         </Heading>

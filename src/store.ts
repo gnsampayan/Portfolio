@@ -13,6 +13,7 @@ const store = configureStore({
 store.subscribe(() => {
   saveState({
     boxes: store.getState().boxes, // Save only the boxes state to local storage
+    boxInView: store.getState().boxInView,
   });
 });
 

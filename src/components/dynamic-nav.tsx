@@ -178,6 +178,8 @@ const Stream = styled.p`
 const DynamicNav = () => {
     const { handleMove, changeOpacity, toggleClickability, boxInView, setBoxInView, toggleAnimation, handleReset } = useControlPanel();
     const [isSecondaryDisabled, setIsSecondaryDisabled] = useState<boolean>(false);
+    const currentText = useTypingEffect(100, 6000); // Typing speed and pause time
+
 
     const slideOutAndReset = () => {
         if (boxInView !== -1) {
@@ -216,7 +218,6 @@ const DynamicNav = () => {
         listTranslation,
         setHighlightedSecondaryNav,
       } = useNavContext();
-    const currentText = useTypingEffect(100, 1000); // Typing speed and pause time
 
     const handleHomeButtonClick = () => {
         setActiveMainButton(null);
@@ -229,7 +230,8 @@ const DynamicNav = () => {
     const handleMainButtonClick = ( buttonName: string) => {
         setIsAnyButtonClicked(true);
         setActiveMainButton(buttonName);
-
+        toggleAnimation(11, true);
+        
         if (buttonName === 'Works') {
             onMoveList('left');
             if (boxInView === -1) {
@@ -238,12 +240,35 @@ const DynamicNav = () => {
                 handleMove(11, 'calc(-50vw + 180px)', '0');
                 setHighlightedSecondaryNav(0);
                 toggleAnimation(1, true);
-                toggleAnimation(11, true);
-            } else {
+            } else if (boxInView === 12) {
+                slideInBox(1);
+                setBoxInView(1);
+                handleMove(11, 'calc(-50vw + 180px)', '0');
+                setHighlightedSecondaryNav(0);
+                toggleAnimation(1, true);
+                handleMove(12, '0', '0');
+            }
+            else {
                 setHighlightedSecondaryNav(boxInView - 1);
             }
-        } else if (buttonName !== null) {
+        } else {
+            setBoxInView(12);
+            toggleAnimation(12, true);
             onMoveList('origin');
+            handleMove(12, '100vw', '0');
+            changeOpacity(12, 1);
+            handleMove(11, 'calc(50vw - 180px)', '0');
+            toggleAnimation(boxInView, true);
+            if (boxInView !== 12) {
+                handleMove(boxInView, '0', '0');
+            }
+            if ([6, 7, 8, 9, 10].includes(boxInView)) {
+                handleMove(boxInView, '100vw', '-100vh');
+                setTimeout(() => {
+                    toggleAnimation(boxInView, false);
+                    handleReset([boxInView]);
+                }, 1000)
+            }
         }
     };
 

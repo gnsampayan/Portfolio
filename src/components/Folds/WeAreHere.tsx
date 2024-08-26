@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import WeAreHereVid from '../../assets/WeAreHere.mp4';
-import { useNavContext } from "../Contexts/NavContext";
+import { useControlPanel } from "../Contexts/ControlPanelContext";
 
 const Fold = styled.div`
     height: 100vh;
     align-items: center;
     justify-content: center;
     display: flex;
+    padding-left: 360px;
 `;
 const Container = styled.div`
     position: relative;
@@ -75,15 +76,36 @@ const Triangle = styled.div`
         }
     }
 `
-const ViewBtn = styled.button`
+const A = styled.a`
     all: unset;
-    color: blue;
+    text-decoration: none;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 3px;
+    color: #40cd47;
+    background: white;
+    outline: 1px solid #40cd47;
+    cursor: pointer;
+    &:hover {
+        color: white;
+        background: #40cd47;
+        outline: none;
+    }
 `
 
 const WeAreHere = () => {
-    const {
-        handleProjectDetails
-    } = useNavContext();
+    const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
+    const handleViewDetailsClick = () => {
+        setBoxInView(8);
+        handleMove(8, '0', '-100vh');
+        handleMove(3, '-100vw', '-100vh');
+        changeOpacity(8, 1);
+        toggleAnimation(8, true);
+        setTimeout(() => {
+            toggleAnimation(3, false);
+            handleReset([3]);
+        }, 1000)
+    }
   return (
     <Fold>
         <Container>
@@ -92,8 +114,7 @@ const WeAreHere = () => {
                     <Title>We Are Here</Title>
                     <Subtitle>WEB E-COMMERCE</Subtitle>
                     <Date>2021</Date>
-                    <ViewBtn onClick={() => handleProjectDetails(2)}>Project Details</ViewBtn>
-                    <a href="https://wearehere.com" target="_blank">Visit Site</a>
+                    <A onClick={() => handleViewDetailsClick()}>Project Details</A>
                 </Project>
                 <Video src={WeAreHereVid} autoPlay loop muted />
             </Frame>

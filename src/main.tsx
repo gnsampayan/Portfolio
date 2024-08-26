@@ -1,13 +1,37 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavProvider } from './components/Contexts/NavContext.tsx';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducers';
+import { loadState, saveState } from './utils/localStorage'; // Import utility functions
+import { ControlPanelProvider } from './components/Contexts/ControlPanelContext.tsx';
+
+// Load the state from localStorage
+const preloadedState = loadState();
+
+const store = configureStore({
+  reducer: rootReducer,
+  preloadedState, // Use the preloaded state from localStorage
+});
+
+// Save the state to localStorage whenever it changes
+store.subscribe(() => {
+  saveState({
+    boxes: store.getState().boxes, // Save only the 'boxes' state
+  });
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <NavProvider>
-      <App />
-    </NavProvider>
+    <Provider store={store}>
+        <NavProvider>
+          <ControlPanelProvider>
+            <App />
+          </ControlPanelProvider>
+        </NavProvider>
+    </Provider>
   </React.StrictMode>,
-)
+);

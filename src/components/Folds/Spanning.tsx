@@ -1,12 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import SpanningVid from '../../assets/spanning-o365.mp4';
-import { useNavContext } from "../Contexts/NavContext";
+import { useControlPanel } from "../Contexts/ControlPanelContext";
 
 const Fold = styled.div`
     height: 100vh;
     align-items: center;
     justify-content: center;
     display: flex;
+    padding-left: 360px;
 `;
 const Container = styled.div`
     position: relative;
@@ -104,15 +105,36 @@ const getFixedPolygon = () => {
       background-color: #e06bd0;
       animation: ${star} 6s infinite linear;
   `;
-const ViewBtn = styled.button`
-    all: unset;
-    color: blue;
+const A = styled.a`
+all: unset;
+text-decoration: none;
+width: fit-content;
+padding: 10px 20px;
+border-radius: 3px;
+color: #40cd47;
+background: white;
+outline: 1px solid #40cd47;
+cursor: pointer;
+&:hover {
+    color: white;
+    background: #40cd47;
+    outline: none;
+}
 `
 
 const Spanning = () => {
-  const {
-    handleProjectDetails
-  } = useNavContext();
+  const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
+    const handleViewDetailsClick = () => {
+        setBoxInView(10);
+        handleMove(10, '0', '-100vh');
+        handleMove(5, '-100vw', '-100vh');
+        changeOpacity(10, 1);
+        toggleAnimation(10, true);
+        setTimeout(() => {
+            toggleAnimation(5, false);
+            handleReset([5]);
+        }, 1000)
+    }
   return (
     <Fold>
         <Container>
@@ -121,8 +143,7 @@ const Spanning = () => {
                     <Title>Spanning<br/>Office 365</Title>
                     <Subtitle>WEB APP</Subtitle>
                     <Date>2019</Date>
-                    <ViewBtn onClick={() => handleProjectDetails(4)}>Project Details</ViewBtn>
-                    <a href="https://spanning.com" target="_blank">Visit Site</a>
+                    <A onClick={() => handleViewDetailsClick()}>Project Details</A>
                 </Project>
                 <Video src={SpanningVid} autoPlay loop muted />
             </Frame>

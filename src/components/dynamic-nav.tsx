@@ -1,6 +1,8 @@
 import styled, { keyframes } from "styled-components";
 import useTypingEffect from "../hooks/useTypingEffect";
 import { useNavContext } from "./Contexts/NavContext";
+import { useControlPanel } from "./Contexts/ControlPanelContext";
+import { useState } from "react";
 
 
 // Keyframes
@@ -45,28 +47,14 @@ const skewAnimation = keyframes`
         transform: skew(0deg);
     }
 `;
-
-// Styled Components
-const NavBounderies = styled.div`
-    width: calc(100vw - 40px);
-    height: calc(100vh - 40px);
+const NavBox = styled.div`
     position: relative;
-    background-color: none;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-const NavBox = styled.div<{ position: string }>`
     background-color: none;
     width: 320px;
     height: 400px;
     border: 1px solid black;
     border-radius: 3px;
-    transform: ${(props) => props.position};
     overflow: hidden;
-    transition: 1s ease;
     z-index: 999;
 `;
 const Header = styled.div`
@@ -163,6 +151,9 @@ const NavButton = styled.button<{isActive: boolean, isAnyButtonClicked: boolean}
   &:hover {
     color: black;
   }
+  &:disabled {
+    cursor: progress;
+  }
   background-color: none;
   border: none;
   text-decoration: none;
@@ -185,6 +176,33 @@ const Stream = styled.p`
 `;
 
 const DynamicNav = () => {
+    const { handleMove, changeOpacity, toggleClickability, boxInView, setBoxInView, toggleAnimation, handleReset } = useControlPanel();
+    const [isSecondaryDisabled, setIsSecondaryDisabled] = useState<boolean>(false);
+
+    const slideOutAndReset = () => {
+        if (boxInView !== -1) {
+            if (![6, 7, 8, 9, 10].includes(boxInView)) {
+                handleMove(boxInView, '-200vw', '0vh');
+            } else {
+                handleMove(boxInView, '-200vw', '-100vh');
+            }
+            toggleClickability(boxInView);
+            setTimeout(() => {
+                toggleAnimation(boxInView, false);
+                handleReset([boxInView]);
+            }, 1000);
+        }
+    };
+
+    const slideInBox = (id: number) => {
+        if (id !== boxInView) {
+            toggleAnimation(id, true);
+            changeOpacity(id, 1);
+            handleMove(id, '-100vw', '0');
+            setBoxInView(id);
+        }
+    };
+
     const {
         activeMainButton,
         setActiveMainButton,
@@ -192,18 +210,11 @@ const DynamicNav = () => {
         setActiveSecondaryBtn,
         isAnyButtonClicked,
         setIsAnyButtonClicked,
-        navTranslation,
-        onMoveNav,
-        onMoveFold,
         onMoveList,
         MainBtnData,
         SecondaryBtnData,
         listTranslation,
-        setTouchedFolds,
         setHighlightedSecondaryNav,
-        setFoldVis,
-        foldTranslation,
-        setIsScrollEnabled,
       } = useNavContext();
     const currentText = useTypingEffect(100, 1000); // Typing speed and pause time
 
@@ -211,44 +222,95 @@ const DynamicNav = () => {
         setActiveMainButton(null);
         setActiveSecondaryBtn(null);
         setIsAnyButtonClicked(true);
-        setTouchedFolds([0,1,2,3,4]);
-        onMoveFold('origin');
-        onMoveNav('origin');
-        console.log('handleHomeButtonClick triggered');
-        console.log(foldTranslation);
+        setHighlightedSecondaryNav(null);
         onMoveList('origin');
     };
 
     const handleMainButtonClick = ( buttonName: string) => {
-        setIsScrollEnabled(false);
         setIsAnyButtonClicked(true);
         setActiveMainButton(buttonName);
-        onMoveNav('left');
-        onMoveList('left');
-        setFoldVis(true);
-        if (buttonName === "Works") {
-            setHighlightedSecondaryNav(0);
-            setTouchedFolds([0,1,2,3,4]);
-            onMoveFold('center');
+
+        if (buttonName === 'Works') {
+            onMoveList('left');
+            if (boxInView === -1) {
+                slideInBox(1);
+                setBoxInView(1);
+                handleMove(11, 'calc(-50vw + 180px)', '0');
+                setHighlightedSecondaryNav(0);
+                toggleAnimation(1, true);
+                toggleAnimation(11, true);
+            } else {
+                setHighlightedSecondaryNav(boxInView - 1);
+            }
+        } else if (buttonName !== null) {
+            onMoveList('origin');
         }
-        // Re-enable scroll handling after a delay
-        setTimeout(() => {
-            setIsScrollEnabled(true);
-        }, 1000);  // Adjust the delay to match your transition duration
     };
 
     const handleSecondaryButtonClick = (buttonName: string) => {
+        const buttonIndex = SecondaryBtnData.findIndex(button => button.name === buttonName);
+        const matchingBoxId = buttonIndex + 1; // Add 2 to align with your box ID logic
+        setIsAnyButtonClicked(true);
         setActiveSecondaryBtn(buttonName);
+    
+        if (buttonIndex !== -1) {
+            toggleAnimation(matchingBoxId, true);
+            
+            // Disable buttons for 1 second
+            if (matchingBoxId !== boxInView) {
+                slideOutAndReset();
+                slideInBox(matchingBoxId); 
+                setIsSecondaryDisabled(true);
+            }
+            setTimeout(() => {
+                setIsSecondaryDisabled(false);
+            }, 1000);
+        }
     };
 
+    
+    const combinedHandler = () => {
+        handleHomeButtonClick();
+        setBoxInView(-1);
+        toggleAnimation(11, true);
+        toggleAnimation(boxInView, true);
+        handleMove(11, '0', '0');
+        handleMove(boxInView, '0', '0');
+    
+        setTimeout(() => {
+            handleReset();
+        }, 1000);
+    
+        const boxMappings: { [key: number]: number } = {
+            6: 1,
+            7: 2,
+            8: 3,
+            9: 4,
+            10: 5
+        };
+    
+        const targetBox = boxMappings[boxInView];
+        
+        if (targetBox !== undefined) {
+            toggleAnimation(targetBox, false);
+            handleMove(boxInView, '100vw', '-100vh');
+            handleMove(targetBox, '100vw', '-100vh');
+    
+            setTimeout(() => {
+                toggleAnimation(boxInView, false);
+                handleReset();
+            }, 1000);
+        }
+    };
+    
+    
+    
 
     return (
-        <NavBounderies>
-            <NavBox position={navTranslation}>
+        
+            <NavBox>
                 <Header>
-                    <Name onClick={() => { 
-                        handleHomeButtonClick();
-                    }}>Glenn Sampayan</Name>
+                    <Name onClick={combinedHandler}>Glenn Sampayan</Name>
                     <OrnamentsContainer>
                         <Blue />
                         <Yellow />
@@ -262,10 +324,7 @@ const DynamicNav = () => {
                                 key={button.name}
                                 isActive={activeMainButton === button.name}
                                 isAnyButtonClicked={isAnyButtonClicked}
-                                onClick={() => {
-                                    handleMainButtonClick(button.name);
-                                }}
-                            >
+                                onClick={() => {handleMainButtonClick(button.name)}} >
                                 {button.name}
                             </NavButton>
                         ))}
@@ -277,9 +336,8 @@ const DynamicNav = () => {
                                     key={button.name}
                                     isActive={activeSecondaryBtn === button.name}
                                     isAnyButtonClicked={isAnyButtonClicked}
-                                    onClick={() => {
-                                        handleSecondaryButtonClick(button.name);
-                                    }}
+                                    onClick={() => {handleSecondaryButtonClick(button.name);}}
+                                    disabled={isSecondaryDisabled}
                                 >
                                     {button.name}
                                 </NavButton>
@@ -291,7 +349,6 @@ const DynamicNav = () => {
                     <Stream>{currentText}</Stream>
                 </Footer>
             </NavBox>
-        </NavBounderies>
     );
 };
 

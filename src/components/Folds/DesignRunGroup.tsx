@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import DrgGroup from '../../assets/DrgGroupVid.mp4';
-import { useNavContext } from "../Contexts/NavContext";
+import { useControlPanel } from "../Contexts/ControlPanelContext";
 
 const Fold = styled.div`
     height: 100vh;
     align-items: center;
     justify-content: center;
     display: flex;
+    padding-left: 360px;
 `;
 
 const Container = styled.div`
@@ -83,16 +84,37 @@ const Circle = styled.div`
         }
     }
 `
-const ViewBtn = styled.button`
+const A = styled.a`
     all: unset;
-    color: blue;
+    text-decoration: none;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 3px;
+    color: #40cd47;
+    background: white;
+    outline: 1px solid #40cd47;
+    cursor: pointer;
+    &:hover {
+        color: white;
+        background: #40cd47;
+        outline: none;
+    }
 `
 
 
 const DesignRunGroup = () => {
-  const {
-    handleProjectDetails
-  } = useNavContext();
+  const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
+    const handleViewDetailsClick = () => {
+        setBoxInView(7);
+        handleMove(7, '0', '-100vh');
+        handleMove(2, '-100vw', '-100vh');
+        changeOpacity(7, 1);
+        toggleAnimation(7, true);
+        setTimeout(() => {
+            toggleAnimation(2, false);
+            handleReset([2]);
+        }, 1000)
+    }
   return (
     <Fold>
       <Container>
@@ -101,8 +123,7 @@ const DesignRunGroup = () => {
             <Title>DesignRun<br/>Group</Title>
             <Subtitle>WEBSITE</Subtitle>
             <Date>2023</Date>
-            <ViewBtn onClick={() => handleProjectDetails(1)}>Project Details</ViewBtn>
-            <a href="https://designrungroup.com" target="_blank">Visit Site</a>
+            <A onClick={() => handleViewDetailsClick()}>Project Details</A>
           </Project>
           <Video src={DrgGroup} autoPlay loop muted />
         </Frame>

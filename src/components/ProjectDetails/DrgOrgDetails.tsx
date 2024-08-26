@@ -3,14 +3,24 @@ import DrgOrg from '../../assets/designrun.mp4';
 import Wordmard from '../../assets/drg_branding.png';
 import Screenshot from '../../assets/drg_sample_page.png';
 
-const Frame = styled.div<{vis: boolean}>`
-    width: calc(100vw - 360px);
-    display: ${(props) => props.vis ? 'flex' : 'none'};
+const Frame = styled.div`
+    width: 100vw;
+    height: 100vh;
+    padding: 60px 0px 60px 360px;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 40px;
-    padding: 60px 10px 60px 10px;
+    overflow: auto;
+    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for other browsers */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 `
 const Heading = styled.div`
     display: flex;
@@ -137,14 +147,9 @@ const SmallBlobAnimation = styled.div`
   }
 `
 
-
-
-interface Props {
-    visible: boolean;
-}
-const DrgOrgDetails = ({ visible } : Props) => {
+const DrgOrgDetails = () => {
   return (
-    <Frame vis={visible}>
+    <Frame>
         <Heading>
             <Scope>
                 <Caption>Scope</Caption>

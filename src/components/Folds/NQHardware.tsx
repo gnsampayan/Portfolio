@@ -1,20 +1,21 @@
 import styled from "styled-components";
 import NQVid from '../../assets/nqhardware-sequence.mp4';
-import { useNavContext } from "../Contexts/NavContext";
+import { useControlPanel } from "../Contexts/ControlPanelContext";
 
-const Fold = styled.div`
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-`;
 
 const Container = styled.div`
     position: relative;
-    width: calc(100vw - 380px);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 360px;
 `;
 
 const Frame = styled.div`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -58,7 +59,7 @@ const Video = styled.video`
 const Square = styled.div`
     position: absolute;
     top: -60px;
-    left: 440px;
+    left: 240px;
     width: 400px;
     height: 400px;
     border-radius: 3px;
@@ -71,31 +72,49 @@ const Square = styled.div`
         }
     }
 `
-const ViewBtn = styled.button`
+const A = styled.a`
     all: unset;
-    color: blue;
+    text-decoration: none;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 3px;
+    color: #40cd47;
+    background: white;
+    outline: 1px solid #40cd47;
+    cursor: pointer;
+    &:hover {
+        color: white;
+        background: #40cd47;
+        outline: none;
+    }
 `
 
 const NQHardware = () => {
-    const {
-        handleProjectDetails,
-    } = useNavContext();
+    const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
+    const handleViewDetailsClick = () => {
+        setBoxInView(6);
+        handleMove(6, '0', '-100vh');
+        handleMove(1, '-100vw', '-100vh');
+        changeOpacity(6, 1);
+        toggleAnimation(6, true);
+        setTimeout(() => {
+            toggleAnimation(1, false);
+            handleReset([1]);
+        }, 1000)
+    }
     return (
-        <Fold>
-            <Container>
-                <Frame>
-                    <Project>
-                        <Title>NQ Hardware</Title>
-                        <Subtitle>WEB APP, E-COMMERCE</Subtitle>
-                        <Date>2024</Date>
-                        <ViewBtn onClick={() => handleProjectDetails(0)}>Project Details</ViewBtn>
-                        <a href="https://nqhardware.com" target="_blank">Visit Site</a>
-                    </Project>
-                    <Video src={NQVid} autoPlay loop muted />
-                    <Square />
-                </Frame>
-            </Container>
-        </Fold>
+        <Container>
+            <Frame>
+                <Project>
+                    <Title>NQ Hardware</Title>
+                    <Subtitle>WEB APP, E-COMMERCE</Subtitle>
+                    <Date>2024</Date>
+                    <A onClick={() => handleViewDetailsClick()}>Project Details</A>
+                </Project>
+                <Video src={NQVid} autoPlay loop muted />
+                <Square />
+            </Frame>
+        </Container>
     );
 };
 

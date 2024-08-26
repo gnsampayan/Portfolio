@@ -1,8 +1,23 @@
 import styled from "styled-components";
 
-const Frame = styled.div<{vis: boolean}>`
-    width: calc(100vw - 360px);
-    display: ${(props) => props.vis ? 'block' : 'none'};
+const Frame = styled.div`
+    width: 100vw;
+    height: 100vh;
+    padding: 60px 0px 60px 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+    overflow: auto;
+    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for other browsers */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 `
 const Scope = styled.div`
     display: flex;
@@ -38,12 +53,9 @@ const SpacerLine = styled.div`
 const Line = styled.div`
     border-top: 1px solid rgb(143, 143, 143);
 `
-interface Props {
-    visible: boolean;
-}
-const WeAreHereDetails = ({ visible } : Props) => {
+const WeAreHereDetails = () => {
   return (
-    <Frame vis={visible}>
+    <Frame>
         <h1>We Are Here Details</h1>
         <Scope>
             <Caption>Scope</Caption>

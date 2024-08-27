@@ -44,7 +44,7 @@ const Subtitle = styled.h3`
 `;
 
 const Date = styled.p`
-    margin-top: -14px;
+    margin-top: 0px;
 `;
 
 const Video = styled.video`
@@ -78,14 +78,14 @@ const A = styled.a`
     width: fit-content;
     padding: 10px 20px;
     border-radius: 3px;
-    color: #40cd47;
-    background: white;
-    outline: 1px solid #40cd47;
     cursor: pointer;
+    color: white;
+    background: black;
+    outline: none;
     &:hover {
-        color: white;
-        background: #40cd47;
-        outline: none;
+        color: black;
+        background: white;
+        outline: 1px solid black;
     }
 `
 

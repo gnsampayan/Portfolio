@@ -36,9 +36,10 @@ const Subtitle = styled.h3`
     font-weight: 200;
     font-size: 1rem;
     width: 300px;
+    text-transform: uppercase;
 `
 const Date = styled.p`
-    margin-top: -14px;
+    margin-top: 0px;
 `
 const Video = styled.video`
     height: 300px;
@@ -50,7 +51,7 @@ const Video = styled.video`
     }
 `
 const getFixedPolygon = () => {
-    return `polygon(
+  return `polygon(
       10% 10%,   /* Top-left corner */
       50% 20%,   /* Top-center */
       90% 10%,   /* Top-right corner */
@@ -60,13 +61,13 @@ const getFixedPolygon = () => {
       10% 90%,   /* Bottom-left corner */
       20% 50%    /* Left-center */
     )`;
-  };
-  
-  const getRandomPolygon = () => {
-    const randomValue = (min: number, max: number) =>
-      Math.random() * (max - min) + min;
-  
-    return `polygon(
+};
+
+const getRandomPolygon = () => {
+  const randomValue = (min: number, max: number) =>
+    Math.random() * (max - min) + min;
+
+  return `polygon(
       ${randomValue(5, 15)}% ${randomValue(5, 15)}%,   /* Top-left corner */
       50% ${randomValue(15, 25)}%,  /* Top-center */
       ${randomValue(85, 95)}% ${randomValue(5, 15)}%, /* Top-right corner */
@@ -76,9 +77,9 @@ const getFixedPolygon = () => {
       ${randomValue(5, 15)}% ${randomValue(85, 95)}%,  /* Bottom-left corner */
       ${randomValue(15, 25)}% 50%    /* Left-center */
     )`;
-  };
-  
-  const star = keyframes`
+};
+
+const star = keyframes`
     0% {
       clip-path: ${getFixedPolygon()};
     }
@@ -95,8 +96,8 @@ const getFixedPolygon = () => {
       clip-path: ${getFixedPolygon()};
     }
   `;
-  
-  const AnimatedShape = styled.div`
+
+const AnimatedShape = styled.div`
       position: absolute;
       width: 490px;
       height: 490px;
@@ -111,44 +112,44 @@ text-decoration: none;
 width: fit-content;
 padding: 10px 20px;
 border-radius: 3px;
-color: #40cd47;
-background: white;
-outline: 1px solid #40cd47;
 cursor: pointer;
+color: white;
+background: black;
+outline: none;
 &:hover {
-    color: white;
-    background: #40cd47;
-    outline: none;
+    color: black;
+    background: white;
+    outline: 1px solid black;
 }
 `
 
 const Spanning = () => {
   const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
-    const handleViewDetailsClick = () => {
-        setBoxInView(10);
-        handleMove(10, '0', '-100vh');
-        handleMove(5, '-100vw', '-100vh');
-        changeOpacity(10, 1);
-        toggleAnimation(10, true);
-        setTimeout(() => {
-            toggleAnimation(5, false);
-            handleReset([5]);
-        }, 1000)
-    }
+  const handleViewDetailsClick = () => {
+    setBoxInView(10);
+    handleMove(10, '0', '-100vh');
+    handleMove(5, '-100vw', '-100vh');
+    changeOpacity(10, 1);
+    toggleAnimation(10, true);
+    setTimeout(() => {
+      toggleAnimation(5, false);
+      handleReset([5]);
+    }, 1000)
+  }
   return (
     <Fold>
-        <Container>
-            <Frame>
-                <Project>
-                    <Title>Spanning<br/>Office 365</Title>
-                    <Subtitle>WEB APP</Subtitle>
-                    <Date>2019</Date>
-                    <A onClick={() => handleViewDetailsClick()}>Project Details</A>
-                </Project>
-                <Video src={SpanningVid} autoPlay loop muted />
-            </Frame>
-            <AnimatedShape />
-        </Container>
+      <Container>
+        <Frame>
+          <Project>
+            <Title>Spanning<br />Office 365</Title>
+            <Subtitle>Web App</Subtitle>
+            <Date>2019</Date>
+            <A onClick={() => handleViewDetailsClick()}>Project Details</A>
+          </Project>
+          <Video src={SpanningVid} autoPlay loop muted />
+        </Frame>
+        <AnimatedShape />
+      </Container>
     </Fold>
   )
 }

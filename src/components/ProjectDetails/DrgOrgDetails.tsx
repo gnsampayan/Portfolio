@@ -2,6 +2,8 @@ import styled from "styled-components";
 import DrgOrg from '../../assets/designrun.mp4';
 import Wordmard from '../../assets/drg_branding.png';
 import Screenshot from '../../assets/drg_sample_page.png';
+import { useControlPanel } from "../Contexts/ControlPanelContext";
+import { useEffect, useRef } from "react";
 
 const Frame = styled.div`
     width: 100vw;
@@ -33,6 +35,7 @@ const Scope = styled.div`
     display: flex;
     flex-direction: column;
     text-align: right;
+    align-items: flex-end;
 `
 const Caption = styled.p`
     font-family: halyard-text, sans-serif;
@@ -91,14 +94,14 @@ const A = styled.a`
     width: fit-content;
     padding: 10px 20px;
     border-radius: 3px;
-    color: #40cd47;
-    background: white;
-    outline: 1px solid #40cd47;
     cursor: pointer;
+    color: white;
+    background: black;
+    outline: none;
     &:hover {
-        color: white;
-        background: #40cd47;
-        outline: none;
+        color: black;
+        background: white;
+        outline: 1px solid black;
     }
 `
 const Video = styled.video`
@@ -158,51 +161,123 @@ const SmallBlobAnimation = styled.div`
 `
 
 const DrgOrgDetails = () => {
-  return (
-    <Frame>
-        <Heading>
-            <Scope>
-                <Caption>Scope</Caption>
-                <P>Art Direction,<br/>UX/UI,<br/>Web development</P>
-            </Scope>
-            <Summary>
-                <Top>
-                    <Caption>Website</Caption>
-                    <Line/>
-                    <Caption>2019</Caption>
-                </Top>
-                <H1>DesignRun.org</H1>
-                <P>
-                    To comply with my non-disclosure agreement, 
-                    I have omitted and obfuscated confidential 
-                    information in this case study. All information 
-                    in this case study is my own and does not necessarily 
-                    reflect the views of DesignRun.org.
+    const { boxInView } = useControlPanel();
+    const myDivRef = useRef<HTMLDivElement>(null);
+
+    const resetScroll = () => {
+        if (myDivRef.current) {
+            myDivRef.current.scrollTop = 0; // Reset scroll to the top
+        }
+    };
+    useEffect(() => {
+        if (boxInView !== 7) {
+            setTimeout(() => {
+                resetScroll();
+            }, 1000)
+        }
+    }, [boxInView]);
+    return (
+        <Frame ref={myDivRef}>
+            <Heading>
+                <Scope>
+                    <Caption>Scope</Caption>
+                    <P>
+                        Art Direction,
+                        <br />
+                        UX/UI,
+                        <br />
+                        Web Design,
+                        <br />
+                        Front-End Development
+                    </P>
+                    <Caption>Links</Caption>
+                    <A href="https://www.designrun.org/" target="_blank">
+                        Visit Site
+                    </A>
+                </Scope>
+                <Summary>
+                    <Top>
+                        <Caption style={{ textTransform: "uppercase" }}>Website</Caption>
+                        <Line />
+                        <Caption>2019</Caption>
+                    </Top>
+                    <H1>DesignRun.org</H1>
+                    <P>
+                        To comply with my non-disclosure agreement, I have omitted and
+                        obfuscated confidential information in this case study. All
+                        information in this case study is my own and does not necessarily
+                        reflect the views of DesignRun.org.
+                    </P>
+                    <Caption>Summary</Caption>
+                    <PBody>
+                        &nbsp;&nbsp;&nbsp;DesignRun.org is a healthcare startup and
+                        non-profit organization that aims to establish a strong brand
+                        identity and digital presence to reach its target audience of
+                        current and future investors, clients, and partners.
+                        <br />
+                        &nbsp;&nbsp;&nbsp;The challenge was to create a minimalist and
+                        subtle brand identity, user-friendly interface, and smooth user
+                        experience with limited resources and time. Despite these
+                        constraints, the team successfully delivered a website that
+                        effectively communicated the company's mission and provided a
+                        seamless experience for its users.
+                    </PBody>
+                </Summary>
+            </Heading>
+            <div>
+                <Video src={DrgOrg} autoPlay loop muted />
+                <P style={{ paddingTop: "20px", width: "540px" }}>
+                    Explore DesignRun.org’s minimalist design, thoughtful typography,
+                    and strategic layout, all crafted to communicate the brand’s
+                    mission.
                 </P>
-                <Caption>Summary</Caption>
-                <PBody>
-                DesignRun.org is a healthcare startup and non-profit organization 
-                that aims to establish a strong brand identity and digital presence 
-                to reach its target audience of current and future investors, 
-                clients, and partners. The challenge was to create a minimalist 
-                and subtle brand identity, user-friendly interface, and smooth user 
-                experience with limited resources and time. Despite these constraints, 
-                the team successfully delivered a website that effectively 
-                communicated the company's mission and provided a seamless 
-                experience for its users.
-                </PBody>
-                <A href="https://www.designrun.org/" target="_blank">Visit Site</A>
-            </Summary>
-        </Heading>
-        <Video src={DrgOrg} autoPlay loop muted />
-        <Image src={Wordmard}/>
-        <Image src={Screenshot}/>
-        <End>
-            <VerticalLine/>
-            <SmallBlobAnimation />
-        </End>
-    </Frame>
-  )
+            </div>
+            <div
+                style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    gap: "20px",
+                }}
+            >
+                <Image style={{ width: "400px" }} src={Wordmard} />
+                <div>
+                    <P style={{ paddingTop: '20px' }}>Brand Guide</P>
+                    <PBody style={{ width: "260px" }}>
+                        DesignRun.org's brand guide: Showcasing the carefully selected
+                        typography, color palette, and wordmark that define the brand’s
+                        minimalist and impactful visual identity.
+                    </PBody>
+                </div>
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: 'flex-start',
+                        gap: "20px",
+                        paddingRight: "20px",
+                        flexDirection: 'column',
+                    }}
+                >
+                    <Image src={Screenshot} />
+                    <div>
+                        <P style={{ paddingTop: '20px' }}>Screen Shot</P>
+                        <PBody style={{ width: "600px" }}>
+                            A glimpse of DesignRun.org’s website: Highlighting the strategic
+                            layout, refined typography, and cohesive color palette that
+                            together create a seamless and engaging user experience.
+                        </PBody>
+                    </div>
+                </div>
+            </div>
+            <End>
+                <VerticalLine />
+                <SmallBlobAnimation />
+            </End>
+        </Frame>
+    );
 }
 
 export default DrgOrgDetails

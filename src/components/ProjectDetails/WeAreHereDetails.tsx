@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import WeAreHereVideo from '../../assets/WeAreHere.mp4';
-import Image1 from '../../assets/drg1.png';
+import { useEffect, useRef } from "react";
+import { useControlPanel } from "../Contexts/ControlPanelContext";
 
 const Frame = styled.div`
     width: 100vw;
@@ -90,14 +91,14 @@ const A = styled.a`
     width: fit-content;
     padding: 10px 20px;
     border-radius: 3px;
-    color: #40cd47;
-    background: white;
-    outline: 1px solid #40cd47;
     cursor: pointer;
+    color: white;
+    background: black;
+    outline: none;
     &:hover {
-        color: white;
-        background: #40cd47;
-        outline: none;
+        color: black;
+        background: white;
+        outline: 1px solid black;
     }
 `
 const Video = styled.video`
@@ -108,11 +109,6 @@ const Video = styled.video`
     @media only screen and (max-width: 768px) {
         width: calc(100vw - 80px);
     }
-`
-const Image = styled.img`
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2);
 `
 const End = styled.div`
     display: flex;
@@ -156,55 +152,85 @@ const SmallBlobAnimation = styled.div`
   }
 `
 const WeAreHereDetails = () => {
-  return (
-    <Frame>
-        <Heading>
-            <Scope>
-                <Caption>Scope</Caption>
-                <P>Full Stack Dev,<br/>UX/UI</P>
-            </Scope>
-            <Summary>
-                <Top>
-                    <Caption>Website</Caption>
-                    <Line/>
-                    <Caption>2021</Caption>
-                </Top>
-                <H1>We Are Here</H1>
-                <P>
-                    To comply with my non-disclosure agreement, 
-                    I have omitted and obfuscated confidential 
-                    information in this case study. All information 
-                    in this case study is my own and does not necessarily 
-                    reflect the views of DesignRun.org.
+    const { boxInView } = useControlPanel();
+    const myDivRef = useRef<HTMLDivElement>(null);
+
+    const resetScroll = () => {
+        if (myDivRef.current) {
+            myDivRef.current.scrollTop = 0; // Reset scroll to the top
+        }
+    };
+    useEffect(() => {
+        if (boxInView !== 7) {
+            setTimeout(() => {
+                resetScroll();
+            }, 1000)
+        }
+    }, [boxInView]);
+    return (
+        <Frame ref={myDivRef}>
+            <Heading>
+                <Scope>
+                    <Caption>Scope</Caption>
+                    <P>
+                        Full Stack Dev,
+                        <br />
+                        Web Design
+                    </P>
+                    <Caption>Links</Caption>
+                    <A href="https://www.wearehere.com/" target="_blank">
+                        Visit Site
+                    </A>
+                </Scope>
+                <Summary>
+                    <Top>
+                        <Caption style={{ textTransform: "uppercase" }}>
+                            User-Driven Service Platform
+                        </Caption>
+                        <Line />
+                        <Caption>2021</Caption>
+                    </Top>
+                    <H1>We Are Here</H1>
+                    <P>
+                        To comply with my non-disclosure agreement, I have omitted and
+                        obfuscated confidential information in this case study. All
+                        information in this case study is my own and does not necessarily
+                        reflect the views of We Are Here.
+                    </P>
+                    <Caption>Summary</Caption>
+                    <PBody>
+                        &nbsp;&nbsp;&nbsp;"Here" is a healthcare startup that provides
+                        resources and support to individuals affected by cancer. The
+                        project involved the development of a professional website that
+                        offered a minimalist design, smooth user experience, and secure
+                        payment transactions.
+                        <br />
+                        &nbsp;&nbsp;&nbsp;The website was built using Webflow for HTML,
+                        CSS, and JavaScript, a content management system (CMS) for ease of
+                        maintenance, and domain hosting for reliable access. The backend
+                        was automated using Zapier and payment transactions were handled
+                        using the Stripe API.
+                        <br />
+                        &nbsp;&nbsp;&nbsp;The end result was a successful website that met
+                        the client's needs and aimed to have a positive impact on those
+                        affected by cancer.
+                    </PBody>
+                </Summary>
+            </Heading>
+            <div>
+                <Video src={WeAreHereVideo} autoPlay loop muted />
+                <P style={{ paddingTop: "20px", width: '540px' }}>
+                    A clean, streamlined website with Stripe payment integration,
+                    HubSpot management, and a prototyped member portal for core
+                    features.
                 </P>
-                <Caption>Summary</Caption>
-                <PBody>
-                    "Here" is a healthcare startup that provides resources 
-                    and support to individuals affected by cancer. 
-                    The project involved the development of a professional 
-                    website that offered a minimalist design, smooth user 
-                    experience, and secure payment transactions. The 
-                    website was built using Webflow for HTML, CSS, and 
-                    JavaScript, a content management system (CMS) for 
-                    ease of maintenance, and domain hosting for reliable 
-                    access. The backend was automated using Zapier and 
-                    payment transactions were handled using the Stripe 
-                    API. The end result was a successful website that 
-                    met the client's needs and aimed to have a positive 
-                    impact on those affected by cancer.
-                </PBody>
-                <A href="https://www.wearehere.com/" target="_blank">Visit Site</A>
-            </Summary>
-        </Heading>
-        <Video src={WeAreHereVideo} autoPlay loop muted />
-        <Image src={Image1}/>
-        <Image src={Image1}/>
-        <End>
-            <VerticalLine/>
-            <SmallBlobAnimation />
-        </End>
-    </Frame>
-  )
+            </div>
+            <End>
+                <VerticalLine />
+                <SmallBlobAnimation />
+            </End>
+        </Frame>
+    );
 }
 
 export default WeAreHereDetails

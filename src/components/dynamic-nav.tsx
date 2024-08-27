@@ -119,17 +119,18 @@ const Nav = styled.div<{ translate: string }>`
 `;
 const Main = styled.div`
     position: absolute;
-    right: 12px; // + 8 to edge
-    top: 0;
+    right: 20px; // + 8 to edge
+    top: calc(50% - 40px);
     width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 `;
 const Secondary = styled.div`
     position: absolute;
-    left: 280px; // 368 is to edge
-    top: 0;
+    left: 268px; // 288 is visual edge
+    top: calc(50% - 80px);
     width: 100%;
     height: auto;
     display: flex;

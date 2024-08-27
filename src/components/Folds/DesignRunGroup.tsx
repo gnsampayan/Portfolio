@@ -44,7 +44,7 @@ const Subtitle = styled.h3`
 `;
 
 const Date = styled.p`
-  margin-top: -14px;
+  margin-top: 0px;
 `;
 
 const Video = styled.video`
@@ -90,37 +90,37 @@ const A = styled.a`
     width: fit-content;
     padding: 10px 20px;
     border-radius: 3px;
-    color: #40cd47;
-    background: white;
-    outline: 1px solid #40cd47;
     cursor: pointer;
+    color: white;
+    background: black;
+    outline: none;
     &:hover {
-        color: white;
-        background: #40cd47;
-        outline: none;
+        color: black;
+        background: white;
+        outline: 1px solid black;
     }
 `
 
 
 const DesignRunGroup = () => {
   const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
-    const handleViewDetailsClick = () => {
-        setBoxInView(7);
-        handleMove(7, '0', '-100vh');
-        handleMove(2, '-100vw', '-100vh');
-        changeOpacity(7, 1);
-        toggleAnimation(7, true);
-        setTimeout(() => {
-            toggleAnimation(2, false);
-            handleReset([2]);
-        }, 1000)
-    }
+  const handleViewDetailsClick = () => {
+    setBoxInView(7);
+    handleMove(7, '0', '-100vh');
+    handleMove(2, '-100vw', '-100vh');
+    changeOpacity(7, 1);
+    toggleAnimation(7, true);
+    setTimeout(() => {
+      toggleAnimation(2, false);
+      handleReset([2]);
+    }, 1000)
+  }
   return (
     <Fold>
       <Container>
         <Frame>
           <Project>
-            <Title>DesignRun<br/>Group</Title>
+            <Title>DesignRun<br />Group</Title>
             <Subtitle>WEBSITE</Subtitle>
             <Date>2023</Date>
             <A onClick={() => handleViewDetailsClick()}>Project Details</A>

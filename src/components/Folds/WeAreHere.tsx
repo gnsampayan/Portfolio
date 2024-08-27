@@ -36,9 +36,10 @@ const Subtitle = styled.h3`
     font-weight: 200;
     font-size: 1rem;
     width: 300px;
+    text-transform: uppercase;
 `
 const Date = styled.p`
-    margin-top: -14px;
+    margin-top: 0px;
 `
 const Video = styled.video`
     height: 300px;
@@ -82,14 +83,14 @@ const A = styled.a`
     width: fit-content;
     padding: 10px 20px;
     border-radius: 3px;
-    color: #40cd47;
-    background: white;
-    outline: 1px solid #40cd47;
     cursor: pointer;
+    color: white;
+    background: black;
+    outline: none;
     &:hover {
-        color: white;
-        background: #40cd47;
-        outline: none;
+        color: black;
+        background: white;
+        outline: 1px solid black;
     }
 `
 
@@ -106,22 +107,22 @@ const WeAreHere = () => {
             handleReset([3]);
         }, 1000)
     }
-  return (
-    <Fold>
-        <Container>
-            <Frame>
-                <Project>
-                    <Title>We Are Here</Title>
-                    <Subtitle>WEB E-COMMERCE</Subtitle>
-                    <Date>2021</Date>
-                    <A onClick={() => handleViewDetailsClick()}>Project Details</A>
-                </Project>
-                <Video src={WeAreHereVid} autoPlay loop muted />
-            </Frame>
-            <Triangle />
-        </Container>
-    </Fold>
-  )
+    return (
+        <Fold>
+            <Container>
+                <Frame>
+                    <Project>
+                        <Title>We Are Here</Title>
+                        <Subtitle>User-Driven Service Platform</Subtitle>
+                        <Date>2021</Date>
+                        <A onClick={() => handleViewDetailsClick()}>Project Details</A>
+                    </Project>
+                    <Video src={WeAreHereVid} autoPlay loop muted />
+                </Frame>
+                <Triangle />
+            </Container>
+        </Fold>
+    )
 }
 
 export default WeAreHere

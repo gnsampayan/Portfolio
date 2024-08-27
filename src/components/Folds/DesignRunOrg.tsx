@@ -39,7 +39,7 @@ const Subtitle = styled.h3`
     width: 300px;
 `
 const Date = styled.p`
-    margin-top: -14px;
+    margin-top: 0px;
 `
 const Video = styled.video`
     height: 300px;
@@ -56,14 +56,14 @@ const A = styled.a`
     width: fit-content;
     padding: 10px 20px;
     border-radius: 3px;
-    color: #40cd47;
-    background: white;
-    outline: 1px solid #40cd47;
     cursor: pointer;
+    color: white;
+    background: black;
+    outline: none;
     &:hover {
-        color: white;
-        background: #40cd47;
-        outline: none;
+        color: black;
+        background: white;
+        outline: 1px solid black;
     }
 `
 
@@ -80,22 +80,22 @@ const DesignRunOrg = () => {
             handleReset([4]);
         }, 1000)
     }
-  return (
-    <Fold>
-        <Container>
-            <Frame>
-                <Project>
-                    <Title>DesignRun<br/>.org</Title>
-                    <Subtitle>WEBSITE</Subtitle>
-                    <Date>2019</Date>
-                    <A onClick={() => handleViewDetailsClick()}>Project Details</A>
-                </Project>
-                <Video src={DrgOrg} autoPlay loop muted />
-                <BlobAnimation />
-            </Frame>
-        </Container>
-    </Fold>
-  )
+    return (
+        <Fold>
+            <Container>
+                <Frame>
+                    <Project>
+                        <Title>DesignRun<br />.org</Title>
+                        <Subtitle>WEBSITE</Subtitle>
+                        <Date>2019</Date>
+                        <A onClick={() => handleViewDetailsClick()}>Project Details</A>
+                    </Project>
+                    <Video src={DrgOrg} autoPlay loop muted />
+                    <BlobAnimation />
+                </Frame>
+            </Container>
+        </Fold>
+    )
 }
 
 export default DesignRunOrg

@@ -1,16 +1,23 @@
+import { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
-import NQhardware from "../../assets/nqhardware-sequence.mp4";
 import Screenshot1 from "../../assets/nqhardware-shop-fold-screenshot.png";
 import Screenshot2 from "../../assets/nqhardware-store-scrolled-screenshot.png";
 import Screenshot3 from "../../assets/nqhardware-zipties-screenshot.png";
 import Screenshot4 from "../../assets/nqhardware-editing-screenshot.png";
+import NQhardware from "../../assets/nqhardware-sequence.mp4";
 import { useControlPanel } from "../Contexts/ControlPanelContext";
-import { useEffect, useRef } from "react";
+import {
+    RiArrowLeftSLine,
+    RiArrowRightSLine,
+    RiExpandDiagonalFill,
+    RiCloseLargeFill,
+} from "react-icons/ri";
+import { useNavContext } from "../Contexts/NavContext";
 
 const Frame = styled.div`
 	width: 100vw;
 	height: 100vh;
-	padding: 60px 0px 60px 360px;
+	padding: calc(50vh - 200px) 0px 60px 0px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -26,6 +33,10 @@ const Frame = styled.div`
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 `;
+const Padded = styled.div`
+	padding-left: 360px;
+	width: 100vw;
+`;
 const Heading = styled.div`
 	display: flex;
 	flex-direction: row;
@@ -33,12 +44,14 @@ const Heading = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
+
 const Scope = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: right;
-    align-items: flex-end;
+	align-items: flex-end;
 `;
+
 const Caption = styled.p`
 	font-family: halyard-text, sans-serif;
 	font-size: 1.1rem;
@@ -46,15 +59,18 @@ const Caption = styled.p`
 	color: rgb(143, 143, 143);
 	float: left;
 `;
+
 const Summary = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
+
 const Top = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 `;
+
 const Line = styled.div`
 	border-top: 1px solid rgb(143, 143, 143);
 	width: 40px;
@@ -63,6 +79,7 @@ const Line = styled.div`
 	margin-right: 6px;
 	transform: translateY(-8px);
 `;
+
 const H1 = styled.h1`
 	clear: both;
 	font-family: halyard-display, sans-serif;
@@ -70,6 +87,7 @@ const H1 = styled.h1`
 	font-weight: 400;
 	margin-top: -10px;
 `;
+
 const P = styled.p`
 	clear: both;
 	font-family: halyard-text, sans-serif;
@@ -80,6 +98,7 @@ const P = styled.p`
 	line-height: 1.5rem;
 	color: rgb(143, 143, 143);
 `;
+
 const PBody = styled.p`
 	clear: both;
 	font-family: halyard-text, sans-serif;
@@ -90,6 +109,7 @@ const PBody = styled.p`
 	line-height: 1.5rem;
 	color: rgb(0, 0, 0);
 `;
+
 const A = styled.a`
 	all: unset;
 	text-decoration: none;
@@ -97,40 +117,122 @@ const A = styled.a`
 	padding: 10px 20px;
 	border-radius: 3px;
 	cursor: pointer;
-    color: white;
-    background: black;
-    outline: none;
+	color: white;
+	background: black;
+	outline: none;
 	&:hover {
-        color: black;
-        background: white;
-        outline: 1px solid black;
+		color: black;
+		background: white;
+		outline: 1px solid black;
 	}
 `;
-const Video = styled.video`
+
+const VideoWrapper = styled.div`
+	position: relative;
 	height: 300px;
-	transition: all 1s ease;
-	box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	z-index: 3;
+`;
+
+const HoverText = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 2rem;
+	color: white;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none;
+	z-index: 4;
+
+	${VideoWrapper}:hover & {
+		opacity: 1;
+	}
+`;
+
+const Video = styled.video`
+	height: 100%;
+	width: auto;
+	transition: all 0.3s ease;
+	border: 1px solid black;
 	z-index: 2;
 	@media only screen and (max-width: 768px) {
 		width: calc(100vw - 80px);
 	}
+	${VideoWrapper}:hover & {
+		filter: brightness(0.5);
+	}
 `;
+
 const Image = styled.img`
 	width: 600px;
-	box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2);
+	border: 1px solid black;
+	cursor: pointer;
 `;
+
+const Modal = styled.div<{ isOpen: boolean }>`
+	display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	padding-left: 360px;
+	background-color: rgba(0, 0, 0, 0.9);
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+`;
+
+const ModalContent = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	position: relative;
+`;
+
+const ModalVideo = styled.video`
+	width: 100%;
+	height: auto;
+	max-width: 1000px;
+	z-index: 2;
+`;
+
+const ModalImage = styled.img`
+	width: 100%;
+	height: auto;
+	max-width: 1000px;
+	z-index: 2;
+`;
+
+const Arrow = styled.div`
+	font-size: 2rem;
+	color: white;
+	cursor: pointer;
+	margin: 0 10px;
+	z-index: 3; /* Higher z-index to make arrows clickable */
+`;
+
 const End = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	padding-top: 60px;
 `;
+
 const VerticalLine = styled.div`
 	height: 40px;
 	width: 1px;
 	border-left: 1px solid rgba(0, 0, 0, 0.2);
 	margin-bottom: 6px;
 `;
+
 const SmallBlobAnimation = styled.div`
 	height: 10px;
 	width: 10px;
@@ -156,206 +258,317 @@ const SmallBlobAnimation = styled.div`
 			transform: rotate(90deg);
 		}
 	}
-	@keyframes colorShifter2 {
-		25% {
-			transform: scale(1.1);
-		}
-		40% {
-			background-color: rgb(255, 208, 0);
-		}
-		50% {
-			background-color: #40cd47;
-			transform: scale(1);
-		}
-		60% {
-			background-color: rgb(255, 208, 0);
-		}
-		75% {
-			transform: scale(0.9);
-		}
-		100% {
-			transform: scale(1);
-		}
-	}
-	@keyframes colorShifter3 {
-		25% {
-			transform: skew(25deg);
-		}
-		40% {
-			border-bottom: 10px solid #f6543c;
-		}
-		50% {
-			border-bottom: 10px solid #40cd47;
-			transform: skew(0deg);
-		}
-		60% {
-			border-bottom: 10px solid #f6543c;
-		}
-		75% {
-			transform: skew(-25deg);
-		}
-		100% {
-			transform: skew(0deg);
-		}
-	}
 `;
+
 const Images = styled.div`
-    position: relative;
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: space-between;
-`
+	position: relative;
+	width: 100%;
+	height: auto;
+	display: flex;
+`;
+const Close = styled.button`
+	all: unset;
+	position: absolute;
+	top: 40px;
+	right: 40px;
+	color: white;
+`;
+const Breadcrumbs = styled.div`
+	position: absolute;
+	bottom: 20px;
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	z-index: 4;
+`;
+
+const BreadcrumbDot = styled.div<{ isActive: boolean }>`
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: ${({ isActive }) => (isActive ? "white" : "gray")};
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+`;
 
 const NQHardwareDetails = () => {
     const { boxInView } = useControlPanel();
     const myDivRef = useRef<HTMLDivElement>(null);
+    const { isModalOpen, setModalOpen } = useNavContext();
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const galleryItems = [
+        Screenshot1,
+        Screenshot2,
+        Screenshot3,
+        Screenshot4,
+        NQhardware,
+    ];
 
     const resetScroll = () => {
         if (myDivRef.current) {
             myDivRef.current.scrollTop = 0; // Reset scroll to the top
         }
     };
+
     useEffect(() => {
-        if (boxInView !== 7) {
+        if (boxInView !== 6) {
             setTimeout(() => {
                 resetScroll();
-            }, 1000)
+            }, 1000);
         }
     }, [boxInView]);
+
+    const handleOpenModal = (index: number) => {
+        setCurrentIndex(index);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % galleryItems.length);
+    }, [galleryItems.length]);
+
+    const handlePrev = useCallback(() => {
+        setCurrentIndex(
+            (prevIndex) => (prevIndex - 1 + galleryItems.length) % galleryItems.length
+        );
+    }, [galleryItems.length]);
+
+    const handleBreadcrumbClick = (index: number) => {
+        setCurrentIndex(index);
+    };
+    // Add keyboard navigation for arrow keys
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (isModalOpen) {
+                if (event.key === "ArrowRight") {
+                    handleNext();
+                } else if (event.key === "ArrowLeft") {
+                    handlePrev();
+                }
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isModalOpen, handleNext, handlePrev]);
+
     return (
         <Frame ref={myDivRef}>
-            <Heading>
-                <Scope>
-                    <Caption>Scope</Caption>
-                    <P>
-                        Full Stack Development,
-                        <br />
-                        UX/UI,
-                        <br />
-                        Web Design
-                    </P>
-                    <Caption>Links</Caption>
-                    <A href="https://www.nqhardware.com/" target="_blank">
-                        {" "}
-                        Visit Site{" "}
-                    </A>
-                </Scope>
-                <Summary>
-                    <Top>
-                        <Caption>WEB APP, E-COMMERCE</Caption>
-                        <Line />
-                        <Caption>2024</Caption>
-                    </Top>
-                    <H1>
-                        NQ Hardware <br />
-                        and General Enterprise
-                    </H1>
-                    <P>
-                        To comply with my non-disclosure agreement, I have omitted and
-                        obfuscated confidential information in this case study. All
-                        information in this case study is my own and does not necessarily
-                        reflect the views of NQ Hardware and General Enterprise.
-                    </P>
-                    <Caption>Summary</Caption>
-                    <PBody>
-                        &nbsp;&nbsp;&nbsp;NQ Hardware and General Enterprise is an ongoing
-                        project aimed at enhancing the store's operations and customer
-                        engagement through a full-stack web application. This app serves
-                        as a vital tool for managing stock prices, sales, and inventory,
-                        ensuring that the store maintains an efficient and competitive
-                        edge.
-                        <br />
-                        &nbsp;&nbsp;&nbsp;Beyond traditional retail functions, the
-                        application offers a dedicated portal tailored for customers in
-                        the general enterprise sector. This portal enables users to
-                        monitor shipments for construction materials, coordinate with
-                        contractors, rent tools, and arrange for installation services—all
-                        within a streamlined interface.
-                        <br />
-                        &nbsp;&nbsp;&nbsp;A key feature of the app is its user tier
-                        system, which assigns different access levels for store employees
-                        and administrators, safeguarding the integrity of the store's
-                        operations. The front-end is developed using React TypeScript,
-                        providing a responsive and user-friendly interface, while the
-                        backend, built with Express.js and MySQL, ensures robust data
-                        management.
-                        <br />
-                        &nbsp;&nbsp;&nbsp;This project demonstrates my ability to develop
-                        practical, scalable solutions that meet the complex needs of
-                        businesses, supporting their growth in an increasingly digital
-                        marketplace.
-                    </PBody>
-                </Summary>
-            </Heading>
-            <div>
-                <Video src={NQhardware} autoPlay loop muted />
-                <P style={{ paddingTop: "20px" }}>
-                    Quick Tour: Explore the NQ Hardware site in action.
-                </P>
-            </div>
-            <Images style={{ justifyContent: "space-between", gap: "20px" }}>
+            <Padded>
+                {/* Modal for Image and Video Carousel */}
+                <Modal isOpen={isModalOpen}>
+                    <ModalContent>
+                        <Arrow onClick={handlePrev}>
+                            <RiArrowLeftSLine />
+                        </Arrow>
+                        {currentIndex === 4 ? (
+                            <ModalVideo src={galleryItems[currentIndex]} controls autoPlay />
+                        ) : (
+                            <ModalImage src={galleryItems[currentIndex]} />
+                        )}
+                        <Arrow onClick={handleNext}>
+                            <RiArrowRightSLine />
+                        </Arrow>
+                        {/* Breadcrumbs for Gallery Navigation */}
+                        <Breadcrumbs>
+                            {galleryItems.map((_, index) => (
+                                <BreadcrumbDot
+                                    key={index}
+                                    isActive={index === currentIndex}
+                                    onClick={() => handleBreadcrumbClick(index)}
+                                />
+                            ))}
+                        </Breadcrumbs>
+                    </ModalContent>
+                    <Close onClick={handleCloseModal}>
+                        <RiCloseLargeFill />
+                    </Close>
+                </Modal>
+                <Heading>
+                    <Scope>
+                        <Caption>Scope</Caption>
+                        <P>
+                            Full Stack Development,
+                            <br />
+                            UX/UI,
+                            <br />
+                            Web Design
+                        </P>
+                        <Caption>Links</Caption>
+                        <A href="https://www.nqhardware.com/" target="_blank">
+                            {" "}
+                            Visit Site{" "}
+                        </A>
+                    </Scope>
+                    <Summary>
+                        <Top>
+                            <Caption>WEB APP, E-COMMERCE</Caption>
+                            <Line />
+                            <Caption>2024</Caption>
+                        </Top>
+                        <H1>
+                            NQ Hardware <br />
+                            and General Enterprise
+                        </H1>
+                        <P>
+                            To comply with my non-disclosure agreement, I have omitted and
+                            obfuscated confidential information in this case study. All
+                            information in this case study is my own and does not necessarily
+                            reflect the views of NQ Hardware and General Enterprise.
+                        </P>
+                        <Caption>Summary</Caption>
+                        <PBody>
+                            &nbsp;&nbsp;&nbsp;NQ Hardware and General Enterprise is an ongoing
+                            project aimed at enhancing the store's operations and customer
+                            engagement through a full-stack web application. This app serves
+                            as a vital tool for managing stock prices, sales, and inventory,
+                            ensuring that the store maintains an efficient and competitive
+                            edge.
+                            <br />
+                            &nbsp;&nbsp;&nbsp;Beyond traditional retail functions, the
+                            application offers a dedicated portal tailored for customers in
+                            the general enterprise sector. This portal enables users to
+                            monitor shipments for construction materials, coordinate with
+                            contractors, rent tools, and arrange for installation services—all
+                            within a streamlined interface.
+                            <br />
+                            &nbsp;&nbsp;&nbsp;A key feature of the app is its user tier
+                            system, which assigns different access levels for store employees
+                            and administrators, safeguarding the integrity of the store's
+                            operations. The front-end is developed using React TypeScript,
+                            providing a responsive and user-friendly interface, while the
+                            backend, built with Express.js and MySQL, ensures robust data
+                            management.
+                            <br />
+                            &nbsp;&nbsp;&nbsp;This project demonstrates my ability to develop
+                            practical, scalable solutions that meet the complex needs of
+                            businesses, supporting their growth in an increasingly digital
+                            marketplace.
+                        </PBody>
+                    </Summary>
+                </Heading>
+            </Padded>
+            <Images
+                style={{ justifyContent: "flex-start", gap: "20px", marginTop: "60px" }}
+            >
                 <div>
-                    <Image style={{ width: "800px" }} src={Screenshot1} />
-                    <P style={{ paddingTop: "20px" }}>Shop: Main fold.</P>
-                    <PBody>
-                        Designed the main fold to prominently feature key categories and
-                        personalized suggestions, optimizing user engagement and enhancing
-                        the shopping experience through strategic placement and intuitive
-                        design.
-                    </PBody>
-                </div>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        paddingRight: "20px",
-                    }}
-                >
-                    <Image style={{ width: "400px" }} src={Screenshot2} />
-                    <P style={{ paddingTop: "20px" }}>Shop: Scrolled down.</P>
-                    <PBody style={{ width: '400px' }}>
-                        Designed the main fold to prominently feature key categories and
-                        personalized suggestions, optimizing user engagement and enhancing
-                        the shopping experience through strategic placement and intuitive
-                        design.
-                    </PBody>
+                    <Padded>
+                        <Image
+                            style={{ width: "calc(100vw - 70%)" }}
+                            src={Screenshot1}
+                            onClick={() => handleOpenModal(0)}
+                        />
+                        <P style={{ paddingTop: "20px" }}>Shop: Main fold.</P>
+                        <PBody>
+                            Designed the main fold to prominently feature key categories and
+                            personalized suggestions, optimizing user engagement and enhancing
+                            the shopping experience through strategic placement and intuitive
+                            design.
+                        </PBody>
+                    </Padded>
                 </div>
             </Images>
-            <Images style={{ justifyContent: "flex-start", gap: "20px" }}>
-                <Image src={Screenshot3} />
-                <div style={{ justifyContent: "flex-start", paddingRight: "20px" }}>
+            <Padded
+                style={{
+                    width: "100vw",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    paddingRight: "20px",
+                }}
+            >
+                <Images
+                    style={{
+                        width: "auto",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                    }}
+                >
+                    <Image
+                        style={{ width: "400px" }}
+                        src={Screenshot2}
+                        onClick={() => handleOpenModal(1)}
+                    />
+                    <P style={{ paddingTop: "20px" }}>Shop: Scrolled down.</P>
+                    <PBody style={{ width: "400px" }}>
+                        Designed the shop page to prioritize seamless navigation with
+                        versatile filtering options, including a dropdown and a left column
+                        filter. These features allow users to refine their shopping
+                        experience effortlessly, enabling them to quickly find the items
+                        that match their preferences through intuitive and strategic
+                        filtering design.
+                    </PBody>
+                </Images>
+            </Padded>
+            <Images
+                style={{
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    gap: "20px",
+                }}
+            >
+                <Image
+                    style={{
+                        width: "100vw",
+                        cursor: 'default',
+                    }}
+                    src={Screenshot3}
+                />
+                <Padded style={{ justifyContent: "flex-start" }}>
                     <P style={{ paddingTop: "20px" }}>Item View & Cart.</P>
                     <PBody>
                         Built an item page that shows all the essential details—pricing,
                         ratings, descriptions, and more. You can easily add items to your
-                        cart or wishlist, adjust quantities, and see what's in your cart
-                        at a glance. Thanks to smooth API calls, everything updates in
+                        cart or wishlist, adjust quantities, and see what's in your cart at
+                        a glance. Thanks to smooth API calls, everything updates in
                         real-time, making the shopping process quick and hassle-free.
                     </PBody>
-                </div>
+                </Padded>
             </Images>
-            <Images style={{ flexDirection: "column", alignItems: "flex-end" }}>
-                <div style={{ justifyContent: "flex-start" }}>
-                    <Image src={Screenshot4} />
-                    <div style={{ justifyContent: "flex-start", paddingRight: "20px" }}>
-                        <P style={{ paddingTop: "20px" }}>Role-Based Access Control: Editing an item</P>
-                        <PBody>
-                            Showcasing the super or admin view of NQ Hardware's role-based
-                            access control web app. This interface allows employees and store owner to
-                            efficiently manage and edit inventory items, offering
-                            comprehensive control over key details such as pricing, stock
-                            levels, descriptions, and more. The design ensures a streamlined
-                            and intuitive experience, tailored for effective inventory
-                            management within a dynamic retail environment.
-                        </PBody>
+            <Padded>
+                <Images style={{ flexDirection: "column", alignItems: "flex-end" }}>
+                    <div style={{ justifyContent: "flex-start" }}>
+                        <Image src={Screenshot4} onClick={() => handleOpenModal(3)} />
+                        <div style={{ justifyContent: "flex-start", paddingRight: "20px" }}>
+                            <P style={{ paddingTop: "20px" }}>
+                                Role-Based Access Control: Editing an item.
+                            </P>
+                            <PBody>
+                                Showcasing the super or admin view of NQ Hardware's role-based
+                                access control web app. This interface allows employees and
+                                store owner to efficiently manage and edit inventory items,
+                                offering comprehensive control over key details such as pricing,
+                                stock levels, descriptions, and more. The design ensures a
+                                streamlined and intuitive experience, tailored for effective
+                                inventory management within a dynamic retail environment.
+                            </PBody>
+                        </div>
                     </div>
-                </div>
-            </Images>
-            <End>
-                <VerticalLine />
-                <SmallBlobAnimation />
-            </End>
+                </Images>
+                <Images
+                    style={{ display: "flex", flexDirection: "column", width: "auto" }}
+                >
+                    <VideoWrapper onClick={() => handleOpenModal(4)}>
+                        <Video src={NQhardware} autoPlay loop muted />
+                        <HoverText>
+                            <RiExpandDiagonalFill />
+                        </HoverText>
+                    </VideoWrapper>
+                    <P style={{ paddingTop: "20px" }}>
+                        Quick Tour: Explore the NQ Hardware site in action.
+                    </P>
+                </Images>
+                <End>
+                    <VerticalLine />
+                    <SmallBlobAnimation />
+                </End>
+            </Padded>
         </Frame>
     );
 };

@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components";
 import useTypingEffect from "../hooks/useTypingEffect";
 import { useNavContext } from "./Contexts/NavContext";
 import { useControlPanel } from "./Contexts/ControlPanelContext";
-import { useState } from "react";
+import { useEffect } from "react";
 
 
 // Keyframes
@@ -47,25 +47,26 @@ const skewAnimation = keyframes`
         transform: skew(0deg);
     }
 `;
-const NavBox = styled.div`
+const NavBox = styled.div<{ invertion: boolean }>`
     position: relative;
     background-color: none;
     width: 320px;
     height: 400px;
-    border: 1px solid black;
+    border: 1px solid ${(props) => props.invertion ? 'white' : 'black'};
+    transition: border 1s ease;
     border-radius: 3px;
     overflow: hidden;
     z-index: 999;
 `;
-const Header = styled.div`
+const Header = styled.div<{ invertion: boolean }>`
     width: 100%;
     height: 60px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid ${(props) => props.invertion ? 'white' : 'black'};
     box-sizing: border-box;
 `;
-const Name = styled.a`
+const Name = styled.a<{ invertion: boolean }>`
     text-decoration: none;
-    color: #3a3a3a;
+    color: ${(props) => props.invertion ? 'white' : '#3a3a3a'};
     cursor: pointer;
     margin-top: 0;
     position: relative;
@@ -112,24 +113,25 @@ const Red = styled(Ornament)`
     animation: 3s ease-in-out 0.2s infinite ${skewAnimation};
 `;
 const Nav = styled.div<{ translate: string }>`
-    width: 100%;
+    width: 318px;
     height: 310px;
-    transition: 1s ease;
+    transition: all 1s ease;
     transform: ${(props) => props.translate};
 `;
-const Main = styled.div`
+const Main = styled.div<{ isJustifiedLeft: boolean }>`
     position: absolute;
     right: 20px; // + 8 to edge
-    top: calc(50% - 40px);
     width: auto;
+    top: calc(50% - 40px);
     height: auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: ${(props) => props.isJustifiedLeft ? 'flex-start' : 'flex-end'};
 `;
 const Secondary = styled.div`
     position: absolute;
-    left: 268px; // 288 is visual edge
+    left: 294px; // 288 is visual edge
+    width: 320px;
     top: calc(50% - 80px);
     width: 100%;
     height: auto;
@@ -146,41 +148,86 @@ const Work = styled.div`
     align-items: flex-end;
     justify-content: flex-end;
 `;
-const NavButton = styled.button<{isActive: boolean, isAnyButtonClicked: boolean}>`
-  clear: both;
-  color: ${(props) => props.isAnyButtonClicked ? (props.isActive ? 'black' : '#707070') : 'black'}; 
-  &:hover {
-    color: black;
-  }
-  &:disabled {
-    cursor: progress;
-  }
-  background-color: none;
-  border: none;
-  text-decoration: none;
-  background: none;
+const NavButton = styled.button<{
+    isActive: boolean;
+    isAnyButtonClicked: boolean;
+    invertion: boolean;
+}>`
+	clear: both;
+	color: ${(props) =>
+        props.isAnyButtonClicked
+            ? props.isActive
+                ? props.invertion
+                    ? "white"
+                    : "black"
+                : props.invertion
+                    ? "#979797"
+                    : "#707070"
+            : props.invertion
+                ? "white"
+                : "black"};
+	&:hover {
+		color: ${(props) => (props.invertion ? "white" : "black")};
+	}
+	&:disabled {
+		cursor: progress;
+	}
+	background-color: none;
+	border: none;
+	text-decoration: none;
+	background: none;
+	transition: color 1s ease;
 `;
-const Footer = styled.div`
+const Footer = styled.div<{ invertion: boolean }>`
     width: 100%;
     height: 30px;
     bottom: 0;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    border-top: 1px solid black;
+    border-top: 1px solid ${(props) => props.invertion ? 'white' : 'black'};
+    transition: border-top 1s ease;
 `;
-const Stream = styled.p`
-    color: #3a3a3a;
+const Stream = styled.p<{ invertion: boolean }>`
+    color: ${(props) => props.invertion ? '#b5b5b5' : '#3a3a3a'};
     padding-left: 10px;
     font-size: small;
     padding-top: 4px;
+    transition: color 1s ease;
 `;
 
 const DynamicNav = () => {
     const { handleMove, changeOpacity, toggleClickability, boxInView, setBoxInView, toggleAnimation, handleReset } = useControlPanel();
-    const [isSecondaryDisabled, setIsSecondaryDisabled] = useState<boolean>(false);
+    const {
+        activeMainButton,
+        setActiveMainButton,
+        activeSecondaryBtn,
+        setActiveSecondaryBtn,
+        isAnyButtonClicked,
+        setIsAnyButtonClicked,
+        onMoveList,
+        MainBtnData,
+        SecondaryBtnData,
+        listTranslation,
+        highlightedSecondaryNav,
+        setHighlightedSecondaryNav,
+        setButtonDisabled,
+        isButtonDisabled,
+        invertNav,
+        setInvertNav,
+        isModalOpen,
+        setModalOpen,
+    } = useNavContext();
     const currentText = useTypingEffect(100, 6000); // Typing speed and pause time
 
+
+    useEffect(() => {
+        if (isModalOpen) {
+            setInvertNav(true);
+        } else {
+            setInvertNav(false);
+        }
+    }, [isModalOpen])
 
     const slideOutAndReset = () => {
         if (boxInView !== -1) {
@@ -206,34 +253,27 @@ const DynamicNav = () => {
         }
     };
 
-    const {
-        activeMainButton,
-        setActiveMainButton,
-        activeSecondaryBtn,
-        setActiveSecondaryBtn,
-        isAnyButtonClicked,
-        setIsAnyButtonClicked,
-        onMoveList,
-        MainBtnData,
-        SecondaryBtnData,
-        listTranslation,
-        setHighlightedSecondaryNav,
-      } = useNavContext();
 
     const handleHomeButtonClick = () => {
         setActiveMainButton(null);
         setActiveSecondaryBtn(null);
-        setIsAnyButtonClicked(true);
-        setHighlightedSecondaryNav(null);
+        setIsAnyButtonClicked(false);
+        setHighlightedSecondaryNav(-1);
         onMoveList('origin');
+        if (isModalOpen) {
+            setModalOpen(false);
+        }
     };
 
-    const handleMainButtonClick = ( buttonName: string) => {
+    const handleMainButtonClick = (buttonName: string) => {
         setIsAnyButtonClicked(true);
         setActiveMainButton(buttonName);
         toggleAnimation(11, true);
-        
-        if (buttonName === 'Works') {
+        if (isModalOpen) {
+            setModalOpen(false);
+        }
+
+        if (buttonName === MainBtnData[0].name) {
             onMoveList('left');
             if (boxInView === -1) {
                 slideInBox(1);
@@ -262,6 +302,7 @@ const DynamicNav = () => {
             toggleAnimation(boxInView, true);
             if (boxInView !== 12) {
                 handleMove(boxInView, '0', '0');
+                setHighlightedSecondaryNav(-1);
             }
             if ([6, 7, 8, 9, 10].includes(boxInView)) {
                 handleMove(boxInView, '100vw', '-100vh');
@@ -278,23 +319,24 @@ const DynamicNav = () => {
         const matchingBoxId = buttonIndex + 1; // Add 2 to align with your box ID logic
         setIsAnyButtonClicked(true);
         setActiveSecondaryBtn(buttonName);
-    
+        if (isModalOpen) {
+            setModalOpen(false);
+        }
+
         if (buttonIndex !== -1) {
             toggleAnimation(matchingBoxId, true);
-            
-            // Disable buttons for 1 second
+
             if (matchingBoxId !== boxInView) {
                 slideOutAndReset();
-                slideInBox(matchingBoxId); 
-                setIsSecondaryDisabled(true);
+                slideInBox(matchingBoxId);
+                setButtonDisabled(true);
             }
             setTimeout(() => {
-                setIsSecondaryDisabled(false);
+                setButtonDisabled(false);
             }, 1000);
         }
     };
 
-    
     const combinedHandler = () => {
         handleHomeButtonClick();
         setBoxInView(-1);
@@ -302,11 +344,7 @@ const DynamicNav = () => {
         toggleAnimation(boxInView, true);
         handleMove(11, '0', '0');
         handleMove(boxInView, '0', '0');
-    
-        setTimeout(() => {
-            handleReset();
-        }, 1000);
-    
+
         const boxMappings: { [key: number]: number } = {
             6: 1,
             7: 2,
@@ -314,67 +352,71 @@ const DynamicNav = () => {
             9: 4,
             10: 5
         };
-    
+
         const targetBox = boxMappings[boxInView];
-        
+
         if (targetBox !== undefined) {
             toggleAnimation(targetBox, false);
             handleMove(boxInView, '100vw', '-100vh');
             handleMove(targetBox, '100vw', '-100vh');
-    
+
             setTimeout(() => {
                 toggleAnimation(boxInView, false);
-                handleReset();
             }, 1000);
         }
+
+        setTimeout(() => {
+            handleReset();
+        }, 1000);
     };
-    
-    
-    
 
     return (
-        
-            <NavBox>
-                <Header>
-                    <Name onClick={combinedHandler}>Glenn Sampayan</Name>
-                    <OrnamentsContainer>
-                        <Blue />
-                        <Yellow />
-                        <Red />
-                    </OrnamentsContainer>
-                </Header>
-                <Nav translate={listTranslation}>
-                    <Main>
-                        {MainBtnData.map(button => (
+
+        <NavBox invertion={invertNav}>
+            <Header invertion={invertNav}>
+                <Name invertion={invertNav} onClick={combinedHandler}>Glenn Sampayan</Name>
+                <OrnamentsContainer>
+                    <Blue />
+                    <Yellow />
+                    <Red />
+                </OrnamentsContainer>
+            </Header>
+            <Nav translate={listTranslation} >
+                <Main isJustifiedLeft={highlightedSecondaryNav !== -1}>
+                    {MainBtnData.map(button => (
+                        <NavButton
+                            key={button.name}
+                            invertion={invertNav}
+                            isActive={activeMainButton === button.name}
+                            isAnyButtonClicked={isAnyButtonClicked}
+                            onClick={() => { handleMainButtonClick(button.name) }}
+                            disabled={isButtonDisabled}
+                        >
+                            {button.name}
+                        </NavButton>
+                    ))}
+                </Main>
+                <Secondary>
+                    <Work>
+                        {SecondaryBtnData.map(button => (
                             <NavButton
                                 key={button.name}
-                                isActive={activeMainButton === button.name}
+                                invertion={invertNav}
+                                isActive={activeSecondaryBtn === button.name}
                                 isAnyButtonClicked={isAnyButtonClicked}
-                                onClick={() => {handleMainButtonClick(button.name)}} >
+                                onClick={() => { handleSecondaryButtonClick(button.name); }}
+                                disabled={isButtonDisabled}
+                            >
                                 {button.name}
                             </NavButton>
                         ))}
-                    </Main>
-                    <Secondary>
-                        <Work>
-                            {SecondaryBtnData.map(button => (
-                                <NavButton
-                                    key={button.name}
-                                    isActive={activeSecondaryBtn === button.name}
-                                    isAnyButtonClicked={isAnyButtonClicked}
-                                    onClick={() => {handleSecondaryButtonClick(button.name);}}
-                                    disabled={isSecondaryDisabled}
-                                >
-                                    {button.name}
-                                </NavButton>
-                            ))}
-                        </Work>
-                    </Secondary>
-                </Nav>
-                <Footer>
-                    <Stream>{currentText}</Stream>
-                </Footer>
-            </NavBox>
+                    </Work>
+                </Secondary>
+            </Nav>
+            <Footer invertion={invertNav}>
+                <Stream invertion={invertNav}>{currentText}</Stream>
+            </Footer>
+        </NavBox>
     );
 };
 

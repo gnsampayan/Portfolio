@@ -54,58 +54,66 @@ const Bubble = styled.div`
     color: #4b4b4b;
     padding: 6px 20px 6px 20px;  
 `
+const Caption = styled.p`
+	font-family: halyard-text, sans-serif;
+	font-size: 1.1rem;
+	font-weight: 200;
+	color: rgb(143, 143, 143);
+	float: left;
+`;
 
 const AboutMe: React.FC = () => {
-    const { boxInView } = useControlPanel();
-    const currentText = boxInView === 12 ? useTypingEffect(60, 1500, chatText) : ""; // Only start typing when boxInView is 12
+  const { boxInView } = useControlPanel();
+  const currentText = boxInView === 12 ? useTypingEffect(60, 1500, chatText) : ""; // Only start typing when boxInView is 12
   return (
     <Frame>
       <Links>
-        <Link 
+        <Caption>Links</Caption>
+        <Link
           href="mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,"
           id="email"
           className="green fl-l mb-12"
         >
-          Message me
+          Email
         </Link>
-        <Link 
-          target="_blank" 
+        <Link
+          target="_blank"
           rel="noopener noreferrer"
-          href="https://www.instagram.com/glenn_sampayan/"
+          href="https://github.com/gnsampayan"
           id="art"
           className="red fl-l mb-12"
         >
-          Art stuff
+          Github
         </Link>
-        <Link 
-          target="_blank" 
+        <Link
+          target="_blank"
           rel="noopener noreferrer"
           href="https://www.linkedin.com/in/glenn-sampayan-544807176/"
           id="social"
           className="blue fl-l"
         >
-          Let's connect
+          LinkedIn
         </Link>
       </Links>
       <Introduction>
         <Bubble>{currentText}</Bubble>
-        Hi! 😊 <br/>
-        I'm Glenn. <br/>
-        <br/>
-        &nbsp;&nbsp;I'm an experienced Engineer and Designer based in Austin. 
-        I have a unique blend of skills that includes product strategy, 
-        problem-solving, research and development, prototyping, and usability 
-        testing. I also have a strong background in interface design, fine 
+        Hi! 😊 <br />
+        I'm Glenn. <br />
+        <br />
+        &nbsp;&nbsp;I'm an experienced Engineer and Designer based in Austin.
+        I have a unique blend of skills that includes product strategy,
+        problem-solving, research and development, prototyping, and usability
+        testing. I also have a strong background in interface design, fine
         arts, communication design, and programming.
-        <br/>
-        &nbsp;&nbsp;When I'm not working, I enjoy spending time outdoors 
-        and pursuing my passions. Whether it's camping with my dog Alfie, 
-        building and flying racing drones, riding motorcycles, making art, 
-        or working on exciting projects, I always find a way to stay 
+        <br />
+        &nbsp;&nbsp;When I'm not working, I enjoy spending time outdoors
+        and pursuing my passions. Whether it's camping with my dog Alfie,
+        building and flying racing drones, riding motorcycles, making art,
+        or working on exciting projects, I always find a way to stay
         engaged and challenged.
-        <br/>
-        &nbsp;&nbsp;I'm always looking for opportunities to connect and 
-        collaborate, so feel free to get in touch if you'd like to chat. 
+        <br />
+        &nbsp;&nbsp;I'm always looking for opportunities to connect and
+        collaborate, so feel free to get in touch if you'd like to chat.
         Let's see what we can create together!
       </Introduction>
     </Frame>

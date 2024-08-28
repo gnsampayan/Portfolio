@@ -17,6 +17,7 @@ import SpanningDetails from './components/ProjectDetails/SpanningDetails';
 import DynamicNav from './components/dynamic-nav';
 //AboutMe
 import AboutMe from './components/AboutMe';
+import { useControlPanel } from './components/Contexts/ControlPanelContext';
 
 const Wrapper = styled.div`
   position: relative;
@@ -54,47 +55,54 @@ const BoxGroup12Wrapper = styled.div`
   top: 0;
   left: -100vw;
 `;
+const OrbitalWrapper = styled.div<{ vis: boolean }>`
+  opacity: ${(props) => props.vis ? '1' : '0'};
+  transition: opacity 1s ease;
+`
 
 const App = () => {
+  const { boxInView } = useControlPanel();
   const componentMapping = [
     //Folds
-    <NQHardware/>,
-    <DesignRunGroup/>,
-    <WeAreHere/>,
-    <DesignRunOrg/>,
-    <Spanning/>,
+    <NQHardware />,
+    <DesignRunGroup />,
+    <WeAreHere />,
+    <DesignRunOrg />,
+    <Spanning />,
     //Deails
-    <NQHardwareDetails/>,
-    <DrgGroupDetails/>,
-    <WeAreHereDetails/>,
-    <DrgOrgDetails/>,
-    <SpanningDetails/>,
+    <NQHardwareDetails />,
+    <DrgGroupDetails />,
+    <WeAreHereDetails />,
+    <DrgOrgDetails />,
+    <SpanningDetails />,
     //Nav
     <DynamicNav />,
     <AboutMe />
   ]
   return (
     <Wrapper>
-      <Orbital />
-        {/* Render boxes 1-10 in one group */}
-        <BoxGroup1To5Wrapper>
-          {[1, 2, 3, 4, 5].map((id) => (
-            <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
-          ))}
-        </BoxGroup1To5Wrapper>
-        {/* Render boxes 6-10 in another group */}
-        <BoxGroup6To10Wrapper>
-          {[6, 7, 8, 9, 10].map((id) => (
-            <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
-          ))}
-        </BoxGroup6To10Wrapper>
-        {/* Render box 11 in a separate div */}
-        <BoxGroup11Wrapper>
-          <Box key={11} id={11} childComponent={componentMapping[10]} />
-        </BoxGroup11Wrapper>
-        <BoxGroup12Wrapper>
-          <Box key={12} id={12} childComponent={componentMapping[11]} />
-        </BoxGroup12Wrapper>
+      <OrbitalWrapper vis={boxInView === -1}>
+        <Orbital />
+      </OrbitalWrapper>
+      {/* Render boxes 1-10 in one group */}
+      <BoxGroup1To5Wrapper>
+        {[1, 2, 3, 4, 5].map((id) => (
+          <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
+        ))}
+      </BoxGroup1To5Wrapper>
+      {/* Render boxes 6-10 in another group */}
+      <BoxGroup6To10Wrapper>
+        {[6, 7, 8, 9, 10].map((id) => (
+          <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
+        ))}
+      </BoxGroup6To10Wrapper>
+      {/* Render box 11 in a separate div */}
+      <BoxGroup11Wrapper>
+        <Box key={11} id={11} childComponent={componentMapping[10]} />
+      </BoxGroup11Wrapper>
+      <BoxGroup12Wrapper>
+        <Box key={12} id={12} childComponent={componentMapping[11]} />
+      </BoxGroup12Wrapper>
     </Wrapper>
   );
 };

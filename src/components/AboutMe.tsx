@@ -2,6 +2,8 @@ import styled from "styled-components";
 import useTypingEffect from "../hooks/useTypingEffect";
 import chatText from '../hooks/streamText';
 import { useControlPanel } from "./Contexts/ControlPanelContext";
+import { useWindowSize } from "./Contexts/WindowSizeContext";
+import { useDeviceContext } from "../hooks/deviceDetector";
 
 const Frame = styled.div`
     width: 100vw;
@@ -15,8 +17,8 @@ const Frame = styled.div`
     padding-right: 360px;
 `;
 
-const Introduction = styled.p`
-  width: 600px;
+const Introduction = styled.p<{ width: number }>`
+  width: ${(props) => props.width >= 1150 ? '600px' : '400px'};
   position: relative;
 `;
 
@@ -64,7 +66,9 @@ const Caption = styled.p`
 
 const AboutMe: React.FC = () => {
   const { boxInView } = useControlPanel();
+  const { width } = useWindowSize();
   const currentText = boxInView === 12 ? useTypingEffect(60, 1500, chatText) : ""; // Only start typing when boxInView is 12
+  const { isMobile } = useDeviceContext();
   return (
     <Frame>
       <Links>
@@ -95,7 +99,7 @@ const AboutMe: React.FC = () => {
           LinkedIn
         </Link>
       </Links>
-      <Introduction>
+      <Introduction width={width}>
         <Bubble>{currentText}</Bubble>
         Hi! 😊 <br />
         I'm Glenn. <br />
@@ -116,6 +120,7 @@ const AboutMe: React.FC = () => {
         collaborate, so feel free to get in touch if you'd like to chat.
         Let's see what we can create together!
       </Introduction>
+      {isMobile ? <div>Mobile device</div> : <div>Desktop device</div>}
     </Frame>
   );
 };

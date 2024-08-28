@@ -218,7 +218,7 @@ const DynamicNav = () => {
         isModalOpen,
         setModalOpen,
     } = useNavContext();
-    const currentText = useTypingEffect(100, 6000); // Typing speed and pause time
+    const currentText = useTypingEffect(100, 6000);
 
 
     useEffect(() => {

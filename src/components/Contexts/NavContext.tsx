@@ -12,8 +12,8 @@ interface NavContextProps {
   onMoveList: (direction: string) => void;
   MainBtnData: ButtonData[];
   SecondaryBtnData: ButtonData[];
-  highlightedSecondaryNav: number | null;
-  setHighlightedSecondaryNav: React.Dispatch<React.SetStateAction<number | null>>;
+  highlightedSecondaryNav: number;
+  setHighlightedSecondaryNav: React.Dispatch<React.SetStateAction<number>>;
   handleSecondaryButtonClick: (buttonName: string) => void;
   setButtonDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   isButtonDisabled: boolean;
@@ -47,7 +47,7 @@ export const NavProvider = ({ children }: { children: ReactNode }) => {
   const [activeMainButton, setActiveMainButton] = useState<string | null>(null);
   const [activeSecondaryBtn, setActiveSecondaryBtn] = useState<string | null>(null);
   const [listTranslation, setListTranslation] = useState<string>('translateX(0)');
-  const [highlightedSecondaryNav, setHighlightedSecondaryNav] = useState<number | null>(-1);
+  const [highlightedSecondaryNav, setHighlightedSecondaryNav] = useState<number>(-1);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
   const [invertNav, setInvertNav] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -61,7 +61,7 @@ export const NavProvider = ({ children }: { children: ReactNode }) => {
     setListTranslation(directionTranslations[direction] || 'translateX(0)');
   }
   useEffect(() => {
-    if (highlightedSecondaryNav !== null) {
+    if (highlightedSecondaryNav !== -1) {
       const secondaryBtnName = SecondaryBtnData[highlightedSecondaryNav]?.name || '';
       setActiveSecondaryBtn(secondaryBtnName);
       setActiveMainButton(MainBtnData[0].name);
@@ -71,7 +71,7 @@ export const NavProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (activeSecondaryBtn) {
       const navIndex = SecondaryBtnData.findIndex(btn => btn.name === activeSecondaryBtn);
-      setHighlightedSecondaryNav(navIndex !== -1 ? navIndex : null);
+      setHighlightedSecondaryNav(navIndex !== -1 ? navIndex : -1);
       setActiveMainButton(MainBtnData[0].name);
     }
   }, [activeSecondaryBtn, setHighlightedSecondaryNav, setActiveMainButton]);

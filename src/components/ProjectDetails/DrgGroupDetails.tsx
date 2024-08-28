@@ -317,6 +317,7 @@ const LogoOverlap = styled.div`
     &:active {
         cursor: not-allowed;
     }
+    z-index: 2;
 `;
 
 const End = styled.div`

@@ -8,6 +8,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers';
 import { loadState, saveState } from './utils/localStorage'; // Import utility functions
 import { ControlPanelProvider } from './components/Contexts/ControlPanelContext.tsx';
+import { WindowSizeProvider } from './components/Contexts/WindowSizeContext.tsx';
+import { DeviceProvider } from './hooks/deviceDetector.tsx';
 
 // Load the state from localStorage
 const preloadedState = loadState();
@@ -26,12 +28,16 @@ store.subscribe(() => {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={store}>
-        <NavProvider>
-          <ControlPanelProvider>
-            <App />
-          </ControlPanelProvider>
-        </NavProvider>
-    </Provider>
+    <DeviceProvider>
+      <WindowSizeProvider>
+        <Provider store={store}>
+          <NavProvider>
+            <ControlPanelProvider>
+              <App />
+            </ControlPanelProvider>
+          </NavProvider>
+        </Provider>
+      </WindowSizeProvider>
+    </DeviceProvider>
   </React.StrictMode>,
 );

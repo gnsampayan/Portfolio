@@ -46,39 +46,39 @@ export const ControlPanelProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   };
 
-    const handleMove = (id: number, xCoord: string, yCoord: string) => {
-        const box = boxes.find((b: any) => b.id === id);
-        if (box) {
-            dispatch(moveBox({ id, x: `${xCoord}`, y: `${yCoord}` }));
-        }
-    };
+  const handleMove = (id: number, xCoord: string, yCoord: string) => {
+    const box = boxes.find((b: any) => b.id === id);
+    if (box) {
+      dispatch(moveBox({ id, x: `${xCoord}`, y: `${yCoord}` }));
+    }
+  };
 
-    const changeOpacity = (id: number, opacity: number) => {
-        dispatch(setOpacity({ id, opacity }));
-    };
+  const changeOpacity = (id: number, opacity: number) => {
+    dispatch(setOpacity({ id, opacity }));
+  };
 
-    const toggleClickability = (id: number) => {
-        const box = boxes.find((b: any) => b.id === id);
-        if (box) {
-        dispatch(toggleClickable({ id, clickable: !box.clickable }));
-        }
-    };
+  const toggleClickability = (id: number) => {
+    const box = boxes.find((b: any) => b.id === id);
+    if (box) {
+      dispatch(toggleClickable({ id, clickable: !box.clickable }));
+    }
+  };
 
-    const toggleAnimation = (id: number, animate: boolean) => {
-        const box = boxes.find((b: any) => b.id === id);
-        if (box) {
-            dispatch(toggleTransition({ id, animate })); // Directly set the animate value
-        }
-    };
-    const handleReset = (ids?: number[]) => {
-        dispatch(reset(ids)); // Pass the IDs to the reset action
-    };
+  const toggleAnimation = (id: number, animate: boolean) => {
+    const box = boxes.find((b: any) => b.id === id);
+    if (box) {
+      dispatch(toggleTransition({ id, animate })); // Directly set the animate value
+    }
+  };
+  const handleReset = (ids?: number[]) => {
+    dispatch(reset(ids)); // Pass the IDs to the reset action
+  };
 
-      // Update boxInView and save it to local storage
-    const setBoxInView = (id: number) => {
-      dispatch(setBoxInViewAction(id));
-      localStorage.setItem('boxInView', id.toString());
-    };
+  // Update boxInView and save it to local storage
+  const setBoxInView = (id: number) => {
+    dispatch(setBoxInViewAction(id));
+    localStorage.setItem('boxInView', id.toString());
+  };
 
 
   return (

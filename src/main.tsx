@@ -28,16 +28,16 @@ store.subscribe(() => {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <DeviceProvider>
+    <Provider store={store}>
       <WindowSizeProvider>
-        <Provider store={store}>
+        <DeviceProvider>
           <NavProvider>
             <ControlPanelProvider>
               <App />
             </ControlPanelProvider>
           </NavProvider>
-        </Provider>
+        </DeviceProvider>
       </WindowSizeProvider>
-    </DeviceProvider>
+    </Provider>
   </React.StrictMode>,
 );

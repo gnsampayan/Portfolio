@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import useTypingEffect from "../hooks/useTypingEffect";
 import chatText from '../hooks/streamText';
-import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useWindowSize } from "./Contexts/WindowSizeContext";
 import { useDeviceContext } from "../hooks/deviceDetector";
+import { useControlPanel } from "./Contexts/ControlPanelContext";
 
 const Frame = styled.div`
     width: 100vw;
@@ -17,8 +17,8 @@ const Frame = styled.div`
     padding-right: 360px;
 `;
 
-const Introduction = styled.p<{ width: number }>`
-  width: ${(props) => props.width >= 1150 ? '600px' : '400px'};
+const Introduction = styled.div<{ width: number }>`
+  width: ${(props) => (props.width >= 1150) ? '600px' : '400px'};
   position: relative;
 `;
 
@@ -65,10 +65,11 @@ const Caption = styled.p`
 `;
 
 const AboutMe: React.FC = () => {
-  const { boxInView } = useControlPanel();
   const { width } = useWindowSize();
-  const currentText = boxInView === 12 ? useTypingEffect(60, 1500, chatText) : ""; // Only start typing when boxInView is 12
   const { isMobile } = useDeviceContext();
+  const { boxInView } = useControlPanel();
+  const typedText = useTypingEffect(60, 1500, chatText);
+  const currentText = boxInView === 12 ? typedText : "";
   return (
     <Frame>
       <Links>
@@ -76,25 +77,20 @@ const AboutMe: React.FC = () => {
         <Link
           href="mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,"
           id="email"
-          className="green fl-l mb-12"
         >
           Email
         </Link>
         <Link
           target="_blank"
-          rel="noopener noreferrer"
           href="https://github.com/gnsampayan"
           id="art"
-          className="red fl-l mb-12"
         >
           Github
         </Link>
         <Link
           target="_blank"
-          rel="noopener noreferrer"
           href="https://www.linkedin.com/in/glenn-sampayan-544807176/"
           id="social"
-          className="blue fl-l"
         >
           LinkedIn
         </Link>

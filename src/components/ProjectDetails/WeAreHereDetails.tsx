@@ -156,8 +156,8 @@ const Close = styled.button`
     right: 40px;
     color: white;
     `
-const Modal = styled.div<{ isOpen: boolean }>`
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+const Modal = styled.div<{ $isOpen: boolean }>`
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -311,7 +311,7 @@ const WeAreHereDetails = () => {
                     <SmallBlobAnimation />
                 </End>
 
-                <Modal isOpen={isModalOpen}>
+                <Modal $isOpen={isModalOpen}>
                     <ModalVideo src={WeAreHereVideo} controls autoPlay />
                     <Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
                 </Modal>

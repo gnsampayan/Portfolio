@@ -3,9 +3,9 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 // Define the shape of your context
 interface NavContextProps {
   activeMainButton: string | null;
-  setActiveMainButton: React.Dispatch<React.SetStateAction<string | null>>;
+  setActiveMainButton: React.Dispatch<React.SetStateAction<string>>;
   activeSecondaryBtn: string | null;
-  setActiveSecondaryBtn: React.Dispatch<React.SetStateAction<string | null>>;
+  setActiveSecondaryBtn: React.Dispatch<React.SetStateAction<string>>;
   isAnyButtonClicked: boolean;
   setIsAnyButtonClicked: React.Dispatch<React.SetStateAction<boolean>>;
   listTranslation: string;
@@ -44,8 +44,8 @@ const NavContext = createContext<NavContextProps | undefined>(undefined);
 // Provider component
 export const NavProvider = ({ children }: { children: ReactNode }) => {
   const [isAnyButtonClicked, setIsAnyButtonClicked] = useState<boolean>(false);
-  const [activeMainButton, setActiveMainButton] = useState<string | null>(null);
-  const [activeSecondaryBtn, setActiveSecondaryBtn] = useState<string | null>(null);
+  const [activeMainButton, setActiveMainButton] = useState<string>('');
+  const [activeSecondaryBtn, setActiveSecondaryBtn] = useState<string>('');
   const [listTranslation, setListTranslation] = useState<string>('translateX(0)');
   const [highlightedSecondaryNav, setHighlightedSecondaryNav] = useState<number>(-1);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
@@ -69,7 +69,7 @@ export const NavProvider = ({ children }: { children: ReactNode }) => {
   }, [highlightedSecondaryNav, setActiveSecondaryBtn, setActiveMainButton]);
 
   useEffect(() => {
-    if (activeSecondaryBtn) {
+    if (activeSecondaryBtn !== '') {
       const navIndex = SecondaryBtnData.findIndex(btn => btn.name === activeSecondaryBtn);
       setHighlightedSecondaryNav(navIndex !== -1 ? navIndex : -1);
       setActiveMainButton(MainBtnData[0].name);

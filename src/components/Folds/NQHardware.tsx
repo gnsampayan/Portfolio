@@ -4,32 +4,34 @@ import { useControlPanel } from "../Contexts/ControlPanelContext";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useNavContext } from "../Contexts/NavContext";
 import { FaEye } from "react-icons/fa6";
+import { useDeviceContext } from "../../hooks/deviceDetector";
 
-const Container = styled.div`
-    position: relative;
-    width: 100vw;
+const Fold = styled.div<{ $mobile: boolean }>`
     height: 100vh;
-    display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-left: 360px;
+    display: flex;
+    padding-left: ${(props) => props.$mobile ? '0px' : '360px'};
 `;
-
-const Frame = styled.div`
+const Container = styled.div<{ $mobile: boolean }>`
     position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+    width: ${(props) => props.$mobile ? '100vw' : 'calc(100vw - 360px)'};
 `;
 
-const Project = styled.div`
+const Frame = styled.div<{ $mobile: boolean }>`
+    display: flex;
+    flex-direction: ${(props) => props.$mobile ? 'column' : 'row'};
+    align-items: ${(props) => props.$mobile ? 'flex-start' : 'center'};
+    justify-content: ${(props) => props.$mobile ? 'flex-start' : 'center'};
+    gap: 20px;
+    padding-left: ${(props) => props.$mobile ? '20px' : '0px'};
+`;
+
+const Project = styled.div<{ $mobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: ${(props) => props.$mobile ? 'flex-start' : 'center'};
     z-index: 2;
 `;
 
@@ -49,9 +51,9 @@ const Date = styled.p`
     margin-top: 0px;
 `;
 
-const VideoWrapper = styled.div`
+const VideoWrapper = styled.div<{ $mobile: boolean }>`
     position: relative;
-    height: 300px;
+    height: ${(props) => props.$mobile ? '100%' : '300px'};
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -75,22 +77,35 @@ const HoverText = styled.div`
     }
 `;
 
-const Video = styled.video`
-    height: 100%;
-    width: 100%;
+const Video = styled.video<{ $mobile: boolean }>`
+    height: ${(props) => props.$mobile ? 'auto' : '100%'};
+    width: ${(props) => props.$mobile ? 'calc(100vw - 40px)' : 'auto'};
     transition: all 0.3s ease;
     border: 1px solid black;
     z-index: 2;
-    @media only screen and (max-width: 768px) {
-        width: calc(100vw - 80px);
-    }
     ${VideoWrapper}:hover & {
         filter: brightness(0.5); // Darken the video on hover
     }
+    /* // Media Queries for Responsive Design
+    @media only screen and (max-width: 1024px) { // Tablet Portrait
+        width: calc(100vw - 60px);
+    }
+
+    @media only screen and (max-width: 768px) { // Mobile Landscape
+        width: calc(100vw - 80px);
+    }
+
+    @media only screen and (max-width: 480px) { // Mobile Portrait
+        width: calc(100vw - 100px);
+    }
+
+    @media only screen and (max-width: 320px) { // Small Mobile Devices
+        width: calc(100vw - 120px);
+    } */
 `;
 
-const Modal = styled.div<{ isOpen: boolean }>`
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+const Modal = styled.div<{ $isOpen: boolean }>`
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -110,10 +125,10 @@ const ModalVideo = styled.video`
     box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.2);
 `;
 
-const Square = styled.div`
+const Square = styled.div<{ $mobile: boolean }>`
     position: absolute;
-    top: -60px;
-    left: 240px;
+    top: ${(props) => props.$mobile ? 'calc(50vh - 400px)' : '-60px'};
+    left: ${(props) => props.$mobile ? 'calc(50vw - 200px)' : '440px'};
     width: 400px;
     height: 400px;
     border-radius: 3px;
@@ -152,8 +167,9 @@ const Close = styled.button`
 `
 
 const NQHardware = () => {
-    const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
+    const { isMobile } = useDeviceContext();
     const { setButtonDisabled, isModalOpen, setModalOpen } = useNavContext();
+    const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
 
     const handleViewDetailsClick = () => {
         setButtonDisabled(true);
@@ -178,26 +194,28 @@ const NQHardware = () => {
     };
 
     return (
-        <Container>
-            <Frame>
-                <Project>
-                    <Title>NQ Hardware</Title>
-                    <Subtitle>WEB APP, E-COMMERCE</Subtitle>
-                    <Date>2024</Date>
-                    <A onClick={handleViewDetailsClick}>Project Details</A>
-                </Project>
-                <VideoWrapper onClick={handleVideoClick}>
-                    <Video src={NQVid} autoPlay loop muted />
-                    <HoverText><FaEye /></HoverText>
-                </VideoWrapper>
-                <Square />
-            </Frame>
-
-            <Modal isOpen={isModalOpen}>
+        <Fold $mobile={isMobile}>
+            <Container $mobile={isMobile}>
+                <Frame $mobile={isMobile}>
+                    <Project $mobile={isMobile}>
+                        <Title>NQ Hardware</Title>
+                        <Subtitle>WEB APP, E-COMMERCE</Subtitle>
+                        <Date>2024</Date>
+                        <A onClick={handleViewDetailsClick}>Project Details</A>
+                    </Project>
+                    <VideoWrapper $mobile={isMobile} onClick={handleVideoClick}>
+                        <Video $mobile={isMobile} src={NQVid} autoPlay loop muted />
+                        <HoverText><FaEye /></HoverText>
+                    </VideoWrapper>
+                </Frame>
+                <Square $mobile={isMobile} />
+            </Container>
+            <Modal $isOpen={isModalOpen}>
                 <ModalVideo src={NQVid} controls autoPlay />
                 <Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
             </Modal>
-        </Container>
+        </Fold>
+
     );
 };
 

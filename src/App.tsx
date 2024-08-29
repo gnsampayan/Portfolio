@@ -18,6 +18,8 @@ import DynamicNav from './components/dynamic-nav';
 //AboutMe
 import AboutMe from './components/AboutMe';
 import { useControlPanel } from './components/Contexts/ControlPanelContext';
+import { useDeviceContext } from './hooks/deviceDetector';
+import { useEffect } from 'react';
 
 const Wrapper = styled.div`
   position: relative;
@@ -40,12 +42,12 @@ const BoxGroup6To10Wrapper = styled.div`
   top: 100vh;
   left: 0;
 `;
-const BoxGroup11Wrapper = styled.div`
+const BoxGroup11Wrapper = styled.div<{ $mobile: boolean }>`
   position: absolute;
   width: auto;
   height: auto;
-  top: calc(50vh - 200px);
-  left: calc(50vw - 160px);
+  top: ${(props) => props.$mobile ? '0' : 'calc(50vh - 200px)'};
+  left: ${(props) => props.$mobile ? '0' : 'calc(50vw - 160px)'};
   z-index: 999;
 `;
 const BoxGroup12Wrapper = styled.div`
@@ -55,13 +57,14 @@ const BoxGroup12Wrapper = styled.div`
   top: 0;
   left: -100vw;
 `;
-const OrbitalWrapper = styled.div<{ vis: boolean }>`
-  opacity: ${(props) => props.vis ? '1' : '0'};
+const OrbitalWrapper = styled.div<{ $vis: boolean }>`
+  opacity: ${(props) => props.$vis ? '1' : '0'};
   transition: opacity 1s ease;
 `
 
 const App = () => {
-  const { boxInView } = useControlPanel();
+  const { boxInView, handleReset } = useControlPanel();
+  const { isMobile } = useDeviceContext();
   const componentMapping = [
     //Folds
     <NQHardware />,
@@ -77,29 +80,36 @@ const App = () => {
     <SpanningDetails />,
     //Nav
     <DynamicNav />,
-    <AboutMe />
+    <AboutMe />,
   ]
+  useEffect(() => {
+    if (isMobile) {
+      handleReset();
+    }
+  }, [isMobile]);
+
   return (
     <Wrapper>
-      <OrbitalWrapper vis={boxInView === -1}>
+      <OrbitalWrapper $vis={boxInView === -1}>
         <Orbital />
       </OrbitalWrapper>
-      {/* Render boxes 1-10 in one group */}
+      {/* Project Folds */}
       <BoxGroup1To5Wrapper>
         {[1, 2, 3, 4, 5].map((id) => (
           <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
         ))}
       </BoxGroup1To5Wrapper>
-      {/* Render boxes 6-10 in another group */}
+      {/* Project Details Pages */}
       <BoxGroup6To10Wrapper>
         {[6, 7, 8, 9, 10].map((id) => (
           <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
         ))}
       </BoxGroup6To10Wrapper>
-      {/* Render box 11 in a separate div */}
-      <BoxGroup11Wrapper>
+      {/* Dynamic Nav Box */}
+      <BoxGroup11Wrapper $mobile={isMobile}>
         <Box key={11} id={11} childComponent={componentMapping[10]} />
       </BoxGroup11Wrapper>
+      {/* About Me Page */}
       <BoxGroup12Wrapper>
         <Box key={12} id={12} childComponent={componentMapping[11]} />
       </BoxGroup12Wrapper>

@@ -90,8 +90,8 @@ const Video = styled.video`
     }
 `;
 
-const Modal = styled.div<{ isOpen: boolean }>`
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+const Modal = styled.div<{ $isOpen: boolean }>`
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -164,55 +164,55 @@ const Close = styled.button`
 `
 
 const DesignRunGroup = () => {
-  const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
-  const { setButtonDisabled, isModalOpen, setModalOpen } = useNavContext();
+    const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
+    const { setButtonDisabled, isModalOpen, setModalOpen } = useNavContext();
 
-  const handleViewDetailsClick = () => {
-    setButtonDisabled(true);
-    setBoxInView(7);
-    handleMove(7, '0', '-100vh');
-    handleMove(2, '-100vw', '-100vh');
-    changeOpacity(7, 1);
-    toggleAnimation(7, true);
-    setTimeout(() => {
-      setButtonDisabled(false);
-      toggleAnimation(2, false);
-      handleReset([2]);
-    }, 1000);
-  };
+    const handleViewDetailsClick = () => {
+        setButtonDisabled(true);
+        setBoxInView(7);
+        handleMove(7, '0', '-100vh');
+        handleMove(2, '-100vw', '-100vh');
+        changeOpacity(7, 1);
+        toggleAnimation(7, true);
+        setTimeout(() => {
+            setButtonDisabled(false);
+            toggleAnimation(2, false);
+            handleReset([2]);
+        }, 1000);
+    };
 
-  const handleVideoClick = () => {
-    setModalOpen(true);
-  };
+    const handleVideoClick = () => {
+        setModalOpen(true);
+    };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
 
-  return (
-    <Fold>
-      <Container>
-        <Frame>
-          <Project>
-            <Title>DesignRun<br />Group</Title>
-            <Subtitle>WEBSITE</Subtitle>
-            <Date>2023</Date>
-            <A onClick={handleViewDetailsClick}>Project Details</A>
-          </Project>
-          <VideoWrapper onClick={handleVideoClick}>
-            <Video src={DrgGroup} autoPlay loop muted />
-            <HoverText><FaEye /></HoverText>
-          </VideoWrapper>
-        </Frame>
-        <Circle />
-      </Container>
+    return (
+        <Fold>
+            <Container>
+                <Frame>
+                    <Project>
+                        <Title>DesignRun<br />Group</Title>
+                        <Subtitle>WEBSITE</Subtitle>
+                        <Date>2023</Date>
+                        <A onClick={handleViewDetailsClick}>Project Details</A>
+                    </Project>
+                    <VideoWrapper onClick={handleVideoClick}>
+                        <Video src={DrgGroup} autoPlay loop muted />
+                        <HoverText><FaEye /></HoverText>
+                    </VideoWrapper>
+                </Frame>
+                <Circle />
+            </Container>
 
-      <Modal isOpen={isModalOpen}>
-        <ModalVideo src={DrgGroup} controls autoPlay />
-        <Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
-      </Modal>
-    </Fold>
-  );
+            <Modal $isOpen={isModalOpen}>
+                <ModalVideo src={DrgGroup} controls autoPlay />
+                <Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
+            </Modal>
+        </Fold>
+    );
 };
 
 export default DesignRunGroup;

@@ -91,8 +91,8 @@ const Video = styled.video`
     }
 `;
 
-const Modal = styled.div<{ isOpen: boolean }>`
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+const Modal = styled.div<{ $isOpen: boolean }>`
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -207,7 +207,7 @@ const WeAreHere = () => {
                 <Triangle />
             </Container>
 
-            <Modal isOpen={isModalOpen}>
+            <Modal $isOpen={isModalOpen}>
                 <ModalVideo src={WeAreHereVid} controls autoPlay />
                 <Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
             </Modal>

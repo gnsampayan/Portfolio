@@ -4,18 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { endTransition } from '../features/boxSlice';
 import styled from 'styled-components';
 
-const BoxFrame = styled.div<{ x: string; y: string; opacity: number; clickable: boolean; animate: boolean }>`
+const BoxFrame = styled.div<{ x: string; y: string; opacity: number; $clickable: boolean; $animate: boolean }>`
   position: absolute;
   left: 0;
   top: 0;
   transform: ${({ x, y }) => `translate(${x}, ${y})`};
   opacity: ${({ opacity }) => opacity};
-  transition: ${(props) => props.animate ? 'transform 1s ease' : 'none'};
+  transition: ${(props) => props.$animate ? 'transform 1s ease' : 'none'};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: ${({ clickable }) => (clickable ? 'auto' : 'none')}; // Disable or enable interaction
+  pointer-events: ${({ $clickable }) => ($clickable ? 'auto' : 'none')}; // Disable or enable interaction
   overflow: hidden;
 `;
 const Fold = styled.div`
@@ -58,8 +58,8 @@ const Box: React.FC<BoxProps> = ({ id, childComponent }) => {
       x={box.x}
       y={box.y}
       opacity={box.opacity}
-      clickable={box.clickable}
-      animate={box.animate}
+      $clickable={box.clickable}
+      $animate={box.animate}
     >
       <Fold>{childComponent}</Fold>
     </BoxFrame>

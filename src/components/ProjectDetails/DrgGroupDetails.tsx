@@ -154,8 +154,8 @@ const Video = styled.video`
 	}
 `;
 
-const Modal = styled.div<{ isOpen: boolean }>`
-	display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+const Modal = styled.div<{ $isOpen: boolean }>`
+	display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -211,11 +211,11 @@ const Breadcrumbs = styled.div`
 	z-index: 4;
 `;
 
-const BreadcrumbDot = styled.div<{ isActive: boolean }>`
+const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	background-color: ${({ isActive }) => (isActive ? 'white' : 'gray')};
+	background-color: ${({ $isActive }) => ($isActive ? 'white' : 'gray')};
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 `;
@@ -365,167 +365,167 @@ const SmallBlobAnimation = styled.div`
 
 
 const DrgGroupDetails = () => {
-    const { boxInView } = useControlPanel();
-    const myDivRef = useRef<HTMLDivElement>(null);
-    const { isModalOpen, setModalOpen } = useNavContext();
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const galleryItems = [Screenshot1, Screenshot2, DRGGroupVid];
+	const { boxInView } = useControlPanel();
+	const myDivRef = useRef<HTMLDivElement>(null);
+	const { isModalOpen, setModalOpen } = useNavContext();
+	const [currentIndex, setCurrentIndex] = useState(0);
+	const galleryItems = [Screenshot1, Screenshot2, DRGGroupVid];
 
-    const resetScroll = () => {
-        if (myDivRef.current) {
-            myDivRef.current.scrollTop = 0; // Reset scroll to the top
-        }
-    };
+	const resetScroll = () => {
+		if (myDivRef.current) {
+			myDivRef.current.scrollTop = 0; // Reset scroll to the top
+		}
+	};
 
-    useEffect(() => {
-        if (boxInView !== 7) {
-            setTimeout(() => {
-                resetScroll();
-            }, 1000);
-        }
-    }, [boxInView]);
+	useEffect(() => {
+		if (boxInView !== 7) {
+			setTimeout(() => {
+				resetScroll();
+			}, 1000);
+		}
+	}, [boxInView]);
 
-    const handleOpenModal = (index: number) => {
-        setCurrentIndex(index);
-        setModalOpen(true);
-    };
+	const handleOpenModal = (index: number) => {
+		setCurrentIndex(index);
+		setModalOpen(true);
+	};
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
+	const handleCloseModal = () => {
+		setModalOpen(false);
+	};
 
-    const handleNext = useCallback(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % galleryItems.length);
-    }, [galleryItems.length]);
+	const handleNext = useCallback(() => {
+		setCurrentIndex((prevIndex) => (prevIndex + 1) % galleryItems.length);
+	}, [galleryItems.length]);
 
-    const handlePrev = useCallback(() => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + galleryItems.length) % galleryItems.length);
-    }, [galleryItems.length]);
+	const handlePrev = useCallback(() => {
+		setCurrentIndex((prevIndex) => (prevIndex - 1 + galleryItems.length) % galleryItems.length);
+	}, [galleryItems.length]);
 
-    const handleBreadcrumbClick = (index: number) => {
-        setCurrentIndex(index);
-    };
+	const handleBreadcrumbClick = (index: number) => {
+		setCurrentIndex(index);
+	};
 
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (isModalOpen) {
-                if (event.key === "ArrowRight") {
-                    handleNext();
-                } else if (event.key === "ArrowLeft") {
-                    handlePrev();
-                }
-            }
-        };
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (isModalOpen) {
+				if (event.key === "ArrowRight") {
+					handleNext();
+				} else if (event.key === "ArrowLeft") {
+					handlePrev();
+				}
+			}
+		};
 
-        window.addEventListener("keydown", handleKeyDown);
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [isModalOpen, handleNext, handlePrev]);
+		window.addEventListener("keydown", handleKeyDown);
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [isModalOpen, handleNext, handlePrev]);
 
-    return (
-        <Frame ref={myDivRef}>
-            <Padded>
-                {/* Modal for Image and Video Carousel */}
-                <Modal isOpen={isModalOpen}>
-                    <ModalContent>
-                        <Arrow onClick={handlePrev}><RiArrowLeftSLine /></Arrow>
-                        {currentIndex === 2 ? (
-                            <ModalVideo src={galleryItems[currentIndex]} controls autoPlay />
-                        ) : (
-                            <ModalImage src={galleryItems[currentIndex]} />
-                        )}
-                        <Arrow onClick={handleNext}><RiArrowRightSLine /></Arrow>
-                        {/* Breadcrumbs for Gallery Navigation */}
-                        <Breadcrumbs>
-                            {galleryItems.map((_, index) => (
-                                <BreadcrumbDot
-                                    key={index}
-                                    isActive={index === currentIndex}
-                                    onClick={() => handleBreadcrumbClick(index)}
-                                />
-                            ))}
-                        </Breadcrumbs>
-                    </ModalContent>
-                    <Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
-                </Modal>
+	return (
+		<Frame ref={myDivRef}>
+			<Padded>
+				{/* Modal for Image and Video Carousel */}
+				<Modal $isOpen={isModalOpen}>
+					<ModalContent>
+						<Arrow onClick={handlePrev}><RiArrowLeftSLine /></Arrow>
+						{currentIndex === 2 ? (
+							<ModalVideo src={galleryItems[currentIndex]} controls autoPlay />
+						) : (
+							<ModalImage src={galleryItems[currentIndex]} />
+						)}
+						<Arrow onClick={handleNext}><RiArrowRightSLine /></Arrow>
+						{/* Breadcrumbs for Gallery Navigation */}
+						<Breadcrumbs>
+							{galleryItems.map((_, index) => (
+								<BreadcrumbDot
+									key={index}
+									$isActive={index === currentIndex}
+									onClick={() => handleBreadcrumbClick(index)}
+								/>
+							))}
+						</Breadcrumbs>
+					</ModalContent>
+					<Close onClick={handleCloseModal}><RiCloseLargeFill /></Close>
+				</Modal>
 
-                {/* Page Content */}
-                <Heading>
-                    <Scope>
-                        <Caption>Scope</Caption>
-                        <P>
-                            Art Direction,
-                            <br />
-                            UX/UI,
-                            <br />
-                            Web Design,
-                            <br />
-                            Front-End Development
-                        </P>
-                        <Caption>Links</Caption>
-                        <A href="https://www.designrungroup.com/" target="_blank">
-                            Visit Site
-                        </A>
-                    </Scope>
-                    <Summary>
-                        <Top>
-                            <Caption>WEBSITE</Caption>
-                            <Line />
-                            <Caption>2023</Caption>
-                        </Top>
-                        <H1>Designrun Group</H1>
-                        <P>
-                            To comply with my non-disclosure agreement, I have omitted and obfuscated confidential information in this case study. All information in this case study is my own and does not necessarily reflect the views of DesignRun Group.
-                        </P>
-                        <Caption>Summary</Caption>
-                        <PBody>
-                            DesignRun.org is a healthcare startup and non-profit organization that aims to establish a strong brand identity and digital presence to reach its target audience of current and future investors, clients, and partners.
-                            <br />
-                            The challenge was to create a minimalist and subtle brand identity, user-friendly interface, and smooth user experience with limited resources and time.
-                            <br />
-                            Despite these constraints, the team successfully delivered a website that effectively communicated the company's mission and provided a seamless experience for its users.
-                        </PBody>
-                    </Summary>
-                </Heading>
-                <Examples style={{ marginTop: '60px' }}>
-                    <div>
-                        <LogoOverlap>
-                            <Logo1Div src={Logo1} />
-                            <Logo2Div src={Logo2} />
-                        </LogoOverlap>
-                        <P style={{ paddingTop: "20px" }}>Wordmark.</P>
-                        <PBody style={{ width: '400px' }}>
-                            A dynamic wordmark that expertly balances professionalism and creativity, shifting tones between bold black and vibrant color to embody the essence of DesignRun Group.
-                        </PBody>
-                    </div>
-                    <div>
-                        <ImageOverlap onClick={() => handleOpenModal(0)}>
-                            <Image1 src={Screenshot1} />
-                            <Image2 src={Screenshot2} />
-                        </ImageOverlap>
-                        <P style={{ paddingTop: "20px" }}>Dual-view interactive slider.</P>
-                        <PBody style={{ width: "400px" }}>
-                            Explore the interactive dual-view slider, where content shifts dynamically between two dimensions. Sliding left or right reveals interconnected narratives, illustrating how DesignRun Group's design seamlessly integrates multiple perspectives into a cohesive user experience.
-                        </PBody>
-                    </div>
-                </Examples>
-                <div>
-                    <VideoWrapper>
-                        <Video onClick={() => handleOpenModal(2)} src={DRGGroupVid} autoPlay loop muted />
-                        <HoverText><RiExpandDiagonalFill /></HoverText>
-                    </VideoWrapper>
-                    <P style={{ paddingTop: "20px" }}>
-                        Experience the bold, innovative design of the DesignRun Group site in action.
-                    </P>
-                </div>
-                <End>
-                    <VerticalLine />
-                    <SmallBlobAnimation />
-                </End>
-            </Padded>
-        </Frame>
-    );
+				{/* Page Content */}
+				<Heading>
+					<Scope>
+						<Caption>Scope</Caption>
+						<P>
+							Art Direction,
+							<br />
+							UX/UI,
+							<br />
+							Web Design,
+							<br />
+							Front-End Development
+						</P>
+						<Caption>Links</Caption>
+						<A href="https://www.designrungroup.com/" target="_blank">
+							Visit Site
+						</A>
+					</Scope>
+					<Summary>
+						<Top>
+							<Caption>WEBSITE</Caption>
+							<Line />
+							<Caption>2023</Caption>
+						</Top>
+						<H1>Designrun Group</H1>
+						<P>
+							To comply with my non-disclosure agreement, I have omitted and obfuscated confidential information in this case study. All information in this case study is my own and does not necessarily reflect the views of DesignRun Group.
+						</P>
+						<Caption>Summary</Caption>
+						<PBody>
+							DesignRun.org is a healthcare startup and non-profit organization that aims to establish a strong brand identity and digital presence to reach its target audience of current and future investors, clients, and partners.
+							<br />
+							The challenge was to create a minimalist and subtle brand identity, user-friendly interface, and smooth user experience with limited resources and time.
+							<br />
+							Despite these constraints, the team successfully delivered a website that effectively communicated the company's mission and provided a seamless experience for its users.
+						</PBody>
+					</Summary>
+				</Heading>
+				<Examples style={{ marginTop: '60px' }}>
+					<div>
+						<LogoOverlap>
+							<Logo1Div src={Logo1} />
+							<Logo2Div src={Logo2} />
+						</LogoOverlap>
+						<P style={{ paddingTop: "20px" }}>Wordmark.</P>
+						<PBody style={{ width: '400px' }}>
+							A dynamic wordmark that expertly balances professionalism and creativity, shifting tones between bold black and vibrant color to embody the essence of DesignRun Group.
+						</PBody>
+					</div>
+					<div>
+						<ImageOverlap onClick={() => handleOpenModal(0)}>
+							<Image1 src={Screenshot1} />
+							<Image2 src={Screenshot2} />
+						</ImageOverlap>
+						<P style={{ paddingTop: "20px" }}>Dual-view interactive slider.</P>
+						<PBody style={{ width: "400px" }}>
+							Explore the interactive dual-view slider, where content shifts dynamically between two dimensions. Sliding left or right reveals interconnected narratives, illustrating how DesignRun Group's design seamlessly integrates multiple perspectives into a cohesive user experience.
+						</PBody>
+					</div>
+				</Examples>
+				<div>
+					<VideoWrapper>
+						<Video onClick={() => handleOpenModal(2)} src={DRGGroupVid} autoPlay loop muted />
+						<HoverText><RiExpandDiagonalFill /></HoverText>
+					</VideoWrapper>
+					<P style={{ paddingTop: "20px" }}>
+						Experience the bold, innovative design of the DesignRun Group site in action.
+					</P>
+				</div>
+				<End>
+					<VerticalLine />
+					<SmallBlobAnimation />
+				</End>
+			</Padded>
+		</Frame>
+	);
 };
 
 export default DrgGroupDetails;

@@ -202,8 +202,8 @@ const ImageEmail = styled.img`
     margin-right: 20px;
     cursor: pointer;
 `
-const Modal = styled.div<{ isOpen: boolean }>`
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+const Modal = styled.div<{ $isOpen: boolean }>`
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -259,11 +259,11 @@ const Breadcrumbs = styled.div`
     z-index: 4;
 `;
 
-const BreadcrumbDot = styled.div<{ isActive: boolean }>`
+const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: ${({ isActive }) => (isActive ? 'white' : 'gray')};
+    background-color: ${({ $isActive }) => ($isActive ? 'white' : 'gray')};
     cursor: pointer;
     transition: background-color 0.3s ease;
 `;
@@ -338,7 +338,7 @@ const SpanningDetails = () => {
     return (
         <Frame ref={myDivRef}>
             {/* Modal for Image and Video Carousel */}
-            <Modal isOpen={isModalOpen}>
+            <Modal $isOpen={isModalOpen}>
                 <ModalContent>
                     <Arrow onClick={handlePrev}><RiArrowLeftSLine /></Arrow>
                     {currentIndex === 2 ? (
@@ -351,7 +351,7 @@ const SpanningDetails = () => {
                         {galleryItems.map((_, index) => (
                             <BreadcrumbDot
                                 key={index}
-                                isActive={index === currentIndex}
+                                $isActive={index === currentIndex}
                                 onClick={() => handleBreadcrumbClick(index)}
                             />
                         ))}

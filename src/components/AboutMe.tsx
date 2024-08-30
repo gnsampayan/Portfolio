@@ -2,7 +2,6 @@ import styled from "styled-components";
 import useTypingEffect from "../hooks/useTypingEffect";
 import chatText from '../hooks/streamText';
 import { useWindowSize } from "./Contexts/WindowSizeContext";
-import { useDeviceContext } from "../hooks/deviceDetector";
 import { useControlPanel } from "./Contexts/ControlPanelContext";
 
 const Frame = styled.div`
@@ -52,7 +51,7 @@ const Bubble = styled.div`
     top: -16px;
     left: 80px;
     border-radius: 20px 20px 20px 0px;
-    border: 1px solid #ffa600;
+    border: 1px solid #90e5ff;
     color: #4b4b4b;
     padding: 6px 20px 6px 20px;  
 `
@@ -66,7 +65,6 @@ const Caption = styled.p`
 
 const AboutMe: React.FC = () => {
   const { width } = useWindowSize();
-  const { isMobile } = useDeviceContext();
   const { boxInView } = useControlPanel();
   const typedText = useTypingEffect(60, 1500, chatText);
   const currentText = boxInView === 12 ? typedText : "";
@@ -116,7 +114,6 @@ const AboutMe: React.FC = () => {
         collaborate, so feel free to get in touch if you'd like to chat.
         Let's see what we can create together!
       </Introduction>
-      {isMobile ? <div>Mobile device</div> : <div>Desktop device</div>}
     </Frame>
   );
 };

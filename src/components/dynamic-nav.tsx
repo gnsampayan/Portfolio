@@ -32,7 +32,7 @@ const colorChangeAnimation = (startColor: string, endColor: string) => keyframes
     60% {
         background-color: ${startColor};
     }
-`;
+    `;
 
 const skewAnimation = keyframes`
     25% {
@@ -47,6 +47,72 @@ const skewAnimation = keyframes`
     100% {
         transform: skew(0deg);
     }
+    `;
+const Name = styled.button<{ $invertion: boolean }>`
+    all: unset;
+    text-decoration: none;
+    color: ${(props) => props.$invertion ? 'white' : '#3a3a3a'};
+    margin-top: 0;
+    position: relative;
+    font-size: 1.5rem;
+    margin-left: 20px;
+    top: 10px;
+    left: -7px;
+    font-family: halyard-display, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    white-space: nowrap;
+    padding: 2px 10px 1px 10px;
+    &:hover {
+        opacity: 60%;
+    }
+    &:disabled {
+        pointer-events: none;
+    }
+    `;
+const NavButton = styled.button<{
+    $isActive: boolean;
+    $isAnyButtonClicked: boolean;
+    $invertion: boolean;
+    $hiddenForMobile: boolean;
+}>`
+    all: unset;
+    clear: both;
+    color: ${(props) =>
+        props.$isAnyButtonClicked
+            ? (
+                props.$isActive
+                    ? (
+                        props.$invertion
+                            ? "white"
+                            : "black"
+                    )
+                    : (
+                        props.$invertion
+                            ? "#898989"
+                            : "#707070"
+                    )
+            )
+            : (
+                props.$invertion
+                    ? "white"
+                    : "black"
+            )};
+    &:hover {
+        color: ${(props) => (props.$invertion ? "white" : "black")};
+    }
+    &:disabled {
+        pointer-events: none;
+    }
+    background-color: none;
+    text-decoration: none;
+    transition: color 1s ease;
+    display: ${(props) => (props.$hiddenForMobile ? "none" : "block")};
+    pointer-events: ${(props) => (props.$hiddenForMobile ? "none" : "auto")};
+    white-space: nowrap;
+    padding: 2px 10px 4px 10px;
+    border-radius: 3px;
+    background: none;
 `;
 const NavBox = styled.div<{
     $invertion: boolean;
@@ -63,7 +129,7 @@ const NavBox = styled.div<{
         ` : '60px'
     };
 	border: 1px solid ${(props) => (props.$invertion ? "white" : "black")};
-	transition: border 1s ease;
+	transition: all 1s ease;
 	border-radius: 3px;
 	overflow: hidden;
 	z-index: 999;
@@ -76,31 +142,15 @@ const NavBox = styled.div<{
             height: 200px;
         }
     `}
+    &:hover {
+        background: ${(props) => (props.$invertion ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)')};
+    }
 `;
 const Header = styled.div<{ $invertion: boolean }>`
     width: 100%;
     height: 60px;
     border-bottom: 1px solid ${(props) => props.$invertion ? 'white' : 'black'};
     box-sizing: border-box;
-`;
-const Name = styled.button<{ $invertion: boolean }>`
-    all: unset;
-    text-decoration: none;
-    color: ${(props) => props.$invertion ? 'white' : '#3a3a3a'};
-    margin-top: 0;
-    position: relative;
-    font-size: 1.5rem;
-    margin-left: 20px;
-    top: 16px;
-    font-family: halyard-display, sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    &:hover {
-        opacity: 60%;
-    }
-    &:disabled {
-        pointer-events: none;
-	}
 `;
 const OrnamentsContainer = styled.div`
     display: inline-flex;
@@ -182,51 +232,6 @@ const Work = styled.div<{
     justify-content: flex-end;
     gap: ${(props) => props.$mobile ? '7px' : 'none'};
 `;
-const NavButton = styled.button<{
-    $isActive: boolean;
-    $isAnyButtonClicked: boolean;
-    $invertion: boolean;
-    $hiddenForMobile: boolean;
-    $mobile: boolean;
-}>`
-	clear: both;
-	color: ${(props) =>
-        props.$isAnyButtonClicked
-            ? (
-                props.$isActive
-                    ? (
-                        props.$invertion
-                            ? "white"
-                            : "black"
-                    )
-                    : (
-                        props.$invertion
-                            ? "#979797"
-                            : "#707070"
-                    )
-            )
-            : (
-                props.$invertion
-                    ? "white"
-                    : "black"
-            )};
-	&:hover {
-		color: ${(props) => (props.$invertion ? "white" : "black")};
-	}
-	&:disabled {
-        pointer-events: none;
-	}
-	background-color: none;
-	border: ${(props) => props.$mobile ? '1px solid black' : 'none'};
-	text-decoration: none;
-	background: none;
-	transition: color 1s ease;
-	display: ${(props) => (props.$hiddenForMobile ? "none" : "block")};
-    pointer-events: ${(props) => (props.$hiddenForMobile ? "none" : "auto")};
-	white-space: nowrap;
-    padding: ${(props) => props.$mobile ? '2px 10px 4px 10px' : 'none'};
-    border-radius: ${(props) => props.$mobile ? '3px' : 'none'};
-`;
 const Footer = styled.div<{ $invertion: boolean }>`
     width: 100%;
     height: 30px;
@@ -246,7 +251,7 @@ const Stream = styled.p<{ $invertion: boolean }>`
 `;
 
 const DynamicNav = () => {
-    const { isMobile, windowResized } = useDeviceContext();
+    const { isMobile } = useDeviceContext();
     const {
         activeMainButton,
         setActiveMainButton,
@@ -272,15 +277,6 @@ const DynamicNav = () => {
     const currentText = useTypingEffect(100, 6000);
 
     useEffect(() => {
-        const resetAppStates = () => {
-            if (windowResized) {
-                combinedHandler();
-            }
-        }
-        resetAppStates();
-    }, [windowResized]);
-
-    useEffect(() => {
         const handleNavColorOnModalView = () => {
             if (isModalOpen) {
                 setInvertNav(true);
@@ -294,12 +290,12 @@ const DynamicNav = () => {
 
     const slideLeftAndReset = () => {
         if (boxInView !== -1) {
+            toggleClickability(boxInView, false);
             if (![6, 7, 8, 9, 10].includes(boxInView)) {
                 handleMove(boxInView, '-200vw', '0vh');
             } else {
                 handleMove(boxInView, '-200vw', '-100vh');
             }
-            toggleClickability(boxInView);
             setTimeout(() => {
                 toggleAnimation(boxInView, false);
                 handleReset([boxInView]);
@@ -308,6 +304,7 @@ const DynamicNav = () => {
     };
 
     const slideInBox = (id: number) => {
+        toggleClickability(id, true);
         if (id !== boxInView) {
             toggleAnimation(id, true);
             changeOpacity(id, 1);
@@ -372,6 +369,8 @@ const DynamicNav = () => {
     const handleSecondaryButtonClick = (buttonName: string) => {
         const buttonIndex = SecondaryBtnData.findIndex(button => button.name === buttonName);
         const foldId = buttonIndex + 1; // Add 2 to align with your box ID logic
+        toggleAnimation(11, true);
+        handleMove(11, 'calc(-50vw + 180px)', '0');
         setIsAnyButtonClicked(true);
         setActiveSecondaryBtn(buttonName);
         setActiveMainButton(MainBtnData[0].name);
@@ -386,6 +385,7 @@ const DynamicNav = () => {
         }
         setTimeout(() => {
             setButtonDisabled(false);
+            toggleAnimation(11, false);
         }, 1000);
     };
 
@@ -472,7 +472,6 @@ const DynamicNav = () => {
                             onClick={() => { handleMainButtonClick(button.name) }}
                             disabled={isButtonDisabled}
                             $hiddenForMobile={isMobile && (button.name === MainBtnData[0].name)}
-                            $mobile={isMobile}
                         >
                             {button.name}
                         </NavButton>
@@ -489,7 +488,6 @@ const DynamicNav = () => {
                                 onClick={() => { handleSecondaryButtonClick(button.name) }}
                                 disabled={isButtonDisabled}
                                 $hiddenForMobile={false}
-                                $mobile={isMobile}
                             >
                                 {button.name}
                             </NavButton>

@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 // Define the type for the context state
 interface DeviceContextProps {
     isMobile: boolean;
-    windowResized: boolean;
 }
 
 // Create the context with default values
@@ -21,7 +20,6 @@ export const useDeviceContext = (): DeviceContextProps => {
 // Create a provider component
 export const DeviceProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
-    const [windowResized, setWindowResized] = useState<boolean>(false);
 
     useEffect(() => {
         const checkIsMobile = () => {
@@ -36,29 +34,20 @@ export const DeviceProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         // Debounced resize handler
         let resizeTimer: NodeJS.Timeout; // Timeout reference
 
-        const handleResize = () => {
-            checkIsMobile();
-            setWindowResized(true);
-
-            clearTimeout(resizeTimer); // Clear the previous timeout
-            resizeTimer = setTimeout(() => {
-                setWindowResized(false);
-            }, 1000);
-        };
-
-        window.addEventListener("resize", handleResize);
+        // Add event listeners
+        window.addEventListener("resize", checkIsMobile);
 
         return () => {
-            window.removeEventListener("resize", handleResize);
-            clearTimeout(resizeTimer); // Clear the timeout when the component unmounts
+            window.removeEventListener("resize", checkIsMobile);
+            clearTimeout(resizeTimer);
         };
     }, []);
+
 
     return (
         <DeviceContext.Provider
             value={{
                 isMobile,
-                windowResized,
             }}>
             {children}
         </DeviceContext.Provider>

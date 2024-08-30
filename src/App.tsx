@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Orbital from './components/orbital';
 import Box from './components/Box';
 //child components - Folds
 import NQHardware from './components/Folds/NQHardware';
@@ -20,6 +19,7 @@ import AboutMe from './components/AboutMe';
 import { useControlPanel } from './components/Contexts/ControlPanelContext';
 import { useDeviceContext } from './hooks/deviceDetector';
 import { useEffect } from 'react';
+import OtherWorks from './components/OtherWorks';
 
 const Wrapper = styled.div`
   position: relative;
@@ -57,13 +57,9 @@ const BoxGroup12Wrapper = styled.div`
   top: 0;
   left: -100vw;
 `;
-const OrbitalWrapper = styled.div<{ $vis: boolean }>`
-  opacity: ${(props) => props.$vis ? '1' : '0'};
-  transition: opacity 1s ease;
-`
 
 const App = () => {
-  const { boxInView, handleReset } = useControlPanel();
+  const { handleReset } = useControlPanel();
   const { isMobile } = useDeviceContext();
   const componentMapping = [
     //Folds
@@ -90,9 +86,6 @@ const App = () => {
 
   return (
     <Wrapper>
-      <OrbitalWrapper $vis={boxInView === -1}>
-        <Orbital />
-      </OrbitalWrapper>
       {/* Project Folds */}
       <BoxGroup1To5Wrapper>
         {[1, 2, 3, 4, 5].map((id) => (
@@ -113,6 +106,7 @@ const App = () => {
       <BoxGroup12Wrapper>
         <Box key={12} id={12} childComponent={componentMapping[11]} />
       </BoxGroup12Wrapper>
+      <OtherWorks />
     </Wrapper>
   );
 };

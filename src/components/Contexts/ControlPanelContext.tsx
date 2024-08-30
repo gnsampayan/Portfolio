@@ -10,7 +10,7 @@ export interface ControlPanelContextProps {
   handleYCoordChange: (id: number, newYCoord: string) => void;
   handleMove: (id: number, x: string, y: string) => void;
   changeOpacity: (id: number, opacity: number) => void;
-  toggleClickability: (id: number) => void;
+  toggleClickability: (id: number, isClickable: boolean) => void;
   boxInView: number;
   setBoxInView: (id: number) => void;
   toggleAnimation: (id: number, animate: boolean) => void;
@@ -57,10 +57,10 @@ export const ControlPanelProvider: React.FC<{ children: React.ReactNode }> = ({ 
     dispatch(setOpacity({ id, opacity }));
   };
 
-  const toggleClickability = (id: number) => {
+  const toggleClickability = (id: number, isClickable: boolean) => {
     const box = boxes.find((b: any) => b.id === id);
     if (box) {
-      dispatch(toggleClickable({ id, clickable: !box.clickable }));
+      dispatch(toggleClickable({ id, clickable: isClickable }));
     }
   };
 

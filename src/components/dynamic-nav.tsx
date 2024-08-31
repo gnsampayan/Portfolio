@@ -108,7 +108,7 @@ const NavBox = styled.div<{
 	z-index: 999;
         
     &:hover {
-        background: ${(props) => (props.$invertion ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)')};
+        background: ${(props) => (props.$invertion ? 'none' : 'rgba(255, 255, 255, 0.6)')};
     }
     @media only screen and (max-width: 1250px) {
         width: 220px;
@@ -284,6 +284,7 @@ const DynamicNav = () => {
         setButtonDisabled,
         isButtonDisabled,
         invertNav,
+        setInvertNav,
         isModalOpen,
         setModalOpen,
     } = useNavContext();
@@ -301,10 +302,19 @@ const DynamicNav = () => {
             (prevWidth.current > 768 && width <= 768)      // Crossed the 768 threshold going down
         ) {
             handleReset();
+            setInvertNav(false);
         }
 
         prevWidth.current = width;
     }, [width]);
+
+    useEffect(() => {
+        if (isModalOpen) {
+            setInvertNav(true);
+        } else {
+            setInvertNav(false);
+        }
+    }, [isModalOpen])
 
     const slideLeftAndReset = () => {
         if (boxInView !== -1) {

@@ -62,7 +62,7 @@ const DrgOrgDetails = () => {
     const myDivRef = useRef<HTMLDivElement>(null);
     const { isModalOpen, setModalOpen } = useNavContext();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const galleryItems = [Wordmard, DrgOrg, Screenshot];
+    const galleryItems = [Screenshot, Wordmard];
 
     const scopeContents = (
         <p className={`${styles.scopeList} ${styles.p}`}>
@@ -228,7 +228,7 @@ const DrgOrgDetails = () => {
                     marginBottom: '60px',
                     marginTop: '60px',
                 }}>
-                    <img className={styles.image} onClick={() => handleOpenModal(0)} style={{ width: '100%', maxWidth: "400px", height: '100%', border: '1px solid black' }} src={Wordmard} />
+                    <img className={styles.image} onClick={() => handleOpenModal(1)} style={{ width: '100%', maxWidth: "400px", height: '100%', border: '1px solid black' }} src={Wordmard} />
                     <div style={{ width: '100%', maxWidth: "260px", paddingRight: '20px' }}>
                         <p className={styles.p} style={{ paddingTop: '20px' }}>Brand Guide</p>
                         <p className={styles.pBody} >

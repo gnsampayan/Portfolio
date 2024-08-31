@@ -1,45 +1,8 @@
-import styled from "styled-components";
 import WeAreHereVideo from '/WeAreHere.mp4';
 import { useEffect, useRef } from "react";
 import { useControlPanel } from "../Contexts/ControlPanelContext";
 import styles from './details.module.css';
 import Template from "./template";
-
-const P = styled.p`
-    clear: both;
-    font-family: halyard-text, sans-serif;
-    font-size: 0.9rem;
-    font-weight: 200;
-    font-style: italic;
-    max-width: 600px;
-    line-height: 1.5rem;
-    color: rgb(143, 143, 143);
-`
-const VideoWrapper = styled.div`
-    position: relative;
-    height: 300px;
-    width: 534px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    z-index: 3;
-`;
-
-
-const Video = styled.video`
-    height: 100%;
-    width: auto;
-    transition: all 0.3s ease;
-    border: 1px solid black;
-    z-index: 2;
-    cursor: pointer;
-    @media only screen and (max-width: 768px) {
-        width: calc(100vw - 80px);
-    }
-    ${VideoWrapper}:hover & {
-        filter: brightness(0.5);
-    }
-`;
-
 
 const WeAreHereDetails = () => {
     const { boxInView } = useControlPanel();
@@ -111,15 +74,15 @@ const WeAreHereDetails = () => {
                 nonDisclosure={nonDisclosure}
                 summaryContent={summaryContent}
             />
-            <div style={{ marginTop: '60px', paddingLeft: '360px' }}>
-                <VideoWrapper>
-                    <Video src={WeAreHereVideo} controls autoPlay loop muted playsInline />
-                </VideoWrapper>
-                <P style={{ paddingTop: "20px", width: '540px' }}>
+            <div className={styles.padded}>
+                <div className={styles.videoWrapper}>
+                    <video className={styles.video} src={WeAreHereVideo} controls autoPlay loop muted playsInline />
+                </div>
+                <p className={styles.p} style={{ paddingTop: "20px", width: '540px' }}>
                     A clean, streamlined website with Stripe payment integration,
                     HubSpot management, and a prototyped member portal for core
                     features.
-                </P>
+                </p>
                 <div className={styles.end}>
                     <div className={styles.verticalLine} />
                     <div className={styles.smallShapeAnimation} />

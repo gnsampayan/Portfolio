@@ -4,7 +4,8 @@ import { fetchWeatherData } from "./weatherApi";
 const useTypingEffect = (
   typingSpeed: number,
   pauseTime: number,
-  customTexts?: string[]
+  customTexts?: string[],
+  shouldRestart?: boolean,
 ) => {
   const [currentText, setCurrentText] = useState("");
   const [isDone, setIsDone] = useState(false);
@@ -20,13 +21,31 @@ const useTypingEffect = (
         if (weatherData) {
           const tempCelsius = Math.round(weatherData.main.temp - 273.15); // Convert Kelvin to Celsius
           const tempFahrenheit = Math.round((tempCelsius * 9) / 5 + 32); // Convert Celsius to Fahrenheit
+          let greeting = "";
+
+            const currentHour = new Date().getHours();
+        
+            if (currentHour >= 5 && currentHour < 12) {
+              greeting = "Have a wonderful day!";
+            } else if (currentHour >= 12 && currentHour < 17) {
+              greeting = "Good afternoon!";
+            } else if (currentHour >= 17 && currentHour < 21) {
+              greeting = "Good evening!";
+            } else if (currentHour >= 2 && currentHour < 4) {
+              greeting =  "Is it insomnia, inspiration, or just a caffeine-fueled adventure? Whatever it is, I'm here for it!" // Use line during 2 AM to 4 AM
+            } else {
+              greeting = "Good night!";
+            }
+    
+
           setTexts([
             `Your location: ${weatherData.name}`,
-            `Temperature: ${tempCelsius}°C or ${tempFahrenheit}°F`,
+            `Temperature: ${tempFahrenheit}°F`, //   ${tempCelsius}°C
             `Weather: ${weatherData.weather[0].description}`,
             `Wind speed: ${weatherData.wind.speed} m/s`,
             `Date: ${weatherData.date}`,
-            `Time: ${weatherData.time24Hour} or ${weatherData.time12Hour}`,
+            `Time: ${weatherData.time12Hour}`,  // ${weatherData.time24Hour}
+            greeting,
           ]);
         } else {
           setTexts(["Failed to load weather data."]);
@@ -80,6 +99,16 @@ const useTypingEffect = (
 
     return () => clearTimeout(timeout);
   }, [currentText, isDone, isPaused, loopNum, texts, index, typingSpeed, pauseTime]);
+
+  useEffect(() => {
+    if (shouldRestart) {
+      setCurrentText("");
+      setIsDone(false);
+      setLoopNum(0);
+      setIndex(0);
+      setIsPaused(false);
+    }
+  }, [shouldRestart]);
 
   return currentText;
 };

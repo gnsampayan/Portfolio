@@ -237,6 +237,7 @@ const NQHardwareDetails = () => {
                 <img className={styles.image}
                     style={{
                         width: "100vw",
+                        maxWidth: "100vw",
                         cursor: 'default',
                     }}
                     src={Screenshot3}
@@ -253,10 +254,10 @@ const NQHardwareDetails = () => {
                 </div>
             </div>
             <div className={styles.padded}>
-                <div className={styles.images} style={{ flexDirection: "column", alignItems: "flex-end" }}>
-                    <div style={{ justifyContent: "flex-start" }}>
+                <div className={styles.images} style={{ flexDirection: "column", alignItems: "flex-end", marginBottom: '60px' }}>
+                    <div style={{ justifyContent: "flex-start", paddingRight: "20px" }}>
                         <img className={styles.image} src={Screenshot4} onClick={() => handleOpenModal(3)} />
-                        <div style={{ justifyContent: "flex-start", paddingRight: "20px" }}>
+                        <div style={{ justifyContent: "flex-start" }}>
                             <p className={styles.p} style={{ paddingTop: "20px" }}>
                                 Role-Based Access Control: Editing an item.
                             </p>

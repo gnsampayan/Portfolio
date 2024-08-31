@@ -14,6 +14,9 @@ const Frame = styled.div`
     justify-content: center;
     gap: 40px;
     padding-right: 360px;
+    @media only screen and (max-width: 1250px) {
+      padding-right: 260px;
+	  }
 `;
 
 const Introduction = styled.div<{ width: number }>`
@@ -66,7 +69,8 @@ const Caption = styled.p`
 const AboutMe: React.FC = () => {
   const { width } = useWindowSize();
   const { boxInView } = useControlPanel();
-  const typedText = useTypingEffect(60, 1500, chatText);
+  const shouldRestart = boxInView === 12;
+  const typedText = useTypingEffect(60, 1500, chatText, shouldRestart);
   const currentText = boxInView === 12 ? typedText : "";
   return (
     <Frame>

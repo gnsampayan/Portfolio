@@ -29,15 +29,6 @@ const PBody = styled.p`
     line-height: 1.5rem;
     color: rgb(0, 0, 0);
 `
-const Video = styled.video`
-    height: 300px;
-    transition: all 1s ease;
-    border: 1px solid black;
-    z-index: 2;
-    @media only screen and (max-width: 768px) {
-        width: calc(100vw - 80px);
-    }
-`
 const Image = styled.img`
     width: 100vw;
 `
@@ -64,6 +55,7 @@ const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
     cursor: pointer;
     transition: background-color 0.3s ease;
 `;
+
 
 const DrgOrgDetails = () => {
     const { boxInView } = useControlPanel();
@@ -216,7 +208,7 @@ const DrgOrgDetails = () => {
                     }}
                 >
                     <Image src={Screenshot} />
-                    <div style={{ paddingLeft: '360px' }}>
+                    <div className={styles.padded}>
                         <P style={{ paddingTop: '20px' }}>Screen Shot</P>
                         <PBody style={{ width: "600px" }}>
                             A glimpse of DesignRun.org’s website: Highlighting the strategic
@@ -227,34 +219,35 @@ const DrgOrgDetails = () => {
                 </div>
             </div>
             <div className={styles.padded}>
-                <div
-                    style={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "flex-start",
-                        gap: "20px",
-                        marginBottom: '60px',
-                        marginTop: '60px',
-                    }}
-                >
-                    <img className={styles.image} onClick={() => handleOpenModal(0)} style={{ width: "400px", border: '1px solid black' }} src={Wordmard} />
-                    <div>
-                        <P style={{ paddingTop: '20px' }}>Brand Guide</P>
-                        <PBody style={{ width: "260px" }}>
+                <div style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    gap: "20px",
+                    width: '100%',
+                    height: 'auto',
+                    marginBottom: '60px',
+                    marginTop: '60px',
+                }}>
+                    <img className={styles.image} onClick={() => handleOpenModal(0)} style={{ width: '100%', maxWidth: "400px", height: '100%', border: '1px solid black' }} src={Wordmard} />
+                    <div style={{ width: '100%', maxWidth: "260px", paddingRight: '20px' }}>
+                        <p className={styles.p} style={{ paddingTop: '20px' }}>Brand Guide</p>
+                        <p className={styles.pBody} >
                             DesignRun.org's brand guide: Showcasing the carefully selected
                             typography, color palette, and wordmark that define the brand’s
                             minimalist and impactful visual identity.
-                        </PBody>
+                        </p>
                     </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                        <Video src={DrgOrg} controls autoPlay loop muted playsInline />
-                        <P style={{ paddingTop: "20px", width: "540px" }}>
+                        <div className={styles.videoWrapper}>
+                            <video className={styles.video} src={DrgOrg} controls autoPlay loop muted playsInline />
+                        </div>
+                        <p className={styles.p} style={{ paddingTop: "20px", width: "500px" }}>
                             Explore DesignRun.org’s minimalist design, thoughtful typography,
                             and strategic layout, all crafted to communicate the brand’s
                             mission.
-                        </P>
+                        </p>
                     </div>
                 </div>
                 <div className={styles.end}>

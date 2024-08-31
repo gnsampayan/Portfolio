@@ -23,17 +23,17 @@ const WeAreHere = () => {
 
     return (
         <div className={styles.fold}>
-            <div className={styles.container}>
-                <div className={styles.frame}>
-                    <div className={styles.videoWrapper}>
+            <div className={styles.frame}>
+                <div className={styles.videoWrapper}>
+                    <div className={styles.videoContainer}>
                         <video className={styles.video} src={WeAreHereVid} controls loop playsInline muted />
                     </div>
-                    <div className={styles.project}>
-                        <div className={styles.title}>We Are Here</div>
-                        <div className={styles.subtitle}>User-Driven Service Platform</div>
-                        <div className={styles.date}>2021</div>
-                        <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
-                    </div>
+                </div>
+                <div className={styles.project}>
+                    <div className={styles.title}>We Are Here</div>
+                    <div className={styles.subtitle}>User-Driven Service Platform</div>
+                    <div className={styles.date}>2021</div>
+                    <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
                 </div>
             </div>
         </div>

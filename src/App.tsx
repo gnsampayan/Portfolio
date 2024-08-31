@@ -16,9 +16,6 @@ import SpanningDetails from './components/ProjectDetails/SpanningDetails';
 import DynamicNav from './components/dynamic-nav';
 //AboutMe
 import AboutMe from './components/AboutMe';
-import { useControlPanel } from './components/Contexts/ControlPanelContext';
-import { useDeviceContext } from './hooks/deviceDetector';
-import { useEffect } from 'react';
 import OtherWorks from './components/OtherWorks';
 
 const Wrapper = styled.div`
@@ -42,13 +39,16 @@ const BoxGroup6To10Wrapper = styled.div`
   top: 100vh;
   left: 0;
 `;
-const BoxGroup11Wrapper = styled.div<{ $mobile: boolean }>`
+const BoxGroup11Wrapper = styled.div`
   position: absolute;
   width: auto;
   height: auto;
-  top: ${(props) => props.$mobile ? '0' : 'calc(50vh - 200px)'};
-  left: ${(props) => props.$mobile ? '0' : 'calc(50vw - 160px)'};
+  top: calc(50vh - 200px);
+  left: calc(50vw - 160px);
   z-index: 999;
+  @media only screen and (max-width: 1250px) {
+    top: calc(50vh - 150px);
+	}
 `;
 const BoxGroup12Wrapper = styled.div`
   position: absolute;
@@ -59,8 +59,6 @@ const BoxGroup12Wrapper = styled.div`
 `;
 
 const App = () => {
-  const { handleReset } = useControlPanel();
-  const { isMobile } = useDeviceContext();
   const componentMapping = [
     //Folds
     <NQHardware />,
@@ -78,11 +76,6 @@ const App = () => {
     <DynamicNav />,
     <AboutMe />,
   ]
-  useEffect(() => {
-    if (isMobile) {
-      handleReset();
-    }
-  }, [isMobile]);
 
   return (
     <Wrapper>
@@ -99,7 +92,7 @@ const App = () => {
         ))}
       </BoxGroup6To10Wrapper>
       {/* Dynamic Nav Box */}
-      <BoxGroup11Wrapper $mobile={isMobile}>
+      <BoxGroup11Wrapper >
         <Box key={11} id={11} childComponent={componentMapping[10]} />
       </BoxGroup11Wrapper>
       {/* About Me Page */}

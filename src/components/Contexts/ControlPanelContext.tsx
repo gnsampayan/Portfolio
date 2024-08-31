@@ -28,7 +28,8 @@ export const ControlPanelProvider: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     const savedBoxInView = localStorage.getItem('boxInView');
     if (savedBoxInView !== null) {
-      dispatch(setBoxInViewAction(parseInt(savedBoxInView, 10)));
+      const parsedBoxInView = parseInt(savedBoxInView, 10);
+      dispatch(setBoxInViewAction(parsedBoxInView));
     }
   }, [dispatch]);
 

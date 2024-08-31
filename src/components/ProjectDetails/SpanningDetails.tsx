@@ -37,6 +37,17 @@ const Modal = styled.div<{ $isOpen: boolean }>`
 const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
     background-color: ${({ $isActive }) => ($isActive ? 'white' : 'gray')};
 `;
+const ImagesContainer = styled.div`
+    width: 100%; 
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between;
+    @media only screen and (max-width: 1250px) {
+        flex-direction: column;
+        gap: 60px;
+        margin-bottom: 60px;
+	}
+`
 
 const SpanningDetails = () => {
     const { boxInView } = useControlPanel();
@@ -176,7 +187,7 @@ const SpanningDetails = () => {
                 summaryContent={summaryContent}
             />
             <div className={styles.padded}>
-                <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <ImagesContainer>
                     <Images style={{ display: 'flex', flexDirection: 'column' }}>
                         <ImageDash style={{ outline: '1px solid black' }} onClick={() => handleOpenModal(0)} src={Image1} />
                         <div
@@ -184,8 +195,7 @@ const SpanningDetails = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 paddingTop: "20px",
-                            }}
-                        >
+                            }} >
                             <p className={styles.p}>Dashboard</p>
                             <p className={styles.pBody} style={{ width: "300px" }}>
                                 Spanning Cloud Apps dashboard: Designed for intuitive navigation,
@@ -199,16 +209,14 @@ const SpanningDetails = () => {
                         style={{
                             alignItems: "flex-end",
                             flexDirection: "column",
-                        }}
-                    >
+                        }}>
                         <div
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "flex-start",
                                 alignItems: "flex-start",
-                            }}
-                        >
+                            }}>
                             <ImageEmail style={{ outline: '1px solid black' }} onClick={() => handleOpenModal(1)} src={Image2} />
                             <div
                                 style={{
@@ -218,8 +226,7 @@ const SpanningDetails = () => {
                                     width: "460px",
                                     paddingRight: "20px",
                                     paddingTop: "20px",
-                                }}
-                            >
+                                }}>
                                 <p className={styles.p}>Daily Email Summary</p>
                                 <p className={styles.pBody}>
                                     Daily email backup summary: Delivered in a clean, well-organized
@@ -233,7 +240,7 @@ const SpanningDetails = () => {
                             </div>
                         </div>
                     </Images>
-                </div>
+                </ImagesContainer>
                 <div style={{ width: '100vw', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
                     <div className={styles.videoWrapper}>
                         <video className={styles.video} src={SpanningVideo} controls autoPlay loop muted playsInline />

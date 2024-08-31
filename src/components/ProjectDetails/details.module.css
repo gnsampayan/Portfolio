@@ -55,16 +55,17 @@
 	z-index: 2;
 }
 .videoWrapper {
-    position: relative;
-	height: 300px;
-	cursor: pointer;
-	overflow: hidden;
-	transition: all 0.3s ease;
-	z-index: 3;
+	display: flex;
+	position: relative;
+	height: auto;
+	width: calc(100vw - 280px);
+	max-width: 600px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+	
 }
 .video {
-    height: 100%;
-	width: auto;
+    height: auto;
+	width: 100%;
 	transition: all 0.3s ease;
 	z-index: 2;
 }
@@ -136,6 +137,7 @@
     display: flex;
     width: 100%;
     justify-content: center;
+	padding-right: 20px;
 }
 .a {
 	all: unset;
@@ -189,7 +191,8 @@
 	color: rgb(0, 0, 0);
 }
 .image {
-	width: 600px;
+	width: 100%;
+	max-width: 600px;
 	border: 1px solid black;
 	cursor: pointer;
 }
@@ -232,4 +235,11 @@
 	width: 10px;
 	animation: 3s ease-in-out 0s infinite colorShifter1;
 	
+}
+
+/* Media Queries for Responsive Design */
+@media only screen and (max-width: 1250px) {
+	.padded {
+		padding-left: 260px;
+	}
 }

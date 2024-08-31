@@ -2,8 +2,9 @@ import styled, { keyframes } from "styled-components";
 import useTypingEffect from "../hooks/useTypingEffect";
 import { useNavContext } from "./Contexts/NavContext";
 import { useControlPanel } from "./Contexts/ControlPanelContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDeviceContext } from "../hooks/deviceDetector";
+import { useWindowSize } from "./Contexts/WindowSizeContext";
 
 
 // Keyframes
@@ -46,28 +47,6 @@ const skewAnimation = keyframes`
     }
     100% {
         transform: skew(0deg);
-    }
-    `;
-const Name = styled.button<{ $invertion: boolean }>`
-    all: unset;
-    text-decoration: none;
-    color: ${(props) => props.$invertion ? 'white' : '#3a3a3a'};
-    margin-top: 0;
-    position: relative;
-    font-size: 1.5rem;
-    margin-left: 20px;
-    top: 10px;
-    left: -7px;
-    font-family: halyard-display, sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    white-space: nowrap;
-    padding: 2px 10px 1px 10px;
-    &:hover {
-        opacity: 60%;
-    }
-    &:disabled {
-        pointer-events: none;
     }
     `;
 const NavButton = styled.button<{
@@ -116,34 +95,24 @@ const NavButton = styled.button<{
 `;
 const NavBox = styled.div<{
     $invertion: boolean;
-    $mobile: boolean;
     $toggleVis: boolean;
 }>`
 	position: relative;
 	background-color: none;
-	width: ${(props) => (props.$mobile ? "100vw" : "320px")};
+	width: 320px;
     height: 400px;
-    ${(props) =>
-        (props.$mobile && props.$toggleVis) ? `
-            height: 200px;
-        ` : '60px'
-    };
 	border: 1px solid ${(props) => (props.$invertion ? "white" : "black")};
 	transition: all 1s ease;
 	border-radius: 3px;
 	overflow: hidden;
 	z-index: 999;
         
-	${(props) =>
-        props.$mobile &&
-        `
-        height: 60px;
-        &:hover {
-            height: 200px;
-        }
-    `}
     &:hover {
         background: ${(props) => (props.$invertion ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)')};
+    }
+    @media only screen and (max-width: 1250px) {
+        width: 220px;
+        height: 300px;
     }
 `;
 const Header = styled.div<{ $invertion: boolean }>`
@@ -151,16 +120,42 @@ const Header = styled.div<{ $invertion: boolean }>`
     height: 60px;
     border-bottom: 1px solid ${(props) => props.$invertion ? 'white' : 'black'};
     box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+    @media only screen and (max-width: 1250px) {
+        padding: 0px 10px;
+        height: 40px;
+    }
+`;
+const Name = styled.button<{ $invertion: boolean }>`
+    all: unset;
+    text-decoration: none;
+    color: ${(props) => props.$invertion ? 'white' : '#3a3a3a'};
+    font-size: 1.5rem;
+    font-family: halyard-display, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    white-space: nowrap;
+    &:hover {
+        opacity: 60%;
+    }
+    &:disabled {
+        pointer-events: none;
+    }
+    @media only screen and (max-width: 1250px) {
+        font-size: 1rem;
+    }
 `;
 const OrnamentsContainer = styled.div`
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 20px;
-    height: 20px;
-    width: 60px;
-    right: 20px;
+    justify-content: flex-end;
+    @media only screen and (max-width: 1250px) {
+        scale: 0.6;
+    }
 `;
 const Ornament = styled.div`
     height: 10px;
@@ -185,39 +180,46 @@ const Red = styled(Ornament)`
     animation: 3s ease-in-out 0.2s infinite ${skewAnimation};
 `;
 const Nav = styled.div<{
-    $translate: string;
+    $translate: number;
     $mobile: boolean;
 }>`
     width: 318px;
-    height: ${(props) => props.$mobile ? '110px' : '310px'};
+    height: 310px;
     transition: all 1s ease;
-    transform: ${(props) => props.$translate};
+    transform: ${(props) => `translateX(${props.$translate}px)`};
+    @media only screen and (max-width: 1250px) {
+        height: 230px;
+    }
 `;
 const Main = styled.div<{
     $isJustifiedLeft: boolean;
-    $mobile: boolean;
 }>`
     position: absolute;
-    right: ${(props) => props.$mobile ? 'unset' : '20px'};
-    left: ${(props) => props.$mobile ? '20px' : 'unset'};
+    right: 20px;
     width: auto;
-    top: ${(props) => props.$mobile ? 'unset' : 'calc(50% - 40px)'};
-    bottom: ${(props) => props.$mobile ? '20px' : 'unset'};
+    top: calc(50% - 40px);
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: ${(props) => props.$isJustifiedLeft ? 'flex-start' : 'flex-end'};
+    transition: all 1s ease;
+    
+    @media only screen and (max-width: 1250px) {
+        transform: translateX(-100px);
+    }
 `;
-const Secondary = styled.div<{
-    $mobile: boolean
-}>`
+const Secondary = styled.div`
     position: absolute;
-    left: ${(props) => props.$mobile ? '20px' : '294px'};
-    top: ${(props) => props.$mobile ? '20px' : 'calc(50% - 80px)'};
+    left: 280px;
+    top: calc(50% - 80px);
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
+    transition: all 1s ease;
+    @media only screen and (max-width: 1250px) {
+        transform: translateX(-100px);
+    }
 `;
 const Work = styled.div<{
     $mobile: boolean;
@@ -242,12 +244,26 @@ const Footer = styled.div<{ $invertion: boolean }>`
     border-top: 1px solid ${(props) => props.$invertion ? 'white' : 'black'};
     transition: border-top 1s ease;
 `;
-const Stream = styled.p<{ $invertion: boolean }>`
+const Stream = styled.div<{ $invertion: boolean }>`
     color: ${(props) => props.$invertion ? '#b5b5b5' : '#3a3a3a'};
     padding-left: 10px;
     font-size: small;
     padding-top: 4px;
+    padding-right: 10px;
+    overflow: hidden;
     transition: color 1s ease;
+    position: relative;
+`;
+const StreamText = styled.div`
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: left;
+    direction: rtl;
+`;
+// Wrapper for the actual text to correct punctuation order
+const LtrTextWrapper = styled.span`
+  direction: ltr; /* Corrects punctuation order */
+  display: inline-block; /* Keep text on one line */
 `;
 
 const DynamicNav = () => {
@@ -268,25 +284,27 @@ const DynamicNav = () => {
         setButtonDisabled,
         isButtonDisabled,
         invertNav,
-        setInvertNav,
         isModalOpen,
         setModalOpen,
     } = useNavContext();
     const { handleMove, changeOpacity, toggleClickability, boxInView, setBoxInView, toggleAnimation, handleReset } = useControlPanel();
     const [mobileShowNav, setMobileShowNav] = useState<boolean>(false);
     const currentText = useTypingEffect(100, 6000);
+    const { width } = useWindowSize();
+    const prevWidth = useRef(width);
 
     useEffect(() => {
-        const handleNavColorOnModalView = () => {
-            if (isModalOpen) {
-                setInvertNav(true);
-            } else {
-                setInvertNav(false);
-            }
-
+        if (
+            (prevWidth.current <= 1250 && width > 1250) || // Crossed the 1250 threshold going up
+            (prevWidth.current > 1250 && width <= 1250) || // Crossed the 1250 threshold going down
+            (prevWidth.current <= 768 && width > 768) ||   // Crossed the 768 threshold going up
+            (prevWidth.current > 768 && width <= 768)      // Crossed the 768 threshold going down
+        ) {
+            handleReset();
         }
-        handleNavColorOnModalView();
-    }, [isModalOpen])
+
+        prevWidth.current = width;
+    }, [width]);
 
     const slideLeftAndReset = () => {
         if (boxInView !== -1) {
@@ -343,11 +361,16 @@ const DynamicNav = () => {
             }
         } else {
             setBoxInView(12);
+            console.log('triggeres about me' + boxInView);
             toggleAnimation(12, true);
             onMoveList('origin');
             handleMove(12, '100vw', '0');
             changeOpacity(12, 1);
-            handleMove(11, 'calc(50vw - 180px)', '0');
+            if (width <= 1250) {
+                handleMove(11, 'calc(50vw - 80px)', '0');
+            } else {
+                handleMove(11, 'calc(50vw - 180px)', '0');
+            }
             toggleAnimation(boxInView, true);
             if (boxInView !== 12) {
                 handleMove(boxInView, '0', '0');
@@ -442,7 +465,7 @@ const DynamicNav = () => {
 
     return (
 
-        <NavBox $toggleVis={mobileShowNav} $mobile={isMobile} $invertion={invertNav}>
+        <NavBox $toggleVis={mobileShowNav} $invertion={invertNav}>
             <Header
                 $invertion={invertNav}
                 onTouchStart={handleTouchStart}
@@ -462,7 +485,7 @@ const DynamicNav = () => {
                 </OrnamentsContainer>
             </Header>
             <Nav className="hover-target" $mobile={isMobile} $translate={listTranslation} >
-                <Main $mobile={isMobile} $isJustifiedLeft={highlightedSecondaryNav !== -1}>
+                <Main $isJustifiedLeft={highlightedSecondaryNav !== -1}>
                     {MainBtnData.map(button => (
                         <NavButton
                             key={button.name}
@@ -477,7 +500,7 @@ const DynamicNav = () => {
                         </NavButton>
                     ))}
                 </Main>
-                <Secondary $mobile={isMobile}>
+                <Secondary>
                     <Work $mobile={isMobile}>
                         {SecondaryBtnData.map(button => (
                             <NavButton
@@ -496,7 +519,13 @@ const DynamicNav = () => {
                 </Secondary>
             </Nav>
             <Footer $invertion={invertNav}>
-                <Stream $invertion={invertNav}>{currentText}</Stream>
+                <Stream $invertion={invertNav}>
+                    <StreamText>
+                        <LtrTextWrapper>
+                            {currentText}
+                        </LtrTextWrapper>
+                    </StreamText>
+                </Stream>
             </Footer>
         </NavBox>
     );

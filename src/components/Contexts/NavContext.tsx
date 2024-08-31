@@ -8,7 +8,7 @@ interface NavContextProps {
   setActiveSecondaryBtn: React.Dispatch<React.SetStateAction<string>>;
   isAnyButtonClicked: boolean;
   setIsAnyButtonClicked: React.Dispatch<React.SetStateAction<boolean>>;
-  listTranslation: string;
+  listTranslation: number;
   onMoveList: (direction: string) => void;
   MainBtnData: ButtonData[];
   SecondaryBtnData: ButtonData[];
@@ -46,19 +46,19 @@ export const NavProvider = ({ children }: { children: ReactNode }) => {
   const [isAnyButtonClicked, setIsAnyButtonClicked] = useState<boolean>(false);
   const [activeMainButton, setActiveMainButton] = useState<string>('');
   const [activeSecondaryBtn, setActiveSecondaryBtn] = useState<string>('');
-  const [listTranslation, setListTranslation] = useState<string>('translateX(0)');
+  const [listTranslation, setListTranslation] = useState<number>(0);
   const [highlightedSecondaryNav, setHighlightedSecondaryNav] = useState<number>(-1);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
   const [invertNav, setInvertNav] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const onMoveList = (direction: string) => {
-    const directionTranslations: { [key: string]: string } = {
-      left: 'translateX(-196px)', // to edge
-      right: 'translateX(210px)',
-      origin: 'translateX(0)',
+    const directionTranslations: { [key: string]: number } = {
+      left: -190, // to edge
+      right: 210,
+      origin: 0,
     };
-    setListTranslation(directionTranslations[direction] || 'translateX(0)');
+    setListTranslation(directionTranslations[direction] || 0);
   }
   useEffect(() => {
     if (highlightedSecondaryNav !== -1) {

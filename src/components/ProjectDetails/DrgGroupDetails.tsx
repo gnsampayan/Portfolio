@@ -35,24 +35,6 @@ const PBody = styled.p`
 	line-height: 1.5rem;
 	color: rgb(0, 0, 0);
 `;
-
-const VideoWrapper = styled.div`
-	position: relative;
-	height: 300px;
-	width: 534px;
-	overflow: hidden;
-	transition: all 0.3s ease;
-	z-index: 3;
-`;
-const Video = styled.video`
-	height: 100%;
-	width: auto;
-	transition: all 0.3s ease;
-	border: 1px solid black;
-	z-index: 2;
-	cursor: pointer;
-`;
-
 const Modal = styled.div<{ $isOpen: boolean }>`
 	display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
 	position: fixed;
@@ -139,7 +121,22 @@ const Examples = styled.div`
 	flex-direction: row;
 	justify-content: space-between;
 	padding-right: 20px;
+	@media only screen and (max-width: 1250px) {
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 60px;
+		margin-bottom: 60px;
+	}
 `;
+const ImgOverlapContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: auto;
+	@media only screen and (max-width: 1250px) {
+		align-items: flex-end;
+		width: 100%;
+	}
+`
 
 const ImageOverlap = styled.div`
 	position: relative;
@@ -321,7 +318,7 @@ const DrgGroupDetails = () => {
 							embody the essence of DesignRun Group.
 						</PBody>
 					</div>
-					<div>
+					<ImgOverlapContainer>
 						<ImageOverlap onClick={() => handleOpenModal(0)}>
 							<Image1 src={Screenshot1} />
 							<Image2 src={Screenshot2} />
@@ -334,10 +331,10 @@ const DrgGroupDetails = () => {
 							seamlessly integrates multiple perspectives into a cohesive user
 							experience.
 						</PBody>
-					</div>
+					</ImgOverlapContainer>
 				</Examples>
-				<VideoWrapper>
-					<Video
+				<div className={styles.videoWrapper}>
+					<video className={styles.video}
 						src={DRGGroupVid}
 						controls
 						autoPlay
@@ -345,7 +342,7 @@ const DrgGroupDetails = () => {
 						muted
 						playsInline
 					/>
-				</VideoWrapper>
+				</div>
 				<P style={{ paddingTop: "20px" }}>
 					Experience the bold, innovative design of the DesignRun Group site in
 					action.

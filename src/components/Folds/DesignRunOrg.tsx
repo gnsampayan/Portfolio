@@ -23,17 +23,17 @@ const DesignRunOrg = () => {
 
     return (
         <div className={styles.fold}>
-            <div className={styles.container}>
-                <div className={styles.frame}>
-                    <div className={styles.videoWrapper}>
+            <div className={styles.frame}>
+                <div className={styles.videoWrapper}>
+                    <div className={styles.videoContainer}>
                         <video className={styles.video} src={DrgOrg} controls loop playsInline muted />
                     </div>
-                    <div className={styles.project}>
-                        <div className={styles.title}>Designrun<br />.org</div>
-                        <div className={styles.subtitle}>WEBSITE</div>
-                        <div className={styles.date}>2024</div>
-                        <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
-                    </div>
+                </div>
+                <div className={styles.project}>
+                    <div className={styles.title}>Designrun<br />.org</div>
+                    <div className={styles.subtitle}>WEBSITE</div>
+                    <div className={styles.date}>2024</div>
+                    <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
                 </div>
             </div>
         </div>

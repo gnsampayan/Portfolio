@@ -23,17 +23,17 @@ const NQHardware = () => {
 
     return (
         <div className={styles.fold}>
-            <div className={styles.container}>
-                <div className={styles.frame}>
-                    <div className={styles.videoWrapper}>
+            <div className={styles.frame}>
+                <div className={styles.videoWrapper}>
+                    <div className={styles.videoContainer}>
                         <video className={styles.video} src={NQVid} controls loop playsInline muted />
                     </div>
-                    <div className={styles.project}>
-                        <div className={styles.title}>NQ Hardware</div>
-                        <div className={styles.subtitle}>WEB APP, E-COMMERCE</div>
-                        <div className={styles.date}>2024</div>
-                        <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
-                    </div>
+                </div>
+                <div className={styles.project}>
+                    <div className={styles.title}>NQ Hardware</div>
+                    <div className={styles.subtitle}>WEB APP, E-COMMERCE</div>
+                    <div className={styles.date}>2024</div>
+                    <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
                 </div>
             </div>
         </div>

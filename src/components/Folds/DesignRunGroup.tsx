@@ -23,17 +23,17 @@ const DesignRunGroup = () => {
 
     return (
         <div className={styles.fold}>
-            <div className={styles.container}>
-                <div className={styles.frame}>
-                    <div className={styles.videoWrapper}>
+            <div className={styles.frame}>
+                <div className={styles.videoWrapper}>
+                    <div className={styles.videoContainer}>
                         <video className={styles.video} src={DrgGroup} controls loop playsInline muted />
                     </div>
-                    <div className={styles.project}>
-                        <div className={styles.title}>DesignRun<br />Group</div>
-                        <div className={styles.subtitle}>WEBSITE</div>
-                        <div className={styles.date}>2023</div>
-                        <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
-                    </div>
+                </div>
+                <div className={styles.project}>
+                    <div className={styles.title}>DesignRun<br />Group</div>
+                    <div className={styles.subtitle}>WEBSITE</div>
+                    <div className={styles.date}>2023</div>
+                    <a className={styles.customLink} onClick={handleViewDetailsClick}>Project Details</a>
                 </div>
             </div>
         </div>

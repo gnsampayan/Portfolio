@@ -14,6 +14,26 @@ const useTypingEffect = (
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  const fallbackLocations = [
+    { name: "New York", latitude: 40.7128, longitude: -74.006 },
+    { name: "Chicago", latitude: 41.8781, longitude: -87.6298 },
+    { name: "Los Angeles", latitude: 34.0522, longitude: -118.2437 },
+    { name: "Austin", latitude: 30.2672, longitude: -97.7431 },
+    { name: "Miami", latitude: 25.7617, longitude: -80.1918 },
+  ];
+
+  const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
+
+  useEffect(() => {
+    const cycleLocations = () => {
+      setCurrentLocationIndex((prevIndex) => (prevIndex + 1) % fallbackLocations.length);
+    };
+
+    const intervalId = setInterval(cycleLocations, 10 * 60 * 1000); // Cycle every 10 minutes
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   useEffect(() => {
     if (!customTexts) {
       const updateTextsWithWeather = async (latitude: number, longitude: number) => {
@@ -23,28 +43,27 @@ const useTypingEffect = (
           const tempFahrenheit = Math.round((tempCelsius * 9) / 5 + 32); // Convert Celsius to Fahrenheit
           let greeting = "";
 
-            const currentHour = new Date().getHours();
-        
-            if (currentHour >= 5 && currentHour < 12) {
-              greeting = "Have a wonderful day!";
-            } else if (currentHour >= 12 && currentHour < 17) {
-              greeting = "Good afternoon!";
-            } else if (currentHour >= 17 && currentHour < 21) {
-              greeting = "Good evening!";
-            } else if (currentHour >= 2 && currentHour < 4) {
-              greeting =  "Is it insomnia, inspiration, or just a caffeine-fueled adventure? Whatever it is, I'm here for it!" // Use line during 2 AM to 4 AM
-            } else {
-              greeting = "Good night!";
-            }
-    
+          const currentHour = new Date().getHours();
+
+          if (currentHour >= 5 && currentHour < 12) {
+            greeting = "Have a wonderful day!";
+          } else if (currentHour >= 12 && currentHour < 17) {
+            greeting = "Good afternoon!";
+          } else if (currentHour >= 17 && currentHour < 21) {
+            greeting = "Good evening!";
+          } else if (currentHour >= 2 && currentHour < 4) {
+            greeting = "Is it insomnia, inspiration, or just a caffeine-fueled adventure? Whatever it is, I'm here for it!"; // Use line during 2 AM to 4 AM
+          } else {
+            greeting = "Good night!";
+          }
 
           setTexts([
-            `Your location: ${weatherData.name}`,
-            `Temperature: ${tempFahrenheit}°F`, //   ${tempCelsius}°C
+            `Location: ${weatherData.name}`,
+            `Temperature: ${tempFahrenheit}°F`, // ${tempCelsius}°C
             `Weather: ${weatherData.weather[0].description}`,
             `Wind speed: ${weatherData.wind.speed} m/s`,
             `Date: ${weatherData.date}`,
-            `Time: ${weatherData.time12Hour}`,  // ${weatherData.time24Hour}
+            `Time: ${weatherData.time12Hour}`, // ${weatherData.time24Hour}
             greeting,
           ]);
         } else {
@@ -52,18 +71,23 @@ const useTypingEffect = (
         }
       };
 
+      const handleLocationError = () => {
+        console.error("Failed to get user location. Using fallback location.");
+        const { latitude, longitude } = fallbackLocations[currentLocationIndex];
+        updateTextsWithWeather(latitude, longitude);
+      };
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          updateTextsWithWeather(latitude, longitude);
+          updateTextsWithWeather(latitude, longitude);  // Uses the location name from weatherData
         },
-        (error) => {
-          console.error("Failed to get user location:", error);
-          setTexts(["Failed to get user location."]);
+        () => {
+          handleLocationError();
         }
       );
     }
-  }, [customTexts]);
+  }, [customTexts, currentLocationIndex]); // Re-run when currentLocationIndex changes
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;

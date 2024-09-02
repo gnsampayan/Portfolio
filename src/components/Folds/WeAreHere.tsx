@@ -10,8 +10,8 @@ const WeAreHere = () => {
     const handleViewDetailsClick = () => {
         setButtonDisabled(true);
         setBoxInView(8);
-        handleMove(8, '0', '-100vh');
-        handleMove(3, '-100vw', '-100vh');
+        handleMove(8, '0', '-100dvh');
+        handleMove(3, '-100vw', '-100dvh');
         changeOpacity(8, 1);
         toggleAnimation(8, true);
         setTimeout(() => {

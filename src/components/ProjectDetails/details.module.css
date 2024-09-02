@@ -1,7 +1,7 @@
 .frame {
     width: 100vw;
-	height: 100vh;
-	padding: calc(50vh - 200px) 0px 60px 0px;
+	height: 100dvh;
+	padding: calc(50dvh - 200px) 0px 60px 0px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -25,7 +25,7 @@
 	top: 0;
 	left: 0;
 	width: 100vw;
-	height: 100vh;
+	height: 100dvh;
 	padding-left: 360px;
 	background-color: rgba(0, 0, 0, 0.9);
 	justify-content: center;
@@ -52,7 +52,7 @@
 .modalImage {
     width: 100%;
 	height: 100%;
-	max-height: calc(100vh - 40px);
+	max-height: calc(100dvh - 40px);
 	max-width: 1000px;
 	z-index: 2;
 }
@@ -63,7 +63,6 @@
 	width: calc(100vw - 280px);
 	max-width: 600px;
 	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-	
 }
 .video {
     height: auto;
@@ -188,6 +187,7 @@
 	font-size: 0.9rem;
 	font-weight: 200;
 	font-style: normal;
+	width: calc(100vw - 40px);
 	max-width: 600px;
 	line-height: 1.5rem;
 	color: rgb(0, 0, 0);
@@ -246,5 +246,28 @@
 	}
 	.modal {
 		padding-left: 260px;
+	}
+	.end {
+		transform: translateX(-50px);
+	}
+}
+@media only screen and (max-width: 768px) {
+	.frame {
+		padding: 60px 0px 60px 0px;
+	}
+	.padded {
+		padding-left: 20px;
+	}
+	.modal {
+		padding-left: 20px;
+	}
+	.heading {
+		flex-direction: column;
+	}
+	.end {
+		transform: translateX(-8px);
+	}
+	.videoWrapper {
+		width: calc(100vw - 40px);
 	}
 }

@@ -21,6 +21,12 @@ const Modal = styled.div<{ $isOpen: boolean }>`
 const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
 	background-color: ${({ $isActive }) => ($isActive ? "white" : "gray")};
 `;
+const ImgVariant = styled.img`
+    width: calc(100vw - 70%);
+    @media only screen and (max-width: 768px) {
+        width: calc(100vw - 40px);
+    }
+`
 
 const NQHardwareDetails = () => {
     const { boxInView } = useControlPanel();
@@ -56,21 +62,23 @@ const NQHardwareDetails = () => {
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            &nbsp;&nbsp;&nbsp;NQ Hardware and General Enterprise is an
+            NQ Hardware and General Enterprise is an
             ongoing project aimed at enhancing the store's operations and
             customer engagement through a full-stack web application. This
             app serves as a vital tool for managing stock prices, sales, and
             inventory, ensuring that the store maintains an efficient and
             competitive edge.
             <br />
-            &nbsp;&nbsp;&nbsp;Beyond traditional retail functions, the
+            <br />
+            Beyond traditional retail functions, the
             application offers a dedicated portal tailored for customers in
             the general enterprise sector. This portal enables users to
             monitor shipments for construction materials, coordinate with
             contractors, rent tools, and arrange for installation
             services—all within a streamlined interface.
             <br />
-            &nbsp;&nbsp;&nbsp;A key feature of the app is its user tier
+            <br />
+            A key feature of the app is its user tier
             system, which assigns different access levels for store
             employees and administrators, safeguarding the integrity of the
             store's operations. The front-end is developed using React
@@ -78,7 +86,8 @@ const NQHardwareDetails = () => {
             while the backend, built with Express.js and MySQL, ensures
             robust data management.
             <br />
-            &nbsp;&nbsp;&nbsp;This project demonstrates my ability to
+            <br />
+            This project demonstrates my ability to
             develop practical, scalable solutions that meet the complex
             needs of businesses, supporting their growth in an increasingly
             digital marketplace.
@@ -181,8 +190,7 @@ const NQHardwareDetails = () => {
                 style={{ justifyContent: "flex-start", gap: "20px", marginTop: "60px" }}>
                 <div>
                     <div className={styles.padded}>
-                        <img className={styles.image}
-                            style={{ width: "calc(100vw - 70%)" }}
+                        <ImgVariant className={styles.image}
                             src={Screenshot1}
                             onClick={() => handleOpenModal(0)}
                         />
@@ -202,22 +210,18 @@ const NQHardwareDetails = () => {
                     display: "flex",
                     justifyContent: "flex-end",
                     paddingRight: "20px",
-                }}
-            >
+                }}>
                 <div className={styles.images}
                     style={{
-                        width: "auto",
                         flexDirection: "column",
                         justifyContent: "flex-start",
-                    }}
-                >
+                    }}>
                     <img className={styles.image}
-                        style={{ width: "400px" }}
+                        style={{ width: 'calc(100vw - 40px)', maxWidth: "400px" }}
                         src={Screenshot2}
-                        onClick={() => handleOpenModal(1)}
-                    />
+                        onClick={() => handleOpenModal(1)} />
                     <p className={styles.p} style={{ paddingTop: "20px" }}>Shop: Scrolled down.</p>
-                    <p className={styles.pBody} style={{ width: "400px" }}>
+                    <p className={styles.pBody} style={{ width: 'calc(100vw - 40px)', maxWidth: "400px" }}>
                         Designed the shop page to prioritize seamless navigation with
                         versatile filtering options, including a dropdown and a left column
                         filter. These features allow users to refine their shopping

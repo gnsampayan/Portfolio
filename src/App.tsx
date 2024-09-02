@@ -17,14 +17,13 @@ import DynamicNav from './components/dynamic-nav';
 //AboutMe
 import AboutMe from './components/AboutMe';
 import OtherWorks from './components/OtherWorks';
-
 const Wrapper = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 `;
-const BoxGroup1To5Wrapper = styled.div`
+const ProjectFoldsWrapper = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -32,25 +31,30 @@ const BoxGroup1To5Wrapper = styled.div`
   left: 100vw;
   z-index: 99;
 `;
-const BoxGroup6To10Wrapper = styled.div`
+const ProjectDetailsWrapper = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 100vh;
+  top: 100dvh;
   left: 0;
 `;
-const BoxGroup11Wrapper = styled.div`
+const DynamicNavWrapper = styled.div`
   position: absolute;
   width: auto;
   height: auto;
-  top: calc(50vh - 200px);
+  top: calc(50dvh - 200px);
   left: calc(50vw - 160px);
   z-index: 999;
   @media only screen and (max-width: 1250px) {
-    top: calc(50vh - 150px);
+    top: calc(50dvh - 150px);
+    left: calc(50vw - 110px);
+	}
+  @media only screen and (max-width: 768px) {
+    position: sticky;
+    top: 0;
 	}
 `;
-const BoxGroup12Wrapper = styled.div`
+const AboutMeWrapper = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -80,25 +84,25 @@ const App = () => {
   return (
     <Wrapper>
       {/* Project Folds */}
-      <BoxGroup1To5Wrapper>
+      <ProjectFoldsWrapper>
         {[1, 2, 3, 4, 5].map((id) => (
           <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
         ))}
-      </BoxGroup1To5Wrapper>
+      </ProjectFoldsWrapper>
       {/* Project Details Pages */}
-      <BoxGroup6To10Wrapper>
+      <ProjectDetailsWrapper>
         {[6, 7, 8, 9, 10].map((id) => (
           <Box key={id} id={id} childComponent={componentMapping[id - 1]} />
         ))}
-      </BoxGroup6To10Wrapper>
+      </ProjectDetailsWrapper>
       {/* Dynamic Nav Box */}
-      <BoxGroup11Wrapper >
+      <DynamicNavWrapper>
         <Box key={11} id={11} childComponent={componentMapping[10]} />
-      </BoxGroup11Wrapper>
+      </DynamicNavWrapper>
       {/* About Me Page */}
-      <BoxGroup12Wrapper>
+      <AboutMeWrapper>
         <Box key={12} id={12} childComponent={componentMapping[11]} />
-      </BoxGroup12Wrapper>
+      </AboutMeWrapper>
       <OtherWorks />
     </Wrapper>
   );

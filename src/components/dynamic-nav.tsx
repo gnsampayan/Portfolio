@@ -3,7 +3,6 @@ import useTypingEffect from "../hooks/useTypingEffect";
 import { useNavContext } from "./Contexts/NavContext";
 import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useEffect, useRef, useState } from "react";
-import { useDeviceContext } from "../hooks/deviceDetector";
 import { useWindowSize } from "./Contexts/WindowSizeContext";
 
 
@@ -53,7 +52,6 @@ const NavButton = styled.button<{
     $isActive: boolean;
     $isAnyButtonClicked: boolean;
     $invertion: boolean;
-    $hiddenForMobile: boolean;
 }>`
     all: unset;
     clear: both;
@@ -86,8 +84,6 @@ const NavButton = styled.button<{
     background-color: none;
     text-decoration: none;
     transition: color 1s ease;
-    display: ${(props) => (props.$hiddenForMobile ? "none" : "block")};
-    pointer-events: ${(props) => (props.$hiddenForMobile ? "none" : "auto")};
     white-space: nowrap;
     padding: 2px 10px 4px 10px;
     border-radius: 3px;
@@ -95,7 +91,6 @@ const NavButton = styled.button<{
 `;
 const NavBox = styled.div<{
     $invertion: boolean;
-    $toggleVis: boolean;
 }>`
 	position: relative;
 	background-color: none;
@@ -113,6 +108,17 @@ const NavBox = styled.div<{
     @media only screen and (max-width: 1250px) {
         width: 220px;
         height: 300px;
+    }
+    @media only screen and (max-width: 768px) {
+        height: 100%;
+        position: sticky;
+        top: 0;
+        &:hover .hover-target {
+            height: 230px;
+        }
+        &:hover .footer-target {
+            border-top: 1px solid ${(props) => props.$invertion ? 'white' : 'black'};
+        }
     }
 `;
 const Header = styled.div<{ $invertion: boolean }>`
@@ -181,7 +187,6 @@ const Red = styled(Ornament)`
 `;
 const Nav = styled.div<{
     $translate: number;
-    $mobile: boolean;
 }>`
     width: 318px;
     height: 310px;
@@ -191,6 +196,15 @@ const Nav = styled.div<{
         height: 230px;
     }
 `;
+const MiddleWrapper = styled.div<{ $toggle: boolean }>`
+    width: auto;
+    height: auto;
+    transition: all 1s ease;
+    @media only screen and (max-width: 768px) {
+        height: ${(props) => props.$toggle ? '230px' : '0px'};
+        overflow: hidden;
+    }
+`
 const Main = styled.div<{
     $isJustifiedLeft: boolean;
 }>`
@@ -221,18 +235,15 @@ const Secondary = styled.div`
         transform: translateX(-100px);
     }
 `;
-const Work = styled.div<{
-    $mobile: boolean;
-}>`
+const Work = styled.div`
     position: absolute;
     width: auto;
     height: auto;
-    left: ${(props) => props.$mobile ? '0px' : '90px'};
+    left: 90px;
     display: flex;
-    flex-direction: ${(props) => props.$mobile ? 'row' : 'column'};
+    flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
-    gap: ${(props) => props.$mobile ? '7px' : 'none'};
 `;
 const Footer = styled.div<{ $invertion: boolean }>`
     width: 100%;
@@ -243,6 +254,9 @@ const Footer = styled.div<{ $invertion: boolean }>`
     -webkit-box-sizing: border-box;
     border-top: 1px solid ${(props) => props.$invertion ? 'white' : 'black'};
     transition: border-top 1s ease;
+    @media only screen and (max-width: 768px) {
+        border-top: none;
+    }
 `;
 const Stream = styled.div<{ $invertion: boolean }>`
     color: ${(props) => props.$invertion ? '#b5b5b5' : '#3a3a3a'};
@@ -267,7 +281,6 @@ const LtrTextWrapper = styled.span`
 `;
 
 const DynamicNav = () => {
-    const { isMobile } = useDeviceContext();
     const {
         activeMainButton,
         setActiveMainButton,
@@ -289,10 +302,38 @@ const DynamicNav = () => {
         setModalOpen,
     } = useNavContext();
     const { handleMove, changeOpacity, toggleClickability, boxInView, setBoxInView, toggleAnimation, handleReset } = useControlPanel();
-    const [mobileShowNav, setMobileShowNav] = useState<boolean>(false);
     const currentText = useTypingEffect(100, 6000);
     const { width } = useWindowSize();
     const prevWidth = useRef(width);
+    const [isTouched, setIsTouched] = useState(false);
+    const touchRef = useRef<HTMLDivElement | null>(null);
+
+    // Handle touch start
+    const handleTouchStart = () => {
+        setIsTouched(true);
+    };
+
+    // Handle touch end
+    const handleTouchEnd = () => {
+        setIsTouched(false);
+    };
+
+    // Add event listeners on mount and cleanup on unmount
+    useEffect(() => {
+        const element = touchRef.current;
+
+        if (element) {
+            element.addEventListener('touchstart', handleTouchStart);
+            element.addEventListener('touchend', handleTouchEnd);
+        }
+
+        return () => {
+            if (element) {
+                element.removeEventListener('touchstart', handleTouchStart);
+                element.removeEventListener('touchend', handleTouchEnd);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (
@@ -352,16 +393,19 @@ const DynamicNav = () => {
 
         if (buttonName === MainBtnData[0].name) {
             onMoveList('left');
+            if (width <= 1250) {
+                handleMove(11, 'calc(-50vw + 130px)', '0');
+            } else {
+                handleMove(11, 'calc(-50vw + 180px)', '0');
+            }
             if (boxInView === -1) {
                 slideInBox(1);
                 setBoxInView(1);
-                handleMove(11, 'calc(-50vw + 180px)', '0');
                 setHighlightedSecondaryNav(0);
                 toggleAnimation(1, true);
             } else if (boxInView === 12) {
                 slideInBox(1);
                 setBoxInView(1);
-                handleMove(11, 'calc(-50vw + 180px)', '0');
                 setHighlightedSecondaryNav(0);
                 toggleAnimation(1, true);
                 handleMove(12, '0', '0');
@@ -377,7 +421,7 @@ const DynamicNav = () => {
             handleMove(12, '100vw', '0');
             changeOpacity(12, 1);
             if (width <= 1250) {
-                handleMove(11, 'calc(50vw - 80px)', '0');
+                handleMove(11, 'calc(50vw - 130px)', '0');
             } else {
                 handleMove(11, 'calc(50vw - 180px)', '0');
             }
@@ -403,7 +447,11 @@ const DynamicNav = () => {
         const buttonIndex = SecondaryBtnData.findIndex(button => button.name === buttonName);
         const foldId = buttonIndex + 1; // Add 2 to align with your box ID logic
         toggleAnimation(11, true);
-        handleMove(11, 'calc(-50vw + 180px)', '0');
+        if (width <= 1250) {
+            handleMove(11, 'calc(-50vw + 130px)', '0');
+        } else {
+            handleMove(11, 'calc(-50vw + 180px)', '0');
+        }
         setIsAnyButtonClicked(true);
         setActiveSecondaryBtn(buttonName);
         setActiveMainButton(MainBtnData[0].name);
@@ -465,21 +513,11 @@ const DynamicNav = () => {
         }, 1000);
     };
 
-    const handleTouchStart = () => {
-        setMobileShowNav(true);
-    };
-
-    const handleTouchEnd = () => {
-        setMobileShowNav(false);
-    };
-
     return (
 
-        <NavBox $toggleVis={mobileShowNav} $invertion={invertNav}>
-            <Header
+        <NavBox $invertion={invertNav} ref={touchRef}>
+            <Header className="header-target"
                 $invertion={invertNav}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
             >
                 <Name
                     $invertion={invertNav}
@@ -494,41 +532,41 @@ const DynamicNav = () => {
                     <Red />
                 </OrnamentsContainer>
             </Header>
-            <Nav className="hover-target" $mobile={isMobile} $translate={listTranslation} >
-                <Main $isJustifiedLeft={highlightedSecondaryNav !== -1}>
-                    {MainBtnData.map(button => (
-                        <NavButton
-                            key={button.name}
-                            $invertion={invertNav}
-                            $isActive={activeMainButton === button.name}
-                            $isAnyButtonClicked={isAnyButtonClicked}
-                            onClick={() => { handleMainButtonClick(button.name) }}
-                            disabled={isButtonDisabled}
-                            $hiddenForMobile={isMobile && (button.name === MainBtnData[0].name)}
-                        >
-                            {button.name}
-                        </NavButton>
-                    ))}
-                </Main>
-                <Secondary>
-                    <Work $mobile={isMobile}>
-                        {SecondaryBtnData.map(button => (
+            <MiddleWrapper $toggle={isTouched} className="hover-target">
+                <Nav $translate={listTranslation}>
+                    <Main $isJustifiedLeft={highlightedSecondaryNav !== -1}>
+                        {MainBtnData.map(button => (
                             <NavButton
                                 key={button.name}
                                 $invertion={invertNav}
-                                $isActive={activeSecondaryBtn === button.name}
+                                $isActive={activeMainButton === button.name}
                                 $isAnyButtonClicked={isAnyButtonClicked}
-                                onClick={() => { handleSecondaryButtonClick(button.name) }}
+                                onClick={() => { handleMainButtonClick(button.name) }}
                                 disabled={isButtonDisabled}
-                                $hiddenForMobile={false}
                             >
                                 {button.name}
                             </NavButton>
                         ))}
-                    </Work>
-                </Secondary>
-            </Nav>
-            <Footer $invertion={invertNav}>
+                    </Main>
+                    <Secondary>
+                        <Work>
+                            {SecondaryBtnData.map(button => (
+                                <NavButton
+                                    key={button.name}
+                                    $invertion={invertNav}
+                                    $isActive={activeSecondaryBtn === button.name}
+                                    $isAnyButtonClicked={isAnyButtonClicked}
+                                    onClick={() => { handleSecondaryButtonClick(button.name) }}
+                                    disabled={isButtonDisabled}
+                                >
+                                    {button.name}
+                                </NavButton>
+                            ))}
+                        </Work>
+                    </Secondary>
+                </Nav>
+            </MiddleWrapper>
+            <Footer className="footer-target" $invertion={invertNav}>
                 <Stream $invertion={invertNav}>
                     <StreamText>
                         <LtrTextWrapper>

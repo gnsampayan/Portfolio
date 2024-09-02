@@ -10,8 +10,8 @@ const DesignRunGroup = () => {
     const handleViewDetailsClick = () => {
         setButtonDisabled(true);
         setBoxInView(7);
-        handleMove(7, '0', '-100vh');
-        handleMove(2, '-100vw', '-100vh');
+        handleMove(7, '0', '-100dvh');
+        handleMove(2, '-100vw', '-100dvh');
         changeOpacity(7, 1);
         toggleAnimation(7, true);
         setTimeout(() => {

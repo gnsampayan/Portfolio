@@ -18,7 +18,7 @@ const BoxFrame = styled.div<{ x: string; y: string; opacity: number; $clickable:
   pointer-events: ${({ $clickable }) => ($clickable ? 'auto' : 'none')}; // Disable or enable interaction
   overflow: hidden;
 `;
-const Fold = styled.div`
+const Children = styled.div`
   position: relative;
 `
 
@@ -61,7 +61,7 @@ const Box: React.FC<BoxProps> = ({ id, childComponent }) => {
       $clickable={box.clickable}
       $animate={box.animate}
     >
-      <Fold>{childComponent}</Fold>
+      <Children>{childComponent}</Children>
     </BoxFrame>
   );
 };

@@ -32,19 +32,21 @@ const WeAreHereDetails = () => {
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            &nbsp;&nbsp;&nbsp;"Here" is a healthcare startup that provides
+            "Here" is a healthcare startup that provides
             resources and support to individuals affected by cancer. The
             project involved the development of a professional website that
             offered a minimalist design, smooth user experience, and secure
             payment transactions.
             <br />
-            &nbsp;&nbsp;&nbsp;The website was built using Webflow for HTML,
+            <br />
+            The website was built using Webflow for HTML,
             CSS, and JavaScript, a content management system (CMS) for ease of
             maintenance, and domain hosting for reliable access. The backend
             was automated using Zapier and payment transactions were handled
             using the Stripe API.
             <br />
-            &nbsp;&nbsp;&nbsp;The end result was a successful website that met
+            <br />
+            The end result was a successful website that met
             the client's needs and aimed to have a positive impact on those
             affected by cancer.
         </p>
@@ -64,7 +66,7 @@ const WeAreHereDetails = () => {
     }, [boxInView]);
 
     return (
-        <div className={styles.frame} ref={myDivRef}>
+        <div style={{ marginTop: '40px' }} className={styles.frame} ref={myDivRef}>
             <Template
                 scopeContents={scopeContents}
                 projectLink={projectLink}
@@ -74,11 +76,11 @@ const WeAreHereDetails = () => {
                 nonDisclosure={nonDisclosure}
                 summaryContent={summaryContent}
             />
-            <div className={styles.padded}>
+            <div style={{ marginTop: '60px' }} className={styles.padded}>
                 <div className={styles.videoWrapper}>
                     <video className={styles.video} src={WeAreHereVideo} controls autoPlay loop muted playsInline />
                 </div>
-                <p className={styles.p} style={{ paddingTop: "20px", width: '540px' }}>
+                <p className={styles.p} style={{ paddingTop: "20px", maxWidth: '540px' }}>
                     A clean, streamlined website with Stripe payment integration,
                     HubSpot management, and a prototyped member portal for core
                     features.

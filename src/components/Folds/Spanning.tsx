@@ -16,8 +16,8 @@ const Spanning = () => {
   const handleViewDetailsClick = () => {
     setButtonDisabled(true);
     setBoxInView(10);
-    handleMove(10, "0", "-100vh");
-    handleMove(5, "-100vw", "-100vh");
+    handleMove(10, "0", "-100dvh");
+    handleMove(5, "-100vw", "-100dvh");
     changeOpacity(10, 1);
     toggleAnimation(10, true);
     setTimeout(() => {

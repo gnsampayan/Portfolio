@@ -1,6 +1,6 @@
 /* Default Styles */
 .fold {
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     display: flex;
     align-items: center;
@@ -101,13 +101,6 @@ a.custom-link:hover {
     outline: 1px solid black;
 }
 
-.shape {
-    top: 0;
-    left: 0;
-    width: 100vh;
-    height: 100vh;
-}
-
 /* Media Queries for Responsive Design */
 @media only screen and (max-width: 1250px) {
     .fold {
@@ -152,7 +145,7 @@ a.custom-link:hover {
         width: calc(100vw - 40px);
     }
     .shape {
-        top: calc(50vh - 400px);
+        top: calc(50dvh - 400px);
         left: calc(50vw - 200px);
     }
 }

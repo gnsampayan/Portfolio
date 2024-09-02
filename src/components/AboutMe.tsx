@@ -6,21 +6,37 @@ import { useControlPanel } from "./Contexts/ControlPanelContext";
 
 const Frame = styled.div`
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 40px;
+    padding-left: 20px;
     padding-right: 360px;
     @media only screen and (max-width: 1250px) {
       padding-right: 260px;
 	  }
+    @media only screen and (max-width: 768px) {
+      padding: 100px 20px 60px 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: auto;
+	  }
+    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for other browsers */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 `;
 
 const Introduction = styled.div<{ width: number }>`
-  width: ${(props) => (props.width >= 1150) ? '600px' : '400px'};
+  width: calc(100vw - 40px);
+  max-width: ${(props) => (props.width >= 1150) ? '600px' : '400px'};
   position: relative;
 `;
 
@@ -31,6 +47,9 @@ const Links = styled.div`
   justify-content: center;
   padding: 0;
   margin: 0;
+  @media only screen and (max-width: 768px) {
+      align-items: flex-start;
+	  }
 `;
 
 const Link = styled.a`
@@ -102,19 +121,20 @@ const AboutMe: React.FC = () => {
         Hi! 😊 <br />
         I'm Glenn. <br />
         <br />
-        &nbsp;&nbsp;I'm an experienced Engineer and Designer based in Austin.
-        I have a unique blend of skills that includes product strategy,
-        problem-solving, research and development, prototyping, and usability
-        testing. I also have a strong background in interface design, fine
-        arts, communication design, and programming.
+        I'm a designer and engineer based in Austin Texas.
+        I have a unique blend of skills that includes visual communication,
+        mechatronics engineering, UX & UI design, and full stack web developer.
+        I also have a strong background in fine arts.
         <br />
-        &nbsp;&nbsp;When I'm not working, I enjoy spending time outdoors
-        and pursuing my passions. Whether it's camping with my dog Alfie,
-        building and flying racing drones, riding motorcycles, making art,
+        <br />
+        When I'm not working, I enjoy spending time outdoors
+        and pursuing my passions. Whether it's camping withmy friends and my dog Alfie,
+        building and flying drones, riding motorcycles, making art,
         or working on exciting projects, I always find a way to stay
         engaged and challenged.
         <br />
-        &nbsp;&nbsp;I'm always looking for opportunities to connect and
+        <br />
+        I'm always looking for opportunities to connect and
         collaborate, so feel free to get in touch if you'd like to chat.
         Let's see what we can create together!
       </Introduction>

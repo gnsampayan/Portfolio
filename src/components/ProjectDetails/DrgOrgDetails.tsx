@@ -39,7 +39,7 @@ const Modal = styled.div<{ $isOpen: boolean }>`
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     padding-left: 360px;
     background-color: rgba(0, 0, 0, 0.9);
     justify-content: center;
@@ -55,6 +55,18 @@ const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
     cursor: pointer;
     transition: background-color 0.3s ease;
 `;
+const BrandGuideContainer = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 60px;
+    margin-top: 60px;
+    @media only screen and (max-width: 1250px) {
+        flex-direction: column;
+	}
+`
 
 
 const DrgOrgDetails = () => {
@@ -92,12 +104,13 @@ const DrgOrgDetails = () => {
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            &nbsp;&nbsp;&nbsp;DesignRun.org is a healthcare startup and
+            DesignRun.org is a healthcare startup and
             non-profit organization that aims to establish a strong brand
             identity and digital presence to reach its target audience of
             current and future investors, clients, and partners.
             <br />
-            &nbsp;&nbsp;&nbsp;The challenge was to create a minimalist and
+            <br />
+            The challenge was to create a minimalist and
             subtle brand identity, user-friendly interface, and smooth user
             experience with limited resources and time. Despite these
             constraints, the team successfully delivered a website that
@@ -210,7 +223,7 @@ const DrgOrgDetails = () => {
                     <Image src={Screenshot} />
                     <div className={styles.padded}>
                         <P style={{ paddingTop: '20px' }}>Screen Shot</P>
-                        <PBody style={{ width: "600px" }}>
+                        <PBody style={{ maxWidth: "600px" }}>
                             A glimpse of DesignRun.org’s website: Highlighting the strategic
                             layout, refined typography, and cohesive color palette that
                             together create a seamless and engaging user experience.
@@ -219,16 +232,8 @@ const DrgOrgDetails = () => {
                 </div>
             </div>
             <div className={styles.padded}>
-                <div style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    gap: "20px",
-                    width: '100%',
-                    height: 'auto',
-                    marginBottom: '60px',
-                    marginTop: '60px',
-                }}>
-                    <img className={styles.image} onClick={() => handleOpenModal(1)} style={{ width: '100%', maxWidth: "400px", height: '100%', border: '1px solid black' }} src={Wordmard} />
+                <BrandGuideContainer>
+                    <img className={styles.image} onClick={() => handleOpenModal(1)} style={{ width: 'calc(100vw - 40px)', maxWidth: "400px", height: '100%', border: '1px solid black' }} src={Wordmard} />
                     <div style={{ width: '100%', maxWidth: "260px", paddingRight: '20px' }}>
                         <p className={styles.p} style={{ paddingTop: '20px' }}>Brand Guide</p>
                         <p className={styles.pBody} >
@@ -237,13 +242,13 @@ const DrgOrgDetails = () => {
                             minimalist and impactful visual identity.
                         </p>
                     </div>
-                </div>
+                </BrandGuideContainer>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                         <div className={styles.videoWrapper}>
                             <video className={styles.video} src={DrgOrg} controls autoPlay loop muted playsInline />
                         </div>
-                        <p className={styles.p} style={{ paddingTop: "20px", width: "500px" }}>
+                        <p className={styles.p} style={{ paddingTop: "20px", maxWidth: "500px" }}>
                             Explore DesignRun.org’s minimalist design, thoughtful typography,
                             and strategic layout, all crafted to communicate the brand’s
                             mission.

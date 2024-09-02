@@ -1,5 +1,11 @@
 const streamText = [
     " ",
+    " ",
+    " ",
+    " ",
+    " ",
+    " ",
+    " ",
     "...",
     "Hello there! 👋",
     "I hope you're doing well.",

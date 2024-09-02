@@ -10,8 +10,8 @@ const NQHardware = () => {
     const handleViewDetailsClick = () => {
         setButtonDisabled(true);
         setBoxInView(6);
-        handleMove(6, '0', '-100vh');
-        handleMove(1, '-100vw', '-100vh');
+        handleMove(6, '0', '-100dvh');
+        handleMove(1, '-100vw', '-100dvh');
         changeOpacity(6, 1);
         toggleAnimation(6, true);
         setTimeout(() => {

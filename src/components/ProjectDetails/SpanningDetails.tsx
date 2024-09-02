@@ -17,22 +17,13 @@ const ImageDash = styled.img`
     cursor: pointer;
 `
 const ImageEmail = styled.img`
-    width: 460px;
+    width: calc(100vw - 40px);
+    max-width: 460px;
     margin-right: 20px;
     cursor: pointer;
 `
 const Modal = styled.div<{ $isOpen: boolean }>`
     display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    padding-left: 360px;
-    background-color: rgba(0, 0, 0, 0.9);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
 `;
 const BreadcrumbDot = styled.div<{ $isActive: boolean }>`
     background-color: ${({ $isActive }) => ($isActive ? 'white' : 'gray')};
@@ -42,10 +33,11 @@ const ImagesContainer = styled.div`
     display: flex; 
     flex-direction: row; 
     justify-content: space-between;
+    margin-bottom: 60px;
+    margin-top: 60px;
     @media only screen and (max-width: 1250px) {
         flex-direction: column;
         gap: 60px;
-        margin-bottom: 60px;
 	}
 `
 
@@ -80,17 +72,17 @@ const SpanningDetails = () => {
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            &nbsp;&nbsp;&nbsp;Spanning Cloud Apps is a SaaS solution that
+            Spanning Cloud Apps is a SaaS solution that
             provides data protection for Microsoft 365, G Suite, and
             Salesforce, empowering administrators and users to restore lost
             data with ease.
             <br />
-            &nbsp;&nbsp;&nbsp;As part of an agile design team, I contributed
+            <br />
+            As part of an agile design team, I contributed
             to the development of new features across all Spanning products.
             Our team follows an iterative approach, releasing new features in
             small chunks and typically completing each block within two weeks.
-            <br />
-            &nbsp;&nbsp;&nbsp;This case study showcases the type of work I was
+            This case study showcases the type of work I was
             involved in while working with the Spanning Cloud Apps team.
         </p>
     );
@@ -223,7 +215,8 @@ const SpanningDetails = () => {
                                     display: "flex",
                                     flexDirection: "column",
                                     alignItems: "flex-start",
-                                    width: "460px",
+                                    width: 'calc(100vw - 40px)',
+                                    maxWidth: "460px",
                                     paddingRight: "20px",
                                     paddingTop: "20px",
                                 }}>
@@ -241,11 +234,11 @@ const SpanningDetails = () => {
                         </div>
                     </Images>
                 </ImagesContainer>
-                <div style={{ width: '100vw', display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
+                <div style={{ width: "calc(100vw - 40px)", display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
                     <div className={styles.videoWrapper}>
                         <video className={styles.video} src={SpanningVideo} controls autoPlay loop muted playsInline />
                     </div>
-                    <p className={styles.p} style={{ paddingTop: "20px", width: "540px" }}>
+                    <p className={styles.p} style={{ paddingTop: "20px", width: 'calc(100vw - 40px)', maxWidth: "540px" }}>
                         Explore Spanning Cloud Apps for Office 360—watch as a user navigates
                         backup, restoration, file management, and activity tracking,
                         showcasing the platform’s robust functionality.

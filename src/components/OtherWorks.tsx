@@ -4,9 +4,10 @@ import Image2 from '../assets/ocean.png';
 import Image3 from '/Final v1.mp4';
 import Image4 from '../assets/House - Small (2 rooms) v70.png';
 import Image5 from '../assets/seaholm-print-cover.jpeg';
-import Image7 from '../assets/myface.png';
+import Image7 from '../assets/Me-square.jpg';
 import Image8 from '/alfie.gif';
 import Image9 from '../assets/seaholm-steel-works.jpg';
+import bottomVideo from '/drone-vid.mp4';
 import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useEffect, useState } from "react";
 
@@ -74,8 +75,9 @@ const OtherWorks = () => {
                 <img style={{ width: '400px', height: '400px' }} src={Image8} />
                 <Caption style={{ paddingTop: '6px', paddingRight: '10px' }}>My dog Alfie</Caption>
             </div>
-            <div style={{ paddingBottom: 'calc(50vh - 165px)' }}>
-                <img style={{ width: '300px', height: '300px' }} src={Image7} />
+            <div style={{ position: 'relative', paddingBottom: 'calc(50vh - 171px)' }}>
+                <img style={{ objectFit: 'cover', width: '320px', height: '310px' }} src={Image7} />
+                <video style={{ transform: 'translateX(calc(-50vw + 150px))', position: 'absolute', bottom: '0', left: '0', objectFit: 'cover', width: '300px', height: '300px' }} src={bottomVideo} autoPlay loop muted playsInline />
             </div>
         </Wrapper>
     )

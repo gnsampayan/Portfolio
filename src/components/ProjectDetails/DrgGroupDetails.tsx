@@ -52,6 +52,29 @@ const Logo2Div = styled.img`
 	transition: opacity 1s ease;
 	z-index: 1;
 `;
+const LogoOverlap = styled.div`
+	position: relative;
+	max-width: 442px;
+	width: calc(100vw - 40px);
+	height: 120px;
+	background: white;
+	border: 1px solid black;
+	cursor: default;
+	&:focus {
+		cursor: not-allowed;
+	}
+	&:active {
+		cursor: not-allowed;
+	}
+	z-index: 2;
+	@media only screen and (max-width: 1250px) {
+		height: 120px;
+		border: none;
+	}
+	@media only screen and (max-width: 768) {
+		height: 105px;
+	}
+`;
 
 const ImageOverlap = styled.div`
 	position: relative;
@@ -62,8 +85,6 @@ const ImageOverlap = styled.div`
 	z-index: 9;
 	outline: 1px solid black;
 	cursor: pointer;
-	@media only screen and (max-width: 768px) {
-	}
 `;
 const Image1 = styled.img`
 	position: absolute;
@@ -125,23 +146,6 @@ const ImgOverlapContainer = styled.div`
 		width: 100%;
 	}
 `
-const LogoOverlap = styled.div`
-	position: relative;
-	max-width: 442px;
-	width: calc(100vw - 40px);
-	max-height: 122px;
-	height: 105px;
-	background: white;
-	border: 1px solid black;
-	cursor: default;
-	&:focus {
-		cursor: not-allowed;
-	}
-	&:active {
-		cursor: not-allowed;
-	}
-	z-index: 2;
-`;
 
 const DrgGroupDetails = () => {
 	const { boxInView } = useControlPanel();

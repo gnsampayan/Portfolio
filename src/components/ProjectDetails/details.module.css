@@ -250,6 +250,12 @@
 	.end {
 		transform: translateX(-50px);
 	}
+	.pBody {
+		max-width: 500px;
+	}
+	.p {
+		max-width: 500px;
+	}
 }
 @media only screen and (max-width: 768px) {
 	.frame {

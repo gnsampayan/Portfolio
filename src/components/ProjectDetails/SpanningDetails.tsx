@@ -221,7 +221,7 @@ const SpanningDetails = () => {
                                     paddingTop: "20px",
                                 }}>
                                 <p className={styles.p}>Daily Email Summary</p>
-                                <p className={styles.pBody}>
+                                <p style={{ maxWidth: '450px' }} className={styles.pBody}>
                                     Daily email backup summary: Delivered in a clean, well-organized
                                     format, this summary provides users with a clear and concise
                                     overview of their backup status. The design ensures that

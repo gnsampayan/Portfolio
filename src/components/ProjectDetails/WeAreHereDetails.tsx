@@ -1,4 +1,4 @@
-import WeAreHereVideo from '/WeAreHere.mp4';
+import WeAreHereVideo from '/here_1080p.mp4';
 import { useEffect, useRef } from "react";
 import { useControlPanel } from "../Contexts/ControlPanelContext";
 import styles from './details.module.css';

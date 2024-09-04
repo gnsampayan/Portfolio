@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import Image1 from '../assets/background.png';
 import Image2 from '../assets/ocean.png';
-import Image3 from '/Final v1.mp4';
+import Image3 from '/engine.gif';
 import Image4 from '../assets/House - Small (2 rooms) v70.png';
 import Image5 from '../assets/seaholm-print-cover.jpeg';
 import Image7 from '../assets/Me-square.jpg';
 import Image8 from '/alfie.gif';
-import bottomVideo from '/drone-vid.mp4';
+import bottomVideo from '/drone.gif';
 import WhiteSands from '../assets/white-sands.jpg';
 import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useEffect, useState } from "react";
@@ -44,7 +44,7 @@ const VideoContainer = styled.div`
     height: auto;
 `;
 
-const StyledVideo = styled.video`
+const StyledVideo = styled.img`
     width: 40vw;
     height: auto;
 `;
@@ -74,7 +74,7 @@ const FlexColumnDiv = styled.div<{ $width: string; $transform: string }>`
     height: auto;
 `;
 
-const PositionedVideo = styled.video`
+const PositionedVideo = styled.img`
     z-index: 1;
     position: absolute;
     bottom: 0;
@@ -116,8 +116,8 @@ const OtherWorks = () => {
         <RelativeDiv>
             <Container $opacity={opacity} $pointerEvent={pointerEvent}>
                 <VideoContainer>
-                    <StyledVideo src={Image3} autoPlay loop muted playsInline />
-                    <Caption>A Honda engine I modeled in Fusion 360, textured, animated and rendered in Blender. Used for AI machine vision training.</Caption>
+                    <StyledVideo src={Image3} />
+                    <Caption style={{ paddingTop: '6px' }}>A Honda engine I modeled in Fusion 360, textured, animated and rendered in Blender. Used for AI machine vision training.</Caption>
                 </VideoContainer>
                 <ImageStyled $transform="translateX(25vw)" $width="300px" $height="300px" src={Image2} />
                 <FlexColumnDiv style={{ alignItems: 'flex-end' }} $width="1200px" $transform="translateX(calc(50vw - 600px))">
@@ -138,7 +138,7 @@ const OtherWorks = () => {
                     <div style={{ width: '100vw', display: 'flex', justifyContent: 'center' }}>
                         <PositionedImage src={Image7} />
                     </div>
-                    <PositionedVideo src={bottomVideo} autoPlay loop muted playsInline />
+                    <PositionedVideo src={bottomVideo} />
                 </div>
             </Container>
         </RelativeDiv>

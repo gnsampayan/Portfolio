@@ -3,7 +3,7 @@ import Screenshot1 from "../../assets/nqhardware-shop-fold-screenshot.png";
 import Screenshot2 from "../../assets/nqhardware-store-scrolled-screenshot.png";
 import Screenshot3 from "../../assets/nqhardware-zipties-screenshot.png";
 import Screenshot4 from "../../assets/nqhardware-editing-screenshot.png";
-import NQhardware from "/nqhardware-sequence.mp4";
+import NQhardware from "/nq_1080p.mp4";
 import { useControlPanel } from "../Contexts/ControlPanelContext";
 import styles from './details.module.css';
 import Template from "./template";

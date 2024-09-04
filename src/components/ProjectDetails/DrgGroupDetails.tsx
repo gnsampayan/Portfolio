@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import DRGGroupVid from "/DrgGroupVid.mp4";
+import DRGGroupVid from "/drgroup_1080p.mp4";
 import Screenshot1 from "../../assets/drg1.png";
 import Screenshot2 from "../../assets/drg2.png";
 import Logo1 from "../../assets/drg_logo_v1.svg";

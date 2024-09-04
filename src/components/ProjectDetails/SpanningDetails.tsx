@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SpanningVideo from '/spanning-o365.mp4';
+import SpanningVideo from '/spanning_1080p.mp4';
 import Image1 from '../../assets/Dash1.png';
 import Image2 from '../../assets/email1.png';
 import { useControlPanel } from "../Contexts/ControlPanelContext";

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import DrgOrg from '/designrun.mp4';
+import DrgOrg from '/drorg_1080p.mp4';
 import Wordmard from '../../assets/drg_branding.png';
 import Screenshot from '../../assets/drg_sample_page.png';
 import { useControlPanel } from "../Contexts/ControlPanelContext";

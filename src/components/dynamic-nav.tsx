@@ -415,7 +415,6 @@ const DynamicNav = () => {
             }
         } else {
             setBoxInView(12);
-            console.log('triggeres about me' + boxInView);
             toggleAnimation(12, true);
             onMoveList('origin');
             handleMove(12, '100vw', '0');
@@ -445,7 +444,7 @@ const DynamicNav = () => {
 
     const handleSecondaryButtonClick = (buttonName: string) => {
         const buttonIndex = SecondaryBtnData.findIndex(button => button.name === buttonName);
-        const foldId = buttonIndex + 1; // Add 2 to align with your box ID logic
+        const foldId = buttonIndex + 1;
         toggleAnimation(11, true);
         if (width <= 1250) {
             handleMove(11, 'calc(-50vw + 130px)', '0');

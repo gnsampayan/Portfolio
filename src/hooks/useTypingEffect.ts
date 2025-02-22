@@ -24,6 +24,30 @@ const useTypingEffect = (
 
   const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
 
+  const getWeatherIcon = (iconCode: string) => {
+    const iconMap: { [key: string]: string } = {
+      '01d': '🌞', // clear sky (day)
+      '01n': '🌚', // clear sky (night)
+      '02d': '⛅', // few clouds (day)
+      '02n': '☁️', // few clouds (night)
+      '03d': '☁️', // scattered clouds
+      '03n': '☁️',
+      '04d': '☁️', // broken clouds
+      '04n': '☁️',
+      '09d': '🌧️', // shower rain
+      '09n': '🌧️',
+      '10d': '🌦️', // rain
+      '10n': '🌧️',
+      '11d': '⛈️', // thunderstorm
+      '11n': '⛈️',
+      '13d': '❄️', // snow
+      '13n': '❄️',
+      '50d': '🌫️', // mist
+      '50n': '🌫️',
+    };
+    return iconMap[iconCode] || ''; // Default to no icon if code not found
+  };
+
   useEffect(() => {
     const cycleLocations = () => {
       setCurrentLocationIndex((prevIndex) => (prevIndex + 1) % fallbackLocations.length);
@@ -60,7 +84,7 @@ const useTypingEffect = (
           setTexts([
             `Location: ${weatherData.name}`,
             `Temperature: ${tempFahrenheit}°F`, // ${tempCelsius}°C
-            `Weather: ${weatherData.weather[0].description}`,
+            `Weather: ${weatherData.weather[0].description} ${getWeatherIcon(weatherData.weather[0].icon)}`,
             `Wind speed: ${weatherData.wind.speed} m/s`,
             `Date: ${weatherData.date}`,
             `Time: ${weatherData.time12Hour}`, // ${weatherData.time24Hour}
@@ -106,7 +130,9 @@ const useTypingEffect = (
         setIndex(0);
         timeout = setTimeout(handleTyping, pauseTime);
       } else {
-        setCurrentText(fullText.substring(0, index + 1));
+        // Split the text into an array of characters, properly handling emoji
+        const characters = Array.from(fullText);
+        setCurrentText(characters.slice(0, index + 1).join(''));
         setIndex((prev) => prev + 1);
 
         if (index === fullText.length) {

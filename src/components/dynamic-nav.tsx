@@ -113,6 +113,9 @@ const NavBox = styled.div<{
         height: 100%;
         position: sticky;
         top: 0;
+        &:hover {
+            background: ${(props) => (props.$invertion ? 'none' : 'rgba(255, 255, 255, .9)')};
+        }
         &:hover .hover-target {
             height: 230px;
         }

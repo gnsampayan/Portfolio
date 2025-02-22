@@ -62,12 +62,12 @@ const NQHardwareDetails = () => {
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            NQ Hardware and General Enterprise is an
-            ongoing project aimed at enhancing the store's operations and
-            customer engagement through a full-stack web application. This
-            app serves as a vital tool for managing stock prices, sales, and
-            inventory, ensuring that the store maintains an efficient and
-            competitive edge.
+            NQ Hardware and General Enterprise is a project aimed at enhancing
+            the store's operations and customer engagement through a full-stack
+            web application. This app serves as a vital tool for managing stock
+            prices, sales, and inventory, ensuring that the store maintains an
+            efficient and competitive edge. What you see here is a modified clone
+            of the site, for the purpose of this case study.
             <br />
             <br />
             Beyond traditional retail functions, the

@@ -181,7 +181,7 @@ const SpanningDetails = () => {
             <div className={styles.padded}>
                 <ImagesContainer>
                     <Images style={{ display: 'flex', flexDirection: 'column' }}>
-                        <ImageDash style={{ outline: '1px solid black' }} onClick={() => handleOpenModal(0)} src={Image1} />
+                        <ImageDash className={styles.image} onClick={() => handleOpenModal(0)} src={Image1} />
                         <div
                             style={{
                                 display: "flex",
@@ -209,7 +209,7 @@ const SpanningDetails = () => {
                                 justifyContent: "flex-start",
                                 alignItems: "flex-start",
                             }}>
-                            <ImageEmail style={{ outline: '1px solid black' }} onClick={() => handleOpenModal(1)} src={Image2} />
+                            <ImageEmail className={styles.image} onClick={() => handleOpenModal(1)} src={Image2} />
                             <div
                                 style={{
                                     display: "flex",

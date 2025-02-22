@@ -59,6 +59,8 @@ const LogoOverlap = styled.div`
 	height: 120px;
 	background: white;
 	border: 1px solid black;
+	border-radius: 3px;
+	overflow: hidden;
 	cursor: default;
 	&:focus {
 		cursor: not-allowed;
@@ -84,6 +86,8 @@ const ImageOverlap = styled.div`
 	width: calc(100vw - 40px);
 	z-index: 9;
 	outline: 1px solid black;
+	border-radius: 3px;
+	overflow: hidden;
 	cursor: pointer;
 `;
 const Image1 = styled.img`

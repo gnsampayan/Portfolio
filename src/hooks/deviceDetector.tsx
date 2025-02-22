@@ -32,14 +32,19 @@ export const DeviceProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         checkIsMobile();
 
         // Debounced resize handler
-        let resizeTimer: NodeJS.Timeout; // Timeout reference
+        let resizeTimer: NodeJS.Timeout | null = null; // Timeout reference
+
+        const handleResize = () => {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(checkIsMobile, 250); // 250ms debounce
+        };
 
         // Add event listeners
-        window.addEventListener("resize", checkIsMobile);
+        window.addEventListener("resize", handleResize);
 
         return () => {
-            window.removeEventListener("resize", checkIsMobile);
-            clearTimeout(resizeTimer);
+            window.removeEventListener("resize", handleResize);
+            if (resizeTimer) clearTimeout(resizeTimer);
         };
     }, []);
 

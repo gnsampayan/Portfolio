@@ -1,12 +1,15 @@
 import WeAreHereVideo from '/here_1080p.mp4';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useControlPanel } from "../Contexts/ControlPanelContext";
 import styles from './details.module.css';
 import Template from "./template";
 
+import ReactGA from 'react-ga4';
+
 const WeAreHereDetails = () => {
     const { boxInView } = useControlPanel();
     const myDivRef = useRef<HTMLDivElement>(null);
+    const [startTime, setStartTime] = useState<number | null>(null);
 
     const scopeContents = (
         <p className={`${styles.scopeList} ${styles.p}`}>
@@ -63,6 +66,29 @@ const WeAreHereDetails = () => {
             }, 1000)
         }
     }, [boxInView]);
+
+    // Google Analytics
+    useEffect(() => {
+        // When this component comes into view (boxInView === 8)
+        if (boxInView === 8) {
+            setStartTime(Date.now());
+            ReactGA.event({
+                category: 'Page View',
+                action: 'We Are Here Details Viewed',
+                label: 'Enter'
+            });
+        } else if (boxInView !== 8 && startTime !== null) {
+            // When user leaves this view
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            ReactGA.event({
+                category: 'Page View',
+                action: 'We Are Here Details Time Spent',
+                label: 'Exit',
+                value: timeSpent
+            });
+            setStartTime(null);
+        }
+    }, [boxInView, startTime]);
 
     return (
         <div style={{ marginTop: '40px' }} className={styles.frame} ref={myDivRef}>

@@ -17,6 +17,11 @@ import DynamicNav from './components/dynamic-nav';
 //AboutMe
 import AboutMe from './components/AboutMe';
 import OtherWorks from './components/OtherWorks';
+
+import ReactGA from 'react-ga4';
+
+ReactGA.initialize('G-EJ9QHXNE2W'); // Your GA4 measurement ID
+
 const Wrapper = styled.div`
   position: relative;
   width: 100vw;

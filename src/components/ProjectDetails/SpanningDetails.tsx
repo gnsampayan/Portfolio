@@ -9,6 +9,8 @@ import { RiArrowLeftSLine, RiArrowRightSLine, RiCloseLargeFill } from "react-ico
 import styles from './details.module.css';
 import Template from "./template";
 
+import ReactGA from 'react-ga4';
+
 const Images = styled.div`
     display: flex;
 `
@@ -47,6 +49,7 @@ const SpanningDetails = () => {
     const { isModalOpen, setModalOpen } = useNavContext();
     const [currentIndex, setCurrentIndex] = useState(0);
     const galleryItems = [Image1, Image2];
+    const [startTime, setStartTime] = useState<number | null>(null);
 
     const scopeContents = (
         <p className={`${styles.scopeList} ${styles.p}`}>
@@ -135,6 +138,29 @@ const SpanningDetails = () => {
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, [isModalOpen, handleNext, handlePrev]);
+
+    // Google Analytics
+    useEffect(() => {
+        // When this component comes into view (boxInView === 10)
+        if (boxInView === 10) {
+            setStartTime(Date.now());
+            ReactGA.event({
+                category: 'Page View',
+                action: 'Spanning Details Viewed',
+                label: 'Enter'
+            });
+        } else if (boxInView !== 10 && startTime !== null) {
+            // When user leaves this view
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            ReactGA.event({
+                category: 'Page View',
+                action: 'Spanning Details Time Spent',
+                label: 'Exit',
+                value: timeSpent
+            });
+            setStartTime(null);
+        }
+    }, [boxInView, startTime]);
 
     return (
         <div className={styles.frame} ref={myDivRef}>

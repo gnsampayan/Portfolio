@@ -5,6 +5,8 @@ import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useEffect, useRef, useState } from "react";
 import { useWindowSize } from "./Contexts/WindowSizeContext";
 
+import ReactGA from 'react-ga4';
+
 
 // Keyframes
 const rotateAnimation = keyframes`
@@ -410,6 +412,13 @@ const DynamicNav = () => {
     };
 
     const handleMainButtonClick = (buttonName: string) => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'Navigation',
+            action: 'Main Button Clicked',
+            label: buttonName
+        });
+
         setIsAnyButtonClicked(true);
         setActiveMainButton(buttonName);
         toggleAnimation(11, true);
@@ -470,6 +479,13 @@ const DynamicNav = () => {
     };
 
     const handleSecondaryButtonClick = (buttonName: string) => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'Navigation',
+            action: 'Secondary Button Clicked',
+            label: buttonName
+        });
+
         const buttonIndex = SecondaryBtnData.findIndex(button => button.name === buttonName);
         const foldId = buttonIndex + 1;
         toggleAnimation(11, true);
@@ -511,6 +527,13 @@ const DynamicNav = () => {
         }, 1000)
     };
     const combinedHandler = () => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'Navigation',
+            action: 'Home Button Clicked',
+            label: 'Home'
+        });
+
         handleHomeButtonClick();
         setBoxInView(-1);
         toggleAnimation(11, true);

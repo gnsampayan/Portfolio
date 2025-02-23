@@ -3,11 +3,19 @@ import { useNavContext } from "../Contexts/NavContext";
 import styles from './folds.module.css';
 import WeAreHereImage from '../../assets/wearehere-fold.png';
 
+import ReactGA from 'react-ga4';
+
 const WeAreHere = () => {
     const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
     const { setButtonDisabled } = useNavContext();
 
     const handleViewDetailsClick = () => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'WeAreHere Fold',
+            action: 'View Details Button Clicked',
+            label: 'View Details'
+        });
         setButtonDisabled(true);
         setBoxInView(8);
         handleMove(8, '0', '-100dvh');

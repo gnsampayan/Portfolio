@@ -9,6 +9,8 @@ import { RiArrowLeftSLine, RiArrowRightSLine, RiCloseLargeFill } from "react-ico
 import styles from './details.module.css';
 import Template from "./template";
 
+import ReactGA from 'react-ga4';
+
 const P = styled.p`
     clear: both;
     font-family: halyard-text, sans-serif;
@@ -65,6 +67,7 @@ const DrgOrgDetails = () => {
     const { isModalOpen, setModalOpen } = useNavContext();
     const [currentIndex, setCurrentIndex] = useState(0);
     const galleryItems = [Screenshot, Wordmard];
+    const [startTime, setStartTime] = useState<number | null>(null);
 
     const scopeContents = (
         <p className={`${styles.scopeList} ${styles.p}`}>
@@ -161,6 +164,29 @@ const DrgOrgDetails = () => {
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, [isModalOpen, handleNext, handlePrev]);
+
+    // Google Analytics
+    useEffect(() => {
+        // When this component comes into view (boxInView === 9)
+        if (boxInView === 9) {
+            setStartTime(Date.now());
+            ReactGA.event({
+                category: 'Page View',
+                action: 'DRG Org Details Viewed',
+                label: 'Enter'
+            });
+        } else if (boxInView !== 9 && startTime !== null) {
+            // When user leaves this view
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            ReactGA.event({
+                category: 'Page View',
+                action: 'DRG Org Details Time Spent',
+                label: 'Exit',
+                value: timeSpent
+            });
+            setStartTime(null);
+        }
+    }, [boxInView, startTime]);
 
     return (
         <div className={styles.frame} ref={myDivRef}>

@@ -15,6 +15,8 @@ import {
     RiCloseLargeFill,
 } from "react-icons/ri";
 
+import ReactGA from 'react-ga4';
+
 const Modal = styled.div<{ $isOpen: boolean }>`
 	display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
 `;
@@ -34,6 +36,7 @@ const NQHardwareDetails = () => {
     const { isModalOpen, setModalOpen } = useNavContext();
     const [currentIndex, setCurrentIndex] = useState(0);
     const galleryItems = [Screenshot1, Screenshot2, Screenshot3, Screenshot4];
+    const [startTime, setStartTime] = useState<number | null>(null);
 
     const scopeContents = (
         <p className={`${styles.scopeList} ${styles.p}`}>
@@ -144,6 +147,29 @@ const NQHardwareDetails = () => {
     const handleCloseModal = () => {
         setModalOpen(false);
     };
+
+    // Google Analytics
+    useEffect(() => {
+        // When this component comes into view (boxInView === 6)
+        if (boxInView === 6) {
+            setStartTime(Date.now());
+            ReactGA.event({
+                category: 'Page View',
+                action: 'NQ Hardware Details Viewed',
+                label: 'Enter'
+            });
+        } else if (boxInView !== 6 && startTime !== null) {
+            // When user leaves this view
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            ReactGA.event({
+                category: 'Page View',
+                action: 'NQ Hardware Details Time Spent',
+                label: 'Exit',
+                value: timeSpent
+            });
+            setStartTime(null);
+        }
+    }, [boxInView, startTime]);
 
     return (
         <div className={styles.frame} ref={myDivRef}>

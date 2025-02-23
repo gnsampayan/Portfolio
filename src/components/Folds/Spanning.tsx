@@ -3,6 +3,8 @@ import { useNavContext } from "../Contexts/NavContext";
 import styles from "./folds.module.css";
 import SpanningImage from '../../assets/spanning-fold.png';
 
+import ReactGA from 'react-ga4';
+
 const Spanning = () => {
     const {
         handleMove,
@@ -14,6 +16,12 @@ const Spanning = () => {
     const { setButtonDisabled } = useNavContext();
 
     const handleViewDetailsClick = () => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'Spanning Fold',
+            action: 'View Details Button Clicked',
+            label: 'View Details'
+        });
         setButtonDisabled(true);
         setBoxInView(10);
         handleMove(10, "0", "-100dvh");

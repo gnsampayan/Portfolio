@@ -4,6 +4,9 @@ import chatText from '../hooks/streamText';
 import { useWindowSize } from "./Contexts/WindowSizeContext";
 import { useControlPanel } from "./Contexts/ControlPanelContext";
 
+import ReactGA from 'react-ga4';
+import { useEffect, useState } from "react";
+
 const Frame = styled.div`
     width: 100vw;
     height: 100dvh;
@@ -101,11 +104,48 @@ const AboutMe: React.FC = () => {
   const shouldRestart = boxInView === 12;
   const typedText = useTypingEffect(60, 1500, chatText, shouldRestart);
   const currentText = boxInView === 12 ? typedText : "";
+  const [startTime, setStartTime] = useState<number | null>(null);
+
+  // Google Analytics
+  useEffect(() => {
+    // When this component comes into view (boxInView === 12)
+    if (boxInView === 12) {
+      setStartTime(Date.now());
+      ReactGA.event({
+        category: 'Page View',
+        action: 'About Me Viewed',
+        label: 'Enter'
+      });
+    } else if (boxInView !== 12 && startTime !== null) {
+      // When user leaves this view
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
+      ReactGA.event({
+        category: 'Page View',
+        action: 'About Me Time Spent',
+        label: 'Exit',
+        value: timeSpent
+      });
+      setStartTime(null);
+    }
+  }, [boxInView, startTime]);
+
   return (
     <Frame>
       <Links>
         <Caption>Links</Caption>
         <Link
+          onClick={(e) => {
+            e.preventDefault(); // Prevent immediate navigation
+            ReactGA.event({
+              category: 'About Me',
+              action: 'Email Link Clicked',
+              label: 'Email'
+            });
+            // Navigate after a small delay to ensure the event is tracked
+            setTimeout(() => {
+              window.location.href = "mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,";
+            }, 100);
+          }}
           href="mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,"
           id="email"
           style={{
@@ -116,6 +156,18 @@ const AboutMe: React.FC = () => {
         </Link>
         <Link
           target="_blank"
+          onClick={(e) => {
+            e.preventDefault(); // Prevent immediate navigation
+            ReactGA.event({
+              category: 'About Me',
+              action: 'Github Link Clicked',
+              label: 'Github'
+            });
+            // Navigate after a small delay to ensure the event is tracked
+            setTimeout(() => {
+              window.location.href = "https://github.com/gnsampayan";
+            }, 100);
+          }}
           href="https://github.com/gnsampayan"
           id="art"
           style={{
@@ -126,6 +178,18 @@ const AboutMe: React.FC = () => {
         </Link>
         <Link
           target="_blank"
+          onClick={(e) => {
+            e.preventDefault(); // Prevent immediate navigation
+            ReactGA.event({
+              category: 'About Me',
+              action: 'LinkedIn Link Clicked',
+              label: 'LinkedIn'
+            });
+            // Navigate after a small delay to ensure the event is tracked
+            setTimeout(() => {
+              window.location.href = "https://www.linkedin.com/in/glenn-sampayan-544807176/";
+            }, 100);
+          }}
           href="https://www.linkedin.com/in/glenn-sampayan-544807176/"
           id="social"
           style={{

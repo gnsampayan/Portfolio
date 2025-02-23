@@ -3,11 +3,19 @@ import { useNavContext } from "../Contexts/NavContext";
 import styles from './folds.module.css';
 import DesignRunGroupImage from '../../assets/designrungroup-fold.png';
 
+import ReactGA from 'react-ga4';
+
 const DesignRunGroup = () => {
     const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
     const { setButtonDisabled } = useNavContext();
 
     const handleViewDetailsClick = () => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'Designrun Group Fold',
+            action: 'View Details Button Clicked',
+            label: 'View Details'
+        });
         setButtonDisabled(true);
         setBoxInView(7);
         handleMove(7, '0', '-100dvh');

@@ -3,11 +3,19 @@ import { useNavContext } from "../Contexts/NavContext";
 import styles from './folds.module.css';
 import NQHardwareImage from '../../assets/nqhardware-editing-screenshot.png';
 
+import ReactGA from 'react-ga4';
+
 const NQHardware = () => {
     const { setButtonDisabled } = useNavContext();
     const { handleMove, setBoxInView, changeOpacity, toggleAnimation, handleReset } = useControlPanel();
 
     const handleViewDetailsClick = () => {
+        // Google Analytics
+        ReactGA.event({
+            category: 'NQ Hardware Fold',
+            action: 'View Details Button Clicked',
+            label: 'View Details'
+        });
         setButtonDisabled(true);
         setBoxInView(6);
         handleMove(6, '0', '-100dvh');

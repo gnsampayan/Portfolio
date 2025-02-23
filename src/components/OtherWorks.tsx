@@ -12,7 +12,9 @@ import WhiteSands from '../assets/white-sands.jpg';
 import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useEffect, useState } from "react";
 
-const Container = styled.div<{ $pointerEvent: boolean; $opacity: boolean }>`
+import ReactGA from 'react-ga4';
+
+const Container = styled.div<{ $pointerEvent: boolean; $opacity: boolean; }>`
     padding-top: 20px;
     width: 100vw;
     height: 100vh;
@@ -106,6 +108,33 @@ const OtherWorks = () => {
     const { boxInView } = useControlPanel();
     const [pointerEvent, setPointerEvent] = useState<boolean>(false);
     const [opacity, setOpacity] = useState<boolean>(false);
+    const [startTime, setStartTime] = useState<number | null>(null);
+    const [hasReachedBottom, setHasReachedBottom] = useState(false);
+
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const element = e.currentTarget;
+        const scrollPosition = element.scrollTop + element.clientHeight;
+        const scrollHeight = element.scrollHeight;
+
+        // Check if user has scrolled to bottom (with a small threshold)
+        if (!hasReachedBottom && scrollPosition >= scrollHeight - 100) {
+            setHasReachedBottom(true);
+            ReactGA.event({
+                category: 'User Engagement',
+                action: 'Scrolled to Bottom',
+                label: 'Other Works'
+            });
+        }
+
+        // Optional: Track scroll percentage
+        const scrollPercentage = Math.round((scrollPosition / scrollHeight) * 100);
+        ReactGA.event({
+            category: 'User Engagement',
+            action: 'Scroll Depth',
+            label: 'Other Works',
+            value: scrollPercentage
+        });
+    };
 
     useEffect(() => {
         let timeout: NodeJS.Timeout;
@@ -121,9 +150,32 @@ const OtherWorks = () => {
         return () => clearTimeout(timeout);
     }, [boxInView]);
 
+    // Google Analytics
+    useEffect(() => {
+        // When this component comes into view (boxInView === -1)
+        if (boxInView === -1) {
+            setStartTime(Date.now());
+            ReactGA.event({
+                category: 'Page View',
+                action: 'Other Works Viewed',
+                label: 'Enter'
+            });
+        } else if (boxInView !== -1 && startTime !== null) {
+            // When user leaves this view
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            ReactGA.event({
+                category: 'Page View',
+                action: 'Other Works Time Spent',
+                label: 'Exit',
+                value: timeSpent
+            });
+            setStartTime(null);
+        }
+    }, [boxInView, startTime]);
+
     return (
         <RelativeDiv>
-            <Container $opacity={opacity} $pointerEvent={pointerEvent}>
+            <Container $opacity={opacity} $pointerEvent={pointerEvent} onScroll={handleScroll}>
                 <ProjectContainer>
                     <MediaWrapper $maxWidth="600px">
                         <StyledImage src={Image3} alt="Honda engine 3D model" />

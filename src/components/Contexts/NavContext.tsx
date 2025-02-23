@@ -27,7 +27,7 @@ interface ButtonData {
 }
 
 const MainBtnData = [
-  { name: 'Works' },
+  { name: 'Websites' },
   { name: 'About Me' },
 ];
 const SecondaryBtnData = [

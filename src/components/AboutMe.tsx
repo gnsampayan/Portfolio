@@ -98,6 +98,9 @@ const AboutMe: React.FC = () => {
         <Link
           href="mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,"
           id="email"
+          style={{
+            color: "#438dff",
+          }}
         >
           Email
         </Link>
@@ -105,6 +108,9 @@ const AboutMe: React.FC = () => {
           target="_blank"
           href="https://github.com/gnsampayan"
           id="art"
+          style={{
+            color: "#40cd47",
+          }}
         >
           Github
         </Link>
@@ -112,6 +118,9 @@ const AboutMe: React.FC = () => {
           target="_blank"
           href="https://www.linkedin.com/in/glenn-sampayan-544807176/"
           id="social"
+          style={{
+            color: "#f6543c",
+          }}
         >
           LinkedIn
         </Link>

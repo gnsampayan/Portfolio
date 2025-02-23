@@ -22,6 +22,21 @@ const rotateAnimation = keyframes`
     }
 `;
 
+const scaleAnimation = keyframes`
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+`;
+
 const colorChangeAnimation = (startColor: string, endColor: string) => keyframes`
     40% {
         background-color: ${startColor};
@@ -33,6 +48,18 @@ const colorChangeAnimation = (startColor: string, endColor: string) => keyframes
         background-color: ${startColor};
     }
     `;
+
+const borderColorChangeAnimation = (startColor: string, endColor: string) => keyframes`
+    40% {
+        border-bottom-color: ${startColor};
+    }
+    50% {
+        border-bottom-color: ${endColor};
+    }
+    60% {
+        border-bottom-color: ${startColor};
+    }
+`;
 
 const skewAnimation = keyframes`
     25% {
@@ -103,7 +130,7 @@ const NavBox = styled.div<{
 	z-index: 999;
         
     &:hover {
-        background: ${(props) => (props.$invertion ? 'none' : 'rgba(255, 255, 255, 0.6)')};
+        background: ${(props) => (props.$invertion ? 'none' : 'rgba(255, 255, 255, 0.9)')};
     }
     @media only screen and (max-width: 1250px) {
         width: 220px;
@@ -113,9 +140,6 @@ const NavBox = styled.div<{
         height: 100%;
         position: sticky;
         top: 0;
-        &:hover {
-            background: ${(props) => (props.$invertion ? 'none' : 'rgba(255, 255, 255, .9)')};
-        }
         &:hover .hover-target {
             height: 230px;
         }
@@ -178,7 +202,7 @@ const Blue = styled(Ornament)`
 const Yellow = styled(Ornament)`
     background-color: #ffd000;
     border-radius: 100%;
-    animation: 3s ease-in-out 0.1s infinite ${colorChangeAnimation("#ffd000", "#40cd47")};
+    animation: 3s ease-in-out 0.1s infinite ${scaleAnimation}, 3s ease-in-out 0.1s infinite ${colorChangeAnimation("#ffd000", "#40cd47")};
 `;
 const Red = styled(Ornament)`
     width: 0;
@@ -186,7 +210,7 @@ const Red = styled(Ornament)`
     border: 5px solid transparent;
     border-top: 0;
     border-bottom: 10px solid #f6543c;
-    animation: 3s ease-in-out 0.2s infinite ${skewAnimation};
+    animation: 3s ease-in-out 0.2s infinite ${skewAnimation}, 3s ease-in-out 0.2s infinite ${borderColorChangeAnimation("#f6543c", "#40cd47")};
 `;
 const Nav = styled.div<{
     $translate: number;

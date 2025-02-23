@@ -138,7 +138,7 @@ const SpanningDetails = () => {
 
     return (
         <div className={styles.frame} ref={myDivRef}>
-            <div className={styles.padding}>
+            <div className={styles.padded}>
                 <Modal className={styles.modal} $isOpen={isModalOpen}>
                     <div className={styles.modalContent}>
                         <div className={styles.arrow} onClick={handlePrev}>

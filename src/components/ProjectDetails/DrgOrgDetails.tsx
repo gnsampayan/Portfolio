@@ -34,17 +34,7 @@ const Image = styled.img`
 `
 
 const Modal = styled.div<{ $isOpen: boolean }>`
-    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    padding-left: 360px;
-    background-color: rgba(0, 0, 0, 0.9);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+	display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
 `;
 
 const BreadcrumbDot = styled.div<{ $isActive: boolean }>`

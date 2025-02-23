@@ -112,6 +112,9 @@ const OtherWorks = () => {
     const [hasReachedBottom, setHasReachedBottom] = useState(false);
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        // Only track scrolling when Other Works is visible
+        if (boxInView !== -1) return;
+
         const element = e.currentTarget;
         const scrollPosition = element.scrollTop + element.clientHeight;
         const scrollHeight = element.scrollHeight;

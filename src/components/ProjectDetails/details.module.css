@@ -146,17 +146,9 @@
 	all: unset;
 	text-decoration: none;
 	width: fit-content;
-	padding: 10px 20px;
 	border-radius: 3px;
 	cursor: pointer;
-	color: white;
-	background: black;
 	outline: none;
-	&:hover {
-		color: black;
-		background: white;
-		outline: 1px solid black; 
-	}
 }
 .summary {
 	display: flex;

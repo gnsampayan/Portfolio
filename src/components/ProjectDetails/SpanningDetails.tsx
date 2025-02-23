@@ -55,7 +55,6 @@ const SpanningDetails = () => {
             Graphic Design
         </p>
     );
-    const projectLink = "https://www.spanning.com";
     const projectType = "WEB APP";
     const year = "2019";
     const title = (
@@ -67,8 +66,7 @@ const SpanningDetails = () => {
         To comply with my non-disclosure agreement, I have omitted and
         obfuscated confidential information in this case study. All
         information in this case study is my own and does not
-        necessarily reflect the views of NQ Hardware and General
-        Enterprise.
+        necessarily reflect the views of Spanning Cloud Apps.
     `;
     const summaryContent = (
         <p className={styles.pBody}>
@@ -171,7 +169,6 @@ const SpanningDetails = () => {
             </div>
             <Template
                 scopeContents={scopeContents}
-                projectLink={projectLink}
                 projectType={projectType}
                 year={year}
                 title={title}

@@ -27,12 +27,11 @@ const WeAreHereDetails = () => {
         To comply with my non-disclosure agreement, I have omitted and
         obfuscated confidential information in this case study. All
         information in this case study is my own and does not
-        necessarily reflect the views of NQ Hardware and General
-        Enterprise.
+        necessarily reflect the views of We Are Here.
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            "Here" is a healthcare startup that provides
+            We Are Here is a healthcare startup that provides
             resources and support to individuals affected by cancer. The
             project involved the development of a professional website that
             offered a minimalist design, smooth user experience, and secure

@@ -177,25 +177,28 @@ const DrgGroupDetails = () => {
         To comply with my non-disclosure agreement, I have omitted and
         obfuscated confidential information in this case study. All
         information in this case study is my own and does not
-        necessarily reflect the views of NQ Hardware and General
-        Enterprise.
+        necessarily reflect the views of DesignRun Group.
     `;
 	const summaryContent = (
 		<p className={styles.pBody}>
-			DesignRun.org is a healthcare startup and non-profit organization that
-			aims to establish a strong brand identity and digital presence to reach
-			its target audience of current and future investors, clients, and
-			partners.
+			Designrun Group is a mission-driven venture studio transforming healthcare
+			through innovative solutions for underserved communities. By putting people
+			first, we create lasting positive change that builds more resilient,
+			equitable, and healthier communities.
 			<br />
 			<br />
-			The challenge was to create a minimalist and subtle brand identity,
-			user-friendly interface, and smooth user experience with limited resources
-			and time.
+			The website's design mirrors this revolutionary spirit through an
+			unconventional and striking user interface. We pushed creative boundaries
+			while maintaining intuitive navigation - creating unexpected interactions
+			and visual treatments that reflect the company's dedication to reimagining
+			what's possible in healthcare.
 			<br />
 			<br />
-			Despite these constraints, the team successfully delivered a website that
-			effectively communicated the company's mission and provided a seamless
-			experience for its users.
+			The result is a digital experience as transformative as Designrun Group's
+			mission itself. Progressive animations, experimental layouts and
+			cutting-edge design elements work in harmony to tell the story of how
+			we're revolutionizing healthcare access and delivery, while keeping the
+			human experience front and center.
 		</p>
 	);
 

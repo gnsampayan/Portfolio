@@ -13,22 +13,21 @@ import { useControlPanel } from "./Contexts/ControlPanelContext";
 import { useEffect, useState } from "react";
 
 const Container = styled.div<{ $pointerEvent: boolean; $opacity: boolean }>`
+    padding-top: 20px;
     width: 100vw;
-    height: 100dvh;
+    height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
     &::-webkit-scrollbar {
         display: none;
     }
-    /* Hide scrollbar for other browsers */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 180px;
+    gap: 120px;
     opacity: ${(props) => (props.$opacity ? '1' : '0')};
     transition: opacity ${(props) => (props.$opacity ? '24s' : '1s')} ease;
     pointer-events: ${(props) => (props.$pointerEvent ? 'auto' : 'none')};
@@ -37,49 +36,70 @@ const Container = styled.div<{ $pointerEvent: boolean; $opacity: boolean }>`
 const RelativeDiv = styled.div`
     position: relative;
     pointer-events: none;
+    width: 100%;
 `;
 
-const VideoContainer = styled.div`
-    transform: translateX(-30vw);
-    width: 40vw;
-    height: auto;
-`;
-
-const StyledVideo = styled.img`
-    width: 40vw;
-    height: auto;
-`;
-
-const Caption = styled.p<{ $transform?: string; }>`
-    font-size: 0.7rem;
-    transform: ${({ $transform }) => $transform || 'none'};
-    margin-top: 10px;
-    border: 1px solid lightgray;
-    border-radius: 3px;
-    padding: 6px;
-`;
-
-const ImageStyled = styled.img<{ $transform?: string; $width: string; $height: string; $objectFit?: string }>`
-    transform: ${({ $transform }) => $transform || 'none'};
-    width: ${({ $width }) => $width};
-    height: ${({ $height }) => $height};
-    object-fit: ${({ $objectFit }) => $objectFit || 'initial'};
-`;
-
-const FlexColumnDiv = styled.div<{ $width: string; $transform: string }>`
+const ProjectContainer = styled.div<{ $align?: string }>`
+    width: 100%;
+    max-width: calc(100vw - 40px);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    transform: ${({ $transform }) => $transform};
-    width: ${({ $width }) => $width};
-    height: auto;
+    align-items: ${props => props.$align || 'center'};
+
+    @media (max-width: 768px) {
+        width: 95%;
+    }
 `;
 
-const PositionedImage = styled.img`
-    z-index: 2;
+const MediaWrapper = styled.div<{ $maxWidth?: string }>`
+    width: 100%;
+    max-width: ${props => props.$maxWidth || '800px'};
+    position: relative;
+`;
+
+const StyledImage = styled.img`
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
     object-fit: cover;
-    width: 320px;
-    height: 310px;
+`;
+
+const Caption = styled.p`
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #666;
+    margin-top: 12px;
+    max-width: 600px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    @media (max-width: 768px) {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+`;
+
+const ProfileSection = styled.div`
+    width: 100vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-bottom: calc(50vh - 171px);
+    
+    img {
+        width: 320px;
+        height: 310px;
+        object-fit: cover;
+        
+        @media (max-width: 768px) {
+            width: 280px;
+            height: 270px;
+        }
+    }
 `;
 
 const OtherWorks = () => {
@@ -104,47 +124,72 @@ const OtherWorks = () => {
     return (
         <RelativeDiv>
             <Container $opacity={opacity} $pointerEvent={pointerEvent}>
-                <VideoContainer>
-                    <StyledVideo src={Image3} />
-                    <Caption style={{ maxWidth: '300px' }}>A Honda engine I modeled in Fusion 360, textured, animated and rendered in Blender. Used for AI machine vision training.</Caption>
-                </VideoContainer>
-                <FlexColumnDiv $transform="translateX(25vw)" $width="300px">
-                    <ImageStyled $width="300px" $height="300px" src={Image2} />
-                    <Caption>ComfyUI generated image of crashing waves.</Caption>
-                </FlexColumnDiv>
-                <FlexColumnDiv $width="1200px" $transform="translateX(0)">
-                    <ImageStyled $width="1200px" $height="auto" src={Image6} />
-                    <Caption style={{ maxWidth: '300px' }}>Interface screenshots from "Dnd 5e Player AIO" - a React Native mobile application developed and published on the App Store and Google Play Store, designed to streamline D&D 5e gameplay.</Caption>
-                </FlexColumnDiv>
-                <VideoContainer>
-                    <StyledVideo src={bottomVideo} />
-                    <Caption style={{ maxWidth: '300px' }}>Custom-designed UAV prototype that I developed in Fusion 360, fabricated, and flight tested for autonomous operations with Air Force Special Operations Command. I conducted the field testing in Dripping Springs, Texas.</Caption>
-                </VideoContainer>
-                <FlexColumnDiv style={{ alignItems: 'flex-end' }} $width="1200px" $transform="translateX(calc(50vw - 600px))">
-                    <ImageStyled $width="100vw" $height="auto" src={Image4} />
-                    <Caption style={{ maxWidth: '300px' }}>A house frame I designed and engineered in Fusion 360. Built in real life using coco lumber, mahogany and pine.</Caption>
-                </FlexColumnDiv>
-                <FlexColumnDiv $transform="translateX(calc(-50vw + 200px))" $width="300px">
-                    <ImageStyled $width="300px" $height="300px" src={Image1} />
-                    <Caption>Midjourney generated image of clouds and distant mountains.</Caption>
-                </FlexColumnDiv>
-                <FlexColumnDiv $width="600px" $transform="translateX(calc(-50vw + 300px))">
-                    <ImageStyled $width="100vw" $height="500px" $objectFit="cover" src={Image5} />
-                    <Caption style={{ maxWidth: '300px' }} >A typographic tribute to Seaholm Power Plant’s transformation from industrial landmark to a vibrant mixed-use destination.</Caption>
-                </FlexColumnDiv>
-                <FlexColumnDiv $width="400px" $transform="translateX(0)">
-                    <ImageStyled $width="400px" $height="400px" src={WhiteSands} />
-                    <Caption>White Sands National Monument, New Mexico. Taken with my iPhone 14 Pro Max.</Caption>
-                </FlexColumnDiv>
-                <FlexColumnDiv $width="400px" $transform="translateX(calc(50vw - 200px))">
-                    <ImageStyled $width="400px" $height="400px" src={Image8} />
-                    <Caption>My dog Alfie, my best friend.</Caption>
-                </FlexColumnDiv>
-                <div style={{ width: '100vw', position: 'relative', paddingBottom: 'calc(50vh - 171px)' }}>
-                    <div style={{ width: '100vw', display: 'flex', justifyContent: 'center' }}>
-                        <PositionedImage src={Image7} />
-                    </div>
-                </div>
+                <ProjectContainer>
+                    <MediaWrapper $maxWidth="600px">
+                        <StyledImage src={Image3} alt="Honda engine 3D model" />
+                        <Caption>A Honda engine I modeled in Fusion 360, textured, animated and rendered in Blender. Used for AI machine vision training.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer $align="flex-end">
+                    <MediaWrapper $maxWidth="500px">
+                        <StyledImage src={Image2} alt="Ocean waves" />
+                        <Caption>ComfyUI generated image of crashing waves.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer>
+                    <MediaWrapper>
+                        <StyledImage src={Image6} alt="DnD app interface" />
+                        <Caption>Interface screenshots from "Dnd 5e Player AIO" - a React Native mobile application developed and published on the App Store and Google Play Store, designed to streamline D&D 5e gameplay.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer $align="flex-start">
+                    <MediaWrapper $maxWidth="600px">
+                        <StyledImage src={bottomVideo} alt="UAV prototype" />
+                        <Caption>Custom-designed UAV prototype that I developed in Fusion 360, fabricated, and flight tested for autonomous operations with Air Force Special Operations Command. I conducted the field testing in Dripping Springs, Texas.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer>
+                    <MediaWrapper>
+                        <StyledImage src={Image4} alt="House frame design" />
+                        <Caption>A house frame I designed and engineered in Fusion 360. Built in real life using coco lumber, mahogany and pine.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer $align="flex-start">
+                    <MediaWrapper $maxWidth="500px">
+                        <StyledImage src={Image1} alt="Mountain landscape" />
+                        <Caption>Midjourney generated image of clouds and distant mountains.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer>
+                    <MediaWrapper $maxWidth="800px">
+                        <StyledImage src={Image5} alt="Seaholm Power Plant" />
+                        <Caption>A typographic tribute to Seaholm Power Plant's transformation from industrial landmark to a vibrant mixed-use destination.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer $align="center">
+                    <MediaWrapper $maxWidth="600px">
+                        <StyledImage src={WhiteSands} alt="White Sands" />
+                        <Caption>White Sands National Monument, New Mexico. Taken with my iPhone 14 Pro Max.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProjectContainer $align="flex-end">
+                    <MediaWrapper $maxWidth="500px">
+                        <StyledImage src={Image8} alt="Alfie" />
+                        <Caption>My dog Alfie, my best friend.</Caption>
+                    </MediaWrapper>
+                </ProjectContainer>
+
+                <ProfileSection>
+                    <img src={Image7} alt="Profile" />
+                </ProfileSection>
             </Container>
         </RelativeDiv>
     );

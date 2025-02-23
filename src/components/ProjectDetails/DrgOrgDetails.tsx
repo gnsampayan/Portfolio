@@ -87,7 +87,6 @@ const DrgOrgDetails = () => {
             Front-End Development
         </p>
     );
-    const projectLink = "https://www.designrun.org";
     const projectType = "WEBSITE";
     const year = "2019";
     const title = (
@@ -99,12 +98,11 @@ const DrgOrgDetails = () => {
         To comply with my non-disclosure agreement, I have omitted and
         obfuscated confidential information in this case study. All
         information in this case study is my own and does not
-        necessarily reflect the views of NQ Hardware and General
-        Enterprise.
+        necessarily reflect the views of Designrun.org.
     `;
     const summaryContent = (
         <p className={styles.pBody}>
-            DesignRun.org is a healthcare startup and
+            Designrun.org is a healthcare startup and
             non-profit organization that aims to establish a strong brand
             identity and digital presence to reach its target audience of
             current and future investors, clients, and partners.
@@ -113,9 +111,8 @@ const DrgOrgDetails = () => {
             The challenge was to create a minimalist and
             subtle brand identity, user-friendly interface, and smooth user
             experience with limited resources and time. Despite these
-            constraints, the team successfully delivered a website that
-            effectively communicated the company's mission and provided a
-            seamless experience for its users.
+            constraints, the website effectively communicated the company's
+            mission and provided a seamless experience for its users.
         </p>
     );
 
@@ -203,7 +200,6 @@ const DrgOrgDetails = () => {
             </div>
             <Template
                 scopeContents={scopeContents}
-                projectLink={projectLink}
                 projectType={projectType}
                 year={year}
                 title={title}

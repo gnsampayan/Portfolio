@@ -44,7 +44,6 @@ const NQHardwareDetails = () => {
             Web Design
         </p>
     );
-    const projectLink = "https://www.nqhardware.com";
     const projectType = "WEB APP, E-COMMERCE";
     const year = "2024";
     const title = (
@@ -179,7 +178,6 @@ const NQHardwareDetails = () => {
             </div>
             <Template
                 scopeContents={scopeContents}
-                projectLink={projectLink}
                 projectType={projectType}
                 year={year}
                 title={title}

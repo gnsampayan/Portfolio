@@ -68,14 +68,24 @@ const Link = styled.a`
 const Bubble = styled.div`
     background-color: white;
     width: auto;
-    height: 40px;
+    min-height: 40px;
+    height: auto;
     position: absolute;
     top: -16px;
     left: 80px;
     border-radius: 20px 20px 20px 0px;
     border: 1px solid #90e5ff;
     color: #4b4b4b;
-    padding: 6px 20px 6px 20px;  
+    padding: 6px 20px;
+    display: flex;
+    align-items: center;
+    
+    @media only screen and (max-width: 768px) {
+        max-width: calc(100% - 100px);
+        height: auto;
+        white-space: normal;
+        word-wrap: break-word;
+    }
 `
 const Caption = styled.p`
 	font-family: halyard-text, sans-serif;

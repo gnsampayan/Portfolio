@@ -110,9 +110,14 @@ const DrgOrgDetails = () => {
             <br />
             The challenge was to create a minimalist and
             subtle brand identity, user-friendly interface, and smooth user
-            experience with limited resources and time. Despite these
-            constraints, the website effectively communicated the company's
-            mission and provided a seamless experience for its users.
+            experience with limited resources and time. The power of simplicity
+            shines through in the final design - clean typography, thoughtful
+            white space, and intuitive navigation work together to create an
+            elegant yet highly functional experience. Despite resource
+            constraints, the website's refined aesthetic and seamless
+            interactions effectively communicate the company's mission while
+            demonstrating that great design doesn't have to be complex to
+            make an impact.
         </p>
     );
 

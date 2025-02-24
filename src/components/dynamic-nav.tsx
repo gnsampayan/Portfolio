@@ -105,7 +105,7 @@ const NavButton = styled.button<{
                     : "black"
             )};
     &:hover {
-        color: ${(props) => (props.$invertion ? "white" : "black")};
+        color: #438dff;
     }
     &:disabled {
         pointer-events: none;
@@ -563,9 +563,9 @@ const DynamicNav = () => {
     };
 
     return (
-
         <NavBox $invertion={invertNav} ref={touchRef}>
-            <Header className="header-target"
+            <Header
+                className="header-target"
                 $invertion={invertNav}
             >
                 <Name
@@ -590,7 +590,7 @@ const DynamicNav = () => {
                                 $invertion={invertNav}
                                 $isActive={activeMainButton === button.name}
                                 $isAnyButtonClicked={isAnyButtonClicked}
-                                onClick={() => { handleMainButtonClick(button.name) }}
+                                onClick={() => handleMainButtonClick(button.name)}
                                 disabled={isButtonDisabled}
                             >
                                 {button.name}
@@ -605,7 +605,7 @@ const DynamicNav = () => {
                                     $invertion={invertNav}
                                     $isActive={activeSecondaryBtn === button.name}
                                     $isAnyButtonClicked={isAnyButtonClicked}
-                                    onClick={() => { handleSecondaryButtonClick(button.name) }}
+                                    onClick={() => handleSecondaryButtonClick(button.name)}
                                     disabled={isButtonDisabled}
                                 >
                                     {button.name}

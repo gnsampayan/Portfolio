@@ -104,6 +104,7 @@ const ProfileSection = styled.div`
     }
 `;
 
+
 const OtherWorks = () => {
     const { boxInView } = useControlPanel();
     const [pointerEvent, setPointerEvent] = useState<boolean>(false);
@@ -118,18 +119,19 @@ const OtherWorks = () => {
         const element = e.currentTarget;
         const scrollPosition = element.scrollTop + element.clientHeight;
         const scrollHeight = element.scrollHeight;
+        const difference = scrollHeight - scrollPosition;
 
-        // Check if user has scrolled to bottom (with a small threshold)
-        if (!hasReachedBottom && scrollPosition >= scrollHeight - 100) {
+        // Check if user has scrolled to bottom (with a tiny buffer for floating point precision)
+        if (!hasReachedBottom && difference <= 1) {  // Changed from 100 to 1
             setHasReachedBottom(true);
             ReactGA.event({
                 category: 'User Engagement',
-                action: 'Scrolled to Bottom',
+                action: 'Reached Bottom',
                 label: 'Other Works'
             });
         }
 
-        // Optional: Track scroll percentage
+        // Track scroll percentage and update isAtBottom
         const scrollPercentage = Math.round((scrollPosition / scrollHeight) * 100);
         ReactGA.event({
             category: 'User Engagement',
@@ -174,7 +176,7 @@ const OtherWorks = () => {
             });
             setStartTime(null);
         }
-    }, [boxInView, startTime]);
+    }, [boxInView]);
 
     return (
         <RelativeDiv>

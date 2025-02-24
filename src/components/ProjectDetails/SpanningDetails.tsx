@@ -160,7 +160,7 @@ const SpanningDetails = () => {
             });
             setStartTime(null);
         }
-    }, [boxInView, startTime]);
+    }, [boxInView]);
 
     return (
         <div className={styles.frame} ref={myDivRef}>

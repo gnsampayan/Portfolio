@@ -88,7 +88,7 @@ const WeAreHereDetails = () => {
             });
             setStartTime(null);
         }
-    }, [boxInView, startTime]);
+    }, [boxInView]);
 
     return (
         <div style={{ marginTop: '40px' }} className={styles.frame} ref={myDivRef}>

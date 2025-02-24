@@ -65,11 +65,16 @@ const Link = styled.a`
     font-style: italic;
     max-width: 600px;
     line-height: 1.5rem;
-    color: rgb(143, 143, 143);
+    color: black;
     cursor: pointer;
+    color: #707070;
+    transition: color 1s ease;
+    &:hover {
+      color: #438dff;
+    }
 `;
 const Bubble = styled.div`
-    background-color: white;
+    background-color: #E5E5EA;
     width: auto;
     min-height: 40px;
     height: auto;
@@ -77,8 +82,7 @@ const Bubble = styled.div`
     top: -16px;
     left: 80px;
     border-radius: 20px 20px 20px 0px;
-    border: 1px solid #90e5ff;
-    color: #4b4b4b;
+    color: black;
     padding: 6px 20px;
     display: flex;
     align-items: center;
@@ -127,74 +131,29 @@ const AboutMe: React.FC = () => {
       });
       setStartTime(null);
     }
-  }, [boxInView, startTime]);
+  }, [boxInView]);
 
   return (
     <Frame>
       <Links>
         <Caption>Links</Caption>
         <Link
-          onClick={(e) => {
-            e.preventDefault(); // Prevent immediate navigation
-            ReactGA.event({
-              category: 'About Me',
-              action: 'Email Link Clicked',
-              label: 'Email'
-            });
-            // Navigate after a small delay to ensure the event is tracked
-            setTimeout(() => {
-              window.location.href = "mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,";
-            }, 100);
-          }}
           href="mailto:gnsampayan@gmail.com?subject=Hello there!&body=Hey Glenn,"
           id="email"
-          style={{
-            color: "#438dff",
-          }}
         >
           Email
         </Link>
         <Link
           target="_blank"
-          onClick={(e) => {
-            e.preventDefault(); // Prevent immediate navigation
-            ReactGA.event({
-              category: 'About Me',
-              action: 'Github Link Clicked',
-              label: 'Github'
-            });
-            // Navigate after a small delay to ensure the event is tracked
-            setTimeout(() => {
-              window.location.href = "https://github.com/gnsampayan";
-            }, 100);
-          }}
           href="https://github.com/gnsampayan"
           id="art"
-          style={{
-            color: "#40cd47",
-          }}
         >
           Github
         </Link>
         <Link
           target="_blank"
-          onClick={(e) => {
-            e.preventDefault(); // Prevent immediate navigation
-            ReactGA.event({
-              category: 'About Me',
-              action: 'LinkedIn Link Clicked',
-              label: 'LinkedIn'
-            });
-            // Navigate after a small delay to ensure the event is tracked
-            setTimeout(() => {
-              window.location.href = "https://www.linkedin.com/in/glenn-sampayan-544807176/";
-            }, 100);
-          }}
           href="https://www.linkedin.com/in/glenn-sampayan-544807176/"
           id="social"
-          style={{
-            color: "#f6543c",
-          }}
         >
           LinkedIn
         </Link>

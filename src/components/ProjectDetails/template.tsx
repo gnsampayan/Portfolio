@@ -2,13 +2,13 @@ import { ReactNode } from "react";
 import styles from "./details.module.css";
 
 interface Props {
-    scopeContents: ReactNode;
+    scopeContents: ReactNode | null;
     projectLink?: string;
-    projectType: string;
-    year: string;
-    title: ReactNode;
-    nonDisclosure: string;
-    summaryContent: ReactNode;
+    projectType?: string;
+    year?: string;
+    title?: ReactNode;
+    nonDisclosure?: string;
+    summaryContent?: ReactNode;
 }
 const HeadTemplate = ({
     scopeContents,
@@ -25,7 +25,7 @@ const HeadTemplate = ({
             <div className={styles.heading}>
                 <div className={styles.scope}>
                     <p className={styles.caption}>Scope</p>
-                    {scopeContents}
+                    {scopeContents ? scopeContents : null}
                     {projectLink && (
                         <>
                             <p className={styles.caption}>Links</p>

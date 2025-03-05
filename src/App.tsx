@@ -20,7 +20,7 @@ import OtherWorks from './components/OtherWorks';
 
 import ReactGA from 'react-ga4';
 
-ReactGA.initialize('G-EJ9QHXNE2W'); // Your GA4 measurement ID
+ReactGA.initialize('G-M7DPK7X0X3'); // Your GA4 measurement ID
 
 const Wrapper = styled.div`
   position: relative;

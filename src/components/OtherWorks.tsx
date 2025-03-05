@@ -10,10 +10,8 @@ import Image8 from '/alfie.gif';
 import bottomVideo from '/drone.gif';
 import WhiteSands from '../assets/white-sands.jpg';
 import { useControlPanel } from "./Contexts/ControlPanelContext";
-import { useEffect, useState, Suspense } from "react";
-import * as THREE from 'three';
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { useEffect, useState } from "react";
+
 import ReactGA from 'react-ga4';
 
 const Container = styled.div<{ $pointerEvent: boolean; $opacity: boolean; }>`
@@ -50,7 +48,6 @@ const ProjectContainer = styled.div<{ $align?: string }>`
     display: flex;
     flex-direction: column;
     align-items: ${props => props.$align || 'center'};
-    pointer-events: auto;
 
     @media (max-width: 768px) {
         width: 95%;
@@ -61,7 +58,6 @@ const MediaWrapper = styled.div<{ $maxWidth?: string }>`
     width: 100%;
     max-width: ${props => props.$maxWidth || '800px'};
     position: relative;
-    pointer-events: auto;
 `;
 
 const StyledImage = styled.img`
@@ -108,97 +104,6 @@ const ProfileSection = styled.div`
     }
 `;
 
-const ModelContainer = styled(MediaWrapper)`
-    height: 400px;
-    background: #f5f5f5;
-    border-radius: 3px;
-    overflow: visible;
-    position: relative;
-    pointer-events: auto;
-`;
-
-const LoadingText = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #666;
-    font-size: 14px;
-    pointer-events: none;
-`;
-
-const ControlsOverlay = styled.div`
-    position: absolute;
-    top: 12px;
-    right: 0px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    color: #666;
-    display: flex;
-    gap: 16px;
-    pointer-events: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 1;
-
-    .control-item {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .icon {
-        font-size: 14px;
-        color: #333;
-    }
-
-    @media (max-width: 768px) {
-        .desktop-controls {
-            display: none;
-        }
-        .mobile-controls {
-            display: flex;
-            gap: 12px;
-        }
-    }
-
-    @media (min-width: 769px) {
-        .desktop-controls {
-            display: flex;
-            gap: 16px;
-        }
-        .mobile-controls {
-            display: none;
-        }
-    }
-`;
-
-const HouseModel = () => {
-    console.log("Attempting to load model...");
-    const { scene } = useGLTF("/result.gltf");
-    console.log("Model loaded successfully:", scene);
-
-    useEffect(() => {
-        scene.traverse((child: THREE.Object3D) => {
-            if (child instanceof THREE.Mesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-                // Make materials darker and more visible
-                if (child.material) {
-                    child.material.transparent = false;
-                    child.material.opacity = 1;
-                    child.material.color.setHex(0x4a4a4a); // Set a darker gray color
-                    child.material.metalness = 0.3; // Reduce metalness for more matte appearance
-                    child.material.roughness = 0.7; // Increase roughness for less shine
-                    child.material.needsUpdate = true;
-                }
-            }
-        });
-    }, [scene]);
-
-    return <primitive object={scene} scale={0.01} position={[2, -1, 0]} />;
-};
 
 const OtherWorks = () => {
     const { boxInView } = useControlPanel();
@@ -304,67 +209,11 @@ const OtherWorks = () => {
                     </MediaWrapper>
                 </ProjectContainer>
 
-                <ProjectContainer $align="flex-end">
-                    <ModelContainer>
-                        <ControlsOverlay>
-                            <div className="desktop-controls">
-                                <div className="control-item">
-                                    <span className="icon">🖱️</span>
-                                    <span>Left: Orbit</span>
-                                </div>
-                                <div className="control-item">
-                                    <span className="icon">🖱️</span>
-                                    <span>Right: Pan</span>
-                                </div>
-                                <div className="control-item">
-                                    <span className="icon">⚡</span>
-                                    <span>Scroll: Zoom</span>
-                                </div>
-                            </div>
-                            <div className="mobile-controls">
-                                <div className="control-item">
-                                    <span className="icon">👆</span>
-                                    <span>1 finger: Orbit</span>
-                                </div>
-                                <div className="control-item">
-                                    <span className="icon">✌️</span>
-                                    <span>2 fingers: Pan</span>
-                                </div>
-                                <div className="control-item">
-                                    <span className="icon">🤏</span>
-                                    <span>Pinch: Zoom</span>
-                                </div>
-                            </div>
-                        </ControlsOverlay>
-                        <Suspense fallback={<LoadingText>Loading 3D Model...</LoadingText>}>
-                            <Canvas shadows camera={{ position: [5, 5, 5], fov: 50 }}>
-                                <ambientLight intensity={1} />
-                                <directionalLight
-                                    position={[10, 10, 5]}
-                                    intensity={2}
-                                    castShadow
-                                    shadow-mapSize-width={1024}
-                                    shadow-mapSize-height={1024}
-                                    shadow-camera-far={50}
-                                />
-                                <HouseModel />
-                                <OrbitControls
-                                    enablePan={true}
-                                    enableZoom={true}
-                                    enableRotate={true}
-                                    panSpeed={0.5}
-                                    zoomSpeed={0.6}
-                                    rotateSpeed={0.4}
-                                    minDistance={2}
-                                    maxDistance={10}
-                                    minPolarAngle={Math.PI / 4}
-                                    maxPolarAngle={Math.PI / 2}
-                                />
-                                <color attach="background" args={['#ffffff']} />
-                            </Canvas>
-                        </Suspense>
-                        <Caption>An interactive 3D view of the house frame I designed and engineered in Fusion 360. Built in real life using coco lumber, mahogany and pine.</Caption>
-                    </ModelContainer>
+                <ProjectContainer>
+                    <MediaWrapper>
+                        <StyledImage src={Image4} alt="House frame design" />
+                        <Caption>A house frame I designed and engineered in Fusion 360. Built in real life using coco lumber, mahogany and pine.</Caption>
+                    </MediaWrapper>
                 </ProjectContainer>
 
                 <ProjectContainer $align="flex-start">

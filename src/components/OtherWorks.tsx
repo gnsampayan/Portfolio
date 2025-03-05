@@ -110,36 +110,6 @@ const OtherWorks = () => {
     const [pointerEvent, setPointerEvent] = useState<boolean>(false);
     const [opacity, setOpacity] = useState<boolean>(false);
     const [startTime, setStartTime] = useState<number | null>(null);
-    const [hasReachedBottom, setHasReachedBottom] = useState(false);
-
-    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        // Only track scrolling when Other Works is visible
-        if (boxInView !== -1) return;
-
-        const element = e.currentTarget;
-        const scrollPosition = element.scrollTop + element.clientHeight;
-        const scrollHeight = element.scrollHeight;
-        const difference = scrollHeight - scrollPosition;
-
-        // Check if user has scrolled to bottom (with a tiny buffer for floating point precision)
-        if (!hasReachedBottom && difference <= 1) {  // Changed from 100 to 1
-            setHasReachedBottom(true);
-            ReactGA.event({
-                category: 'User Engagement',
-                action: 'Reached Bottom',
-                label: 'Other Works'
-            });
-        }
-
-        // Track scroll percentage and update isAtBottom
-        const scrollPercentage = Math.round((scrollPosition / scrollHeight) * 100);
-        ReactGA.event({
-            category: 'User Engagement',
-            action: 'Scroll Depth',
-            label: 'Other Works',
-            value: scrollPercentage
-        });
-    };
 
     useEffect(() => {
         let timeout: NodeJS.Timeout;
@@ -180,7 +150,7 @@ const OtherWorks = () => {
 
     return (
         <RelativeDiv>
-            <Container $opacity={opacity} $pointerEvent={pointerEvent} onScroll={handleScroll}>
+            <Container $opacity={opacity} $pointerEvent={pointerEvent}>
                 <ProjectContainer>
                     <MediaWrapper $maxWidth="600px">
                         <StyledImage src={Image3} alt="Honda engine 3D model" />
